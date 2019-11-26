@@ -25,8 +25,8 @@ CREATE TABLE UZIVATEL(
     meno        VARCHAR(20) NOT NULL,
     priezvisko  VARCHAR(20) NOT NULL,
     adresa      VARCHAR(20) NOT NULL,
-    tel_cislo   SMALLINT(13) NOT NULL,
-    email       VARCHAR(20) NOT NULL,
+    tel_cislo   VARCHAR(13) NOT NULL,
+    email       VARCHAR(100) NOT NULL,
     heslo       VARCHAR(20) NOT NULL
 
     -- TODO: admin editing UZIVATEL (need model via ALTER TABLE?)
@@ -34,13 +34,13 @@ CREATE TABLE UZIVATEL(
 
 CREATE TABLE OPERATOR(
     sluzobny_tel    VARCHAR(20) NOT NULL,
-    id              VARCHAR(5) NOT NULL,
+    id              VARCHAR(20) NOT NULL,
     CONSTRAINT id_operator FOREIGN KEY (id) REFERENCES UZIVATEL(id)
 );
 
 CREATE TABLE RIDIC(
     spz     VARCHAR(10) NOT NULL,
-    id      VARCHAR(5) NOT NULL,
+    id      VARCHAR(20) NOT NULL,
 
     CONSTRAINT id_ridic FOREIGN KEY (id) REFERENCES UZIVATEL(id)
 );
@@ -48,14 +48,14 @@ CREATE TABLE RIDIC(
 
 CREATE TABLE ADMIN(
     id_ntb     VARCHAR(10) NOT NULL,
-    id         VARCHAR(5) NOT NULL,
+    id         VARCHAR(20) NOT NULL,
 
     CONSTRAINT id_admin FOREIGN KEY (id) REFERENCES UZIVATEL(id)
 );
 
 CREATE TABLE STRAVNIK(
-    limit_jedal TINYINT(10) NOT NULL,
-    id          VARCHAR(5) NOT NULL,
+    limit_jedal INT(10) NOT NULL,
+    id          VARCHAR(20) NOT NULL,
 
     CONSTRAINT id_stravnik FOREIGN KEY (id) REFERENCES UZIVATEL(id)
 );
@@ -63,12 +63,13 @@ CREATE TABLE STRAVNIK(
 CREATE TABLE NEREGISTROVANY_UZIVATEL(
     adresa      VARCHAR(20) NOT NULL,
     meno        VARCHAR(20) NOT NULL,
-    tel_cislo   SMALLINT(13)
+    priezvisko  VARCHAR(20) NOT NULL,
+    tel_cislo   VARCHAR(13)
 );
   
 CREATE TABLE OBJEDNAVKA(
-	id		            VARCHAR(5) NOT NULL PRIMARY KEY,
-    cena_celkom         SMALLINT(5) NOT NULL,
+	id		            VARCHAR(20) NOT NULL PRIMARY KEY,
+    cena_celkom         INT(5) NOT NULL,
     stav                VARCHAR(10) NOT NULL,
     cas_objednania		TIMESTAMP NOT NULL,
     cas_dorucenia   	TIMESTAMP NOT NULL, -- DATE
@@ -84,12 +85,12 @@ CREATE TABLE POLOZKY (
     id      VARCHAR(5) NOT NULL PRIMARY KEY,
     nazov   VARCHAR(20) NOT NULL,
     typ     VARCHAR(20) NOT NULL,
-    popis   VARCHAR(30),
-    cena    SMALLINT(10) NOT NULL,
+    popis   VARCHAR(100),
+    cena    INT(10) NOT NULL,
     -- obrázok image
     
-    id_objednavky VARCHAR(5),
-    id_operator   VARCHAR(5),
+    id_objednavky VARCHAR(20),
+    id_operator   VARCHAR(20),
     -- TODO: missing connection to table NABIDKA (N:N)
     CONSTRAINT id_objednavky_polozky FOREIGN KEY (id_objednavky) REFERENCES OBJEDNAVKA(id),
     CONSTRAINT id_operator_polozky FOREIGN KEY (id_operator) REFERENCES OPERATOR(id)    
@@ -111,7 +112,7 @@ CREATE TABLE STALA_NABIDKA(
 );
 
 CREATE TABLE DENNI_MENU(
-    den     DATETIME NOT NULL,
+    den     VARCHAR(10) NOT NULL,
     jedlo   VARCHAR(20) NOT NULL,
     napoj   VARCHAR(20) NOT NULL,
     polievka VARCHAR(20) NOT NULL,
@@ -121,7 +122,7 @@ CREATE TABLE DENNI_MENU(
 );
 
 CREATE TABLE PROVOZNA (
-    id          TINYINT(3) NOT NULL PRIMARY KEY,
+    id          INTEGER(3) NOT NULL PRIMARY KEY,
     nazov       VARCHAR(100) NOT NULL,
     adresa      VARCHAR(100) NOT NULL,
     uzavierka   TIMESTAMP NOT NULL, -- DATETIME ? 
@@ -135,7 +136,7 @@ CREATE TABLE PROVOZNA (
 
 CREATE TABLE PLAN_RIDICE(
     id_regionu      VARCHAR(5) NOT NULL,
-    id_objednavky   VARCHAR(5) NOT NULL,
+    id_objednavky   VARCHAR(20) NOT NULL,
     id_ridic        VARCHAR(20) NOT NULL,
     id_operator     VARCHAR(20) NOT NULL, 
 
@@ -144,22 +145,3 @@ CREATE TABLE PLAN_RIDICE(
     CONSTRAINT id_ridice_plan_ridice FOREIGN KEY (id_ridic) REFERENCES RIDIC(id),
     CONSTRAINT id_operatora_plan_ridice FOREIGN KEY (id_operator) REFERENCES OPERATOR(id)
 );
-
-
--- ---------------------------------------------------------------------- --
--- ------------------------ UDELENIA PRAV ------------------------------- --
--- ---------------------------------------------------------------------- --
-
-GRANT ALL ON PROVOZNA TO xjendr03;
-GRANT ALL ON OBJEDNAVKA TO xjendr03;
-GRANT ALL ON POLOZKY TO xjendr03;
-GRANT ALL ON NABIDKA TO xjendr03;
-GRANT ALL ON STALA_NABIDKA TO xjendr03;
-GRANT ALL ON DENNI_MENU TO xjendr03;
-GRANT ALL ON PLAN_RIDICE TO xjendr03;
-GRANT ALL ON UZIVATEL TO xjendr03;
-GRANT ALL ON OPERATOR TO xjendr03;
-GRANT ALL ON RIDIC TO xjendr03;
-GRANT ALL ON ADMIN TO xjendr03;
-GRANT ALL ON STRAVNIK TO xjendr03;
-GRANT ALL ON NEREGISTROVANY_UZIVATEL TO xjendr03;
