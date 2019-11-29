@@ -1,27 +1,21 @@
 /* 
- 1/ vyriesenie HESLA --> hashovacia funkcia  
-
- 2/ UZIVATEL + id_admin_obj 
-	TO CO JE POUZITE MUSI BYT NAMODELOVANE ... v uzivatelovi modelujeme admina ktory je az po nom namodelovany 
-	--> NEED TEST <--  TEST PRESIEL ...SPRAVNE ?  
+ 1/ vyriesenie HESLA --> hashovacia funkcia   
  
  3/ PLAN_RIDICE 1:1 
 
  4/ 0..5 JEDAL V MENU 
-
- 5/ id_regionu ????
  
 */
 
 -- STRAVNICI
-INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo, id_admin_obj)  
-VALUES('0000123414', 'Leopold', 'Halaj', 'Zahrebska 97', '+421908013019', 'Leopold.Halaj@gmail.com', '???', '0000025698');
-INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo, id_admin_obj)  
-VALUES('0000259896', 'Izabela', 'Sokolova', 'Vodova 61', '+420786666954', 'Izabela.Sokolova@gmail.com', '???', '0001234569');
-INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo, id_admin_obj)  
-VALUES('9856745848', 'Julia', 'Cermakova', 'Technicka 1', '+420778695444', 'Julia.Cermakova@gmail.com', '???', '0789568236');
-INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo, id_admin_obj)  
-VALUES('0012563598', 'David', 'Silber', 'Gorkeho 42', '+421569863457', 'David.Silber@gmail.com', '???', '5874692354');
+INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo)  
+VALUES('0000123414', 'Leopold', 'Halaj', 'Zahrebska 97', '+421908013019', 'Leopold.Halaj@gmail.com', '???');
+INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo)  
+VALUES('0000259896', 'Izabela', 'Sokolova', 'Vodova 61', '+420786666954', 'Izabela.Sokolova@gmail.com', '???');
+INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo)  
+VALUES('9856745848', 'Julia', 'Cermakova', 'Technicka 1', '+420778695444', 'Julia.Cermakova@gmail.com', '???');
+INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo)  
+VALUES('0012563598', 'David', 'Silber', 'Gorkeho 42', '+421569863457', 'David.Silber@gmail.com', '???');
 
 -- ADMINI
 INSERT INTO UZIVATEL (id, meno, priezvisko, adresa, tel_cislo, email, heslo)  
