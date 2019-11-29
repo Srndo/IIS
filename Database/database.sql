@@ -30,9 +30,9 @@ CREATE TABLE UZIVATEL(
     email           VARCHAR(100) NOT NULL,
     heslo           VARCHAR(20) NOT NULL,
     
-    id_admin_obj    VARCHAR(10) NOT NULL,
+    -- id_admin_obj    VARCHAR(10) NOT NULL,
     
-    CONSTRAINT spravuje_uzivatela FOREIGN KEY (id_admin_obj) REFERENCES ADMIN(id)
+    -- CONSTRAINT spravuje_uzivatela FOREIGN KEY (id_admin_obj) REFERENCES ADMIN(id)
     -- NEED TEST ...ADMIN NAMODELOVANY NIZSIE !!! ???
     -- TOTO NIE JE DOROBENE ANI TO FILLDAT ->
 );
