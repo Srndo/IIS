@@ -28,7 +28,7 @@ CREATE TABLE UZIVATEL(
     adresa          VARCHAR(20) NOT NULL,
     tel_cislo       VARCHAR(13) NOT NULL,
     email           VARCHAR(100) NOT NULL,
-    heslo           VARCHAR(20) NOT NULL,
+    heslo           VARCHAR(20) NOT NULL
     
     -- id_admin_obj    VARCHAR(10) NOT NULL,
     
