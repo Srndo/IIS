@@ -3,14 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Nomis0409@localhost/iis'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-#db = mysqli_init();
-#if (mysqli_real_connect(db, 'localhost', 'xsesta06', 'kejugu4e', 'xsesta06', 0, '/var/run/mysql/mysql.sock'))
-#	pass
-#else
-#	die('cannot connect '.mysqli_connecterror())
+app.config['SQLALCHEMY_DATABASE_URI'] = ''
+
 
 
 class User(db.Model):
