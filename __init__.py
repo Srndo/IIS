@@ -135,7 +135,7 @@ def index():
 	return render_template('index.html', users=users)
 
 @app.route('/showSignUp', methods=['POST', 'GET'])
-def index():
+def singup():
 	if request.method == 'POST':
 		user_name = request.form['meno']
 		user_email = request.form['email']
@@ -148,7 +148,8 @@ def index():
 			return redirect('/')
 		except Exception as e:
 			return 'There was a issue with adding your task.'
-
+	else:
+		return render_template('showSignUp')
 
 if __name__ == "__main__":
 	app.run(debug=True)
