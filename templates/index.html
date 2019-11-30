@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+        <title>IIS 2019</title>
+
+{% endblock %}
+
+
+
+{% block body %}
+        <div class="content">
+                <h1>Úvodná strana</h1>
+
+                {% if users|length < 1 %}
+                <h4>There are no tasks. Create one below!</h4>
+                {% else %}
+
+                <table>
+                        <tr>
+                                <th>Task</th>
+                                <th>Added</th>
+                                <th>Actions</th>
+                        </tr>
+                        {% for user in users %}
+                        <tr>
+                                <td>{{ user.meno }}</td>
+                                <td>{{ user.priezvisko }}</td>
+                                <td>
+                                        <a href="/delete/{{user.id}}">Delete</a>
+                                        <br>
+                                        <a href="/update/{{user.id}}">Upadte</a>
+                                </td>
+                        </tr>
+                        {% endfor %}
+                </table>
+                {% endif %}
+                <form action="/" method="POST">
+                        <input type="text" name="content" id="content">
+                        <button>Add user</button>
+                </form>
+
+        </div>
+{% endblock %}
