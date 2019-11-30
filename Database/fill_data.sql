@@ -128,7 +128,7 @@ VALUES('9152364859', '3.5', 'Prijata', '2018-02-01 16:34:00', '2018-02-01 17:34:
 INSERT INTO OBJEDNAVKA (id, cena_celkom, stav, cas_objednania, cas_dorucenia, id_operatora, id_stravnika, id_plan_ridice)
 VALUES('7589621548', '21.7', 'Dorucene', '2018-03-01 19:47:00', '2018-03-01 20:27:00', '0012015486', '0012563598', '1111171458');
 
-INSERT INTO ukoncuje_objednavku (id, id_operatora) 
+INSERT INTO ukoncuje_objednavku (id, id_operatora)  
 VALUES('1546958732', '0000000048');
 INSERT INTO ukoncuje_objednavku (id, id_operatora) 
 VALUES('9685743625', '1526485976');

@@ -3,8 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///iisdb'
+db = SQLAlchemy(app)
 
 
 class User(db.Model):
