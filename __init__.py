@@ -134,5 +134,21 @@ def index():
 	users = Uzivatel.query.order_by(Uzivatel.id).all()
 	return render_template('index.html', users=users)
 
+@app.route('/showSignUp', methods=['POST', 'GET'])
+def index():
+	if request.method == 'POST':
+		user_name = request.form['meno']
+		user_email = request.form['email']
+		user_password = request.form['heslo']
+
+		new_user = Uzivatel(meno=user_name, priezvisko="Test", adresa="", cislo="", email=user_email, heslo=user_password)
+		try:
+			db.session.add(new_user)
+			db.session.commit()
+			return redirect('/')
+		except Exception as e:
+			return 'There was a issue with adding your task.'
+
+
 if __name__ == "__main__":
 	app.run(debug=True)

@@ -18,27 +18,17 @@
 
                 <table>
                         <tr>
-                                <th>Task</th>
-                                <th>Added</th>
-                                <th>Actions</th>
+                                <th>Meno</th>
+                                <th>Priezvisko</th>
                         </tr>
                         {% for user in users %}
                         <tr>
                                 <td>{{ user.meno }}</td>
                                 <td>{{ user.priezvisko }}</td>
-                                <td>
-                                        <a href="/delete/{{user.id}}">Delete</a>
-                                        <br>
-                                        <a href="/update/{{user.id}}">Upadte</a>
-                                </td>
                         </tr>
                         {% endfor %}
                 </table>
                 {% endif %}
-                <form action="/" method="POST">
-                        <input type="text" name="content" id="content">
-                        <button>Add user</button>
-                </form>
-
+                        <button><a href="/showSignUp">SIGN UP</a></button>
         </div>
 {% endblock %}
