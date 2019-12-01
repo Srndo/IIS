@@ -1,0 +1,26 @@
+{% block body %}
+<div class="content">
+	{% if orders|length < 1 %}
+	<h4>There are no orders for you.</h4>
+	{% else %}
+	<table>
+		<tr>
+			<th>Cena</th>
+			<th></th>
+			<th>Stav</th>
+			<th>Čas doručenia</th>
+			<th>Čas objednania</th>
+		</tr>
+		{% for order in orders %}
+		<tr>
+			<td>{{ order.cena_celkom }}</td>
+			<td></td>
+			<td>{{ order.stav }}</td>
+			<td>{{ order.cas_dorucenia }}</td>
+			<td>{{ order.cas_objednania }}</td>
+		{% endfor %}
+		</tr>
+	</table>
+	{% endif %}
+</div>
+{% endblock %}
