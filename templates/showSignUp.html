@@ -1,14 +1,15 @@
 {% block body %}
-	<div class="content">
-		<h1>Sign up</h1>
+    <div class="content">
+        <h1>Sign up</h1>
 
-		<div class="from">
-			<form action="/showSignUp" method="POST">
-				<input type="text" name="meno" id="meno" value="Name">
-				<input type="email" name="email" id="email" value="example@example.com">
-				<input type="password" name="heslo" id="heslo" value="passsword}">
-				<button>Sign up</button>
-			</form>
-		</div>
-	</div>
+        <div class="from">
+            <form action="/showSignUp" method="POST">
+                <input type="text" name="meno" id="meno" value="Name">
+                <input type="email" name="email" id="email" value="example@example.com">
+                <input type="password" name="heslo" id="heslo" value="passsword}">
+                <input type="phone" name="cislo" id="cislo" placeholder="+421918918918">
+                <button>Sign up</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
