@@ -149,7 +149,7 @@ def singup():
 		except Exception as e:
 			return 'There was a issue with adding your task.'
 	else:
-		return render_template('showSignUp')
+		return render_template('showSignUp.html')
 
 if __name__ == "__main__":
 	app.run(debug=True)

@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS "UZIVATEL" (
-    "id"    VARCHAR(10) NOT NULL,
+    "id"    INTEGER,
     "meno"  VARCHAR(20) NOT NULL,
     "priezvisko"    VARCHAR(20) NOT NULL,
     "adresa"    VARCHAR(20) NOT NULL,
