@@ -151,7 +151,7 @@ def singup():
         last_user = Uzivatel.query.order_by(Uzivatel.id.desc()).first()
         #print(last_user.id)
         
-        new_user = Uzivatel(meno=user_name, priezvisko="Test", adresa="", cislo=user_tel, email=user_email, heslo=user_password)ko="Test", adresa="", cislo="", email=user_email, heslo=user_password)
+        new_user = Uzivatel(meno=user_name, priezvisko="Test", adresa="", cislo=user_tel, email=user_email, heslo=user_password)
         try:
             db.session.add(new_user)
             db.session.commit()
