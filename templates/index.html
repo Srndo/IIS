@@ -18,13 +18,17 @@
 
                 <table>
                         <tr>
+                                <th>Id</th>
                                 <th>Meno</th>
                                 <th>Priezvisko</th>
+                                <th>Cislo</th>
                         </tr>
                         {% for user in users %}
                         <tr>
+                                <td>{{ user.id }}</td>
                                 <td>{{ user.meno }}</td>
                                 <td>{{ user.priezvisko }}</td>
+                                <td>{{ user.cislo }}</td>
                         </tr>
                         {% endfor %}
                 </table>
