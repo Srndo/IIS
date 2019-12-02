@@ -246,12 +246,16 @@ def canteen_page(canteen_id):
     if permanent is None or daily is None:
         abort(500)
 
-    daily_foods = []
-    q = (Jidlo.query
+    daily_foods = (Jidlo.query
         .join(Jidlo_denni_menu, Jidlo_denni_menu.jidlo_id == Jidlo.id)
         .join(Denni_menu, daily.id == Jidlo_denni_menu.denne_menu_id)
         .all())
-    print(q)
+    permanent_foods = (Jidlo.query
+        .join(Jidlo_trvala_nabidka, Jidlo_trvala_nabidka.jidlo_id == Jidlo.id)
+        .join(Trvala_nabidka, permanent.id == Jidlo_trvala_nabidka.trvala_nabidka_id)
+        .all())
+
+    print(permanent_foods)
 
     return render_template('canteen.html', canteen=canteen, daily=daily, permanent=permanent)
 
