@@ -52,7 +52,7 @@ INSERT INTO "ponuka_denni_menu" ("id","id_provozny") VALUES ('16498','123'),
  ('12365','255'),
  ('32256','147'),
  ('22215','012');
-INSERT INTO "DENNI_MENU" ("id","datum","id_provozny") VALUES ('16498',GETDATE(),123),
+INSERT INTO "DENNI_MENU" ("id","datum","id_provozny") VALUES ('16498',date(),123),
  ('12365','2019-12-02',255),
  ('32256','2019-12-03',147),
  ('22215','2019-12-04',12);
