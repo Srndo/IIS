@@ -2,10 +2,10 @@ import traceback
 import random
 import re
 import os
-from flask import Flask, render_template, url_for, request, redirect, session, g
+from flask import Flask, render_template, url_for, request, redirect, session, g, abort
 from werkzeug.exceptions import HTTPException
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
+from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 
 
@@ -104,8 +104,18 @@ class Trvala_nabidka(db.Model):
 
 class Denni_menu(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
-    datum = db.Column('datum', db.DateTime, nullable=False)
+    datum = db.Column('datum', db.String(10), nullable=False)
     id_provozny = db.Column('id_provozny', db.Integer, nullable=False)
+
+
+class Jidlo_denni_menu(db.Model):
+    jidlo_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
+    denne_menu_id = db.Column('denne_menu_id', db.Integer, nullable=False, primary_key=True)
+
+
+class Jidlo_trvala_nabidka(db.Model):
+    jidlo_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
+    trvala_nabidka_id = db.Column('trvala_nabidka_id', db.Integer, nullable=False, primary_key=True)
 
 
 ########################################
@@ -141,7 +151,6 @@ def load_logged_in_user():
             g.admin = False
         else:
             g.admin = True
-            
 
 
 @app.errorhandler(Exception)
@@ -227,16 +236,33 @@ def logout():
     return redirect('/')
 
 
-@app.route('/canteen/<canteen_id>')
+@app.route('/canteen/<int:canteen_id>')
 def canteen_page(canteen_id):
     canteen = Provozna.query.filter(Provozna.id == canteen_id).first()
     if canteen is None:
         abort(404)
-    permanent = Trvala_nabidka.query.filter(Trvala_nabidka.id_provozny == canteen_id)
-    daily = Denni_menu.query.filter(Denni_menu.id_provozny == canteen_id)
-    if permanent is None or daily is None:
-        abort(500)
-    return render_template('canteen.html', canteen=canteen, daily=daily, permanent=permanent)
+
+    permanent_foods = None
+    permanent = Trvala_nabidka.query.filter(Trvala_nabidka.id_provozny == canteen_id).first()
+    if permanent is not None:
+        permanent_foods = (Jidlo.query
+            .join(Jidlo_trvala_nabidka, Jidlo_trvala_nabidka.jidlo_id == Jidlo.id)
+            .join(Trvala_nabidka, permanent.id == Jidlo_trvala_nabidka.trvala_nabidka_id)
+            .all())
+
+    daily_foods = None
+    daily = Denni_menu.query.filter(Denni_menu.id_provozny == canteen_id).first()
+    if daily is not None:
+        daily_foods = (Jidlo.query
+            .join(Jidlo_denni_menu, Jidlo_denni_menu.jidlo_id == Jidlo.id)
+            .join(Denni_menu, daily.id == Jidlo_denni_menu.denne_menu_id)
+            .all())
+
+    return render_template(
+        'canteen.html',
+        canteen=canteen,
+        daily_foods=daily_foods,
+        permanent_foods=permanent_foods)
 
 
 @app.route('/trvalaNabidka')
@@ -295,6 +321,7 @@ def show_profile():
         return render_template('profile.html', user=user)
     return redirect('/login')
 
+
 @app.route('/create_plan', methods=['POST', 'GET'])
 def create_plan():
     if g.operator or g.admin:
@@ -315,14 +342,15 @@ def create_plan():
         else:
             return render_template('create_plan.html')
     return redirect('login')
-        
-        
+
+
 @app.route('/driver_plan')
 def show_plan():
     if g.driver:
         plans = Plan_ridice.query.filter(Plan_ridice.id_ridica == g.user_id).all()
         return render_template('driver_plan.html', plans=plans)
-        
+
+
 @app.route('/manage_users', methods=['POST', 'GET'])
 def manage_users():
     if g.admin:
@@ -337,9 +365,9 @@ def manage_users():
         else:
             #return render_template('manage_users.html', admins=admins, operators=operators, drivers=drivers, customers=customers)
             return render_template('manage_users.html', users=users)
-    
     return redirect('/login')
-    
+
+
 @app.route('/edit_user/<id>', methods=['GET', 'POST'])
 def edit_user(id):
     print(g.user_id)
@@ -380,12 +408,12 @@ def edit_user(id):
             db.session.commit()
             
             return render_template('all_done.html', desc="Informations change")
-            
-            
+
         else:
             return render_template('edit_user.html', user=user)
     return redirect('/login')
-    
+
+
 @app.route('/add_canteen', methods=['POST', 'GET'])
 def add_canteen():
     if g.operator or g.admin:
@@ -396,24 +424,25 @@ def add_canteen():
             deadline = request.form['deadline']
             operator_name = request.form['operator_name']
             operator_surname = request.form['operator_surname']
-            
+
             operators = Operator.query.all()
             operators = Uzivatel.query.filter(Uzivatel.meno == operator_name and Uzivatel.priezvisko == operator_surname).all()
             for operator in operators:
                 selected_operator = Operator.query.filter(Operator.id == operator.id).first()
                 if selected_operator is not None:
                     break
-            
+
             new_canteen = Provozna(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=selected_operator.id, img_src='https://via.placeholder.com/150')
             db.session.add(new_canteen)
             db.session.commit()
-            
+
             return render_template('all_done.html', desc="New canteen aded")
-            
+
         else:
             return render_template('add_canteen.html')
-        
+
     return redirect('/login')
+
 
 @app.route('/add_item', methods=['POST', 'GET'])
 def add_item():
@@ -436,6 +465,7 @@ def add_item():
         
     return redirect('/login')
 
+
 @app.route('/remove_canteen', methods=['POST', 'GET'])
 def remove_canteen():
     if g.operator or g.admin:
@@ -451,7 +481,8 @@ def remove_canteen():
             return render_template('remove_canteen.html')
         
     return redirect('/login')
-    
+
+
 @app.route('/remove_item', methods=['POST', 'GET'])
 def remove_item():
     if g.operator or g.admin:
@@ -467,22 +498,25 @@ def remove_item():
             return render_template('remove_item.html')
         
     return redirect('/login')
-    
+
+
 @app.route('/add')
 def add():
     if g.operator or g.admin:
         return render_template('add.html')
     return redirect('/login')
-    
+
+
 @app.route('/remove')
 def remove():
     if g.operator or g.admin:
         return render_template('remove.html')
     return redirect('/login')
+
+
 ########################################
 # Main module guard
 ########################################
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000', debug=True)
-
