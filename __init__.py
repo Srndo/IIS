@@ -247,9 +247,9 @@ def canteen_page(canteen_id):
         abort(500)
 
     daily_foods = []
-    q = (Denni_menu.query
-        .join(Jidlo_denni_menu, Denni_menu.id == Jidlo_denni_menu.denne_menu_id)
-        .join(Jidlo, Jidlo_denni_menu.jidlo_id == Jidlo.id)
+    q = (Jidlo.query
+        .join(Jidlo_denni_menu, Jidlo_denni_menu.jidlo_id == Jidlo.id)
+        .join(Denni_menu, Denni_menu.id == Jidlo_denni_menu.denne_menu_id)
         .all())
     print(q)
 
