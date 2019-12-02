@@ -117,11 +117,11 @@ def load_logged_in_user():
     g.user = None
     user_id = session.get('user_id')
     if user_id is not None:
-        user_name = Uzivatel.query.filter(Uzivatel.id == user_id).first()
-        if user_name is None:
+        user = Uzivatel.query.filter(Uzivatel.id == user_id).first()
+        if user is None: # Serious server error or data manipulation
             session.clear()
             abort(500)
-        g.user = user_name
+        g.user = user.email
 
 
 @app.errorhandler(Exception)
