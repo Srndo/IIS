@@ -8,52 +8,5 @@
     <p>{{ canteen.description }}</p>
   </div>
 </div>
-<!--
-	<table>
-		<tr>
-			<th>Id</th>
-			<th></th>
-			<th>Nazov</th>
-			<th>Adresa</th>
-			<th>Uzavierka</th>
-		</tr>
-		{% for provozna in provozny %}
-		<tr>
-			<td>{{ provozna.id }}</td>
-			<td></td>
-			<td>{{ provozna.nazov }}</td>
-			<td>{{ provozna.adresa }}</td>
-			<td>{{ provozna.uzavierka }}</td>
-		{% endfor %}
-		</tr>
-	</table>
-	{% endif %}
-
-
-
-	{% if nabidky|length < 1 %}
-	<h4>There are no provozna.</h4>
-	{% else %}
-	<table>
-		<tr>
-			<th>Id</th>
-			<th></th>
-			<th>Platnost od</th>
-			<th>Platnost dp</th>
-			<th>Provozna</th>
-		</tr>
-		{% for nabidka in nabidky %}
-		<tr>
-			<td>{{ nabidka.id }}</td>
-			<td></td>
-			<td>{{ nabidka.platnost_od }}</td>
-			<td>{{ nabidka.platnost_do }}</td>
-			<td>{{ nabidka.id_provozny }}</td>
-		{% endfor %}
-		</tr>
-	</table>
-	{% endif %}
--->
-</div>
 {% endblock %}
 
