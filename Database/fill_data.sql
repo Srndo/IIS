@@ -90,8 +90,8 @@ INSERT INTO "PROVOZNA" ("id","nazov","adresa","description","img_src","uzavierka
  (255,'U 3 opic','Palackého tř. 200/77, 612 00 Brno-Královo Pole','Typická česká jídla k dostání přímo k vám domů z podniku U 3 opic','https://i.imgur.com/vZW9NnN.jpg','2017-06-23 19:00:00','13'),
  (147,'Everest','Veveří 61, 602 00 Brno-střed','Orientální jídla z oblasti Nepálu si můžete objednat z provozovny Everest.','https://i.imgur.com/vZW9NnN.jpg','2018-02-01 18:30:00','14'),
  (12,'Pivní stáj','Veveří 38, 602 00 Brno-střed','Nejlepší hamburgery v celém Jihomoravském kraji, za skvělé ceny, z podniku Pivní stáj.','https://i.imgur.com/vZW9NnN.jpg','2018-03-01 19:30:00','15'),
- (8,'Klub cestovatelů','Veleslavínova 183/14, 612 00 Brno','Orientální jídla z celé asie. Poznejte chuť dobrodružství s Klubem cestovatelů.','https://i.imgur.com/vZW9NnN.jpg','2018-03-01 19:30:00','15'),
- (2,'Borgeska','Palackého tř. 285/47, 612 00 Brno-Královo Pole','Klasická česká jídla, meníčka i zákusky z provozovny Borgeska.','https://i.imgur.com/vZW9NnN.jpg','2018-03-01 19:30:00','15');
+ (149,'Klub cestovatelů','Veleslavínova 183/14, 612 00 Brno','Orientální jídla z celé asie. Poznejte chuť dobrodružství s Klubem cestovatelů.','https://i.imgur.com/vZW9NnN.jpg','2018-03-01 19:30:00','15'),
+ (150,'Borgeska','Palackého tř. 285/47, 612 00 Brno-Královo Pole','Klasická česká jídla, meníčka i zákusky z provozovny Borgeska.','https://i.imgur.com/vZW9NnN.jpg','2018-03-01 19:30:00','15');
 INSERT INTO "id_operator_jedla" ("id","id_operatora") VALUES
  ('12569','12'),
  ('14598','13'),
