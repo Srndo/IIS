@@ -10,12 +10,14 @@
 		<h4 class="list-group-item-heading col-sm text-center">Address</h4>
 		<h4 class="list-group-item-heading col-sm text-center">Phone number</h4>
 		<h4 class="list-group-item-heading col-sm text-center">Email</h4>
+		<div class="font-weight-bold col-sm text-center" style="max-width: 50px"></div>
 		<div class="w-100"></div>
 		<div class="list-group-item-text col-sm text-center">{{ user.meno }}</div>
 		<div class="list-group-item-text col-sm text-center">{{ user.priezvisko }}</div>
 		<div class="list-group-item-text col-sm text-center">{{ user.adresa }}</div>
 		<div class="list-group-item-text col-sm text-center">{{ user.cislo }}</div>
 		<div class="list-group-item-text col-sm text-center">{{ user.email }}</div>
+		<a href="/edit_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Edit</button></a>
 	</div>
 	<div class="row">
 		<h4 class="list-group-item-heading col-sm text-center" style="padding-top: 30px"><a href="/orders">My orders</a></h4>

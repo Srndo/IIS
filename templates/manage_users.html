@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="jumbotron">
-	<h3>Admins</h3>
+	<h3>Users</h3>
 </div>
 <div class="container">
   <div class="list-group">
@@ -23,7 +23,7 @@
         <div class="col-sm text-center"><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
         <div class="col-sm text-center"><a href="tel:{{ user.cislo }}">{{ user.cislo }}</a></div>
         <div class="col-sm text-center">{{ user.adresa }}</div>
-        <a href="/edit_user/{{ user.id}}"><button type="button" class="btn btn-outline-dark col-sm text-center">Edit</button></a>
+        <a href="/edit_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Edit</button></a>
   		</div>
     </div>
     {% endfor %}

@@ -312,7 +312,7 @@ def create_plan():
             
             db.session.add(new_plan)
             db.session.commit()
-            return redirect('/create_plan')
+            return render_template('all_done.html', desc="Plan created")
         else:
             return render_template('create_plan.html')
     return redirect('login')
@@ -328,10 +328,11 @@ def show_plan():
 def manage_users():
     if g.admin:
         users = Uzivatel.query.all()
-        customers = Stravnik.query.filter(Uzivatel.id == Stravnik.id).all()
-        drivers = Ridic.query.filter(Uzivatel.id == Ridic.id).all()
-        operators = Operator.query.filter(Uzivatel.id == Operator.id).all()
-        admins = Admin.query.filter(Uzivatel.id == Admin.id).all()
+        #prepare for showing in different tables
+        #customers = Stravnik.query.filter(Uzivatel.id == Stravnik.id).all()
+        #drivers = Ridic.query.filter(Uzivatel.id == Ridic.id).all()
+        #operators = Operator.query.filter(Uzivatel.id == Operator.id).all()
+        #admins = Admin.query.filter(Uzivatel.id == Admin.id).all()
         if request.method == 'POST':
             pass
         else:
@@ -339,7 +340,52 @@ def manage_users():
             return render_template('manage_users.html', users=users)
     
     return redirect('/login')
-
+    
+@app.route('/edit_user/<id>', methods=['GET', 'POST'])
+def edit_user(id):
+    print(g.user_id)
+    print(id)
+    if str(g.user_id) == str(id) or g.admin:
+        user = Uzivatel.query.filter(Uzivatel.id == id).first()
+        if request.method == 'POST':
+            new_name = request.form['name']
+            if new_name is None:
+                new_name = user.meno
+            
+            new_surname = request.form['surname']
+            if new_surname is None:
+                new_surname = user.priezvisko
+            
+            new_email = request.form['email']
+            if new_email is None:
+                new_email = user.email
+            
+            new_address = request.form['address']
+            if new_address is None:
+                new_address = user.adresa
+            
+            new_tel = request.form['tel']
+            if new_tel is None:
+                new_tel = user.cislo
+                
+            new_password = request.form['password']
+            if new_password is None:
+                new_password = user.heslo
+                
+            user.meno = new_name
+            user.priezvisko = new_surname
+            user.adresa = new_address
+            user.cislo = new_tel
+            user.email = new_email
+            user.heslo = sha256_crypt.encrypt(new_password)
+            db.session.commit()
+            
+            return render_template('all_done.html', desc="Informations change")
+            
+            
+        else:
+            return render_template('edit_user.html', user=user)
+    return redirect('/login')
 ########################################
 # Main module guard
 ########################################
