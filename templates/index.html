@@ -7,9 +7,10 @@
   <div class="list-group">
     {% for item in items %}
       <a href="#" class="list-group-item justify-content">
-        <img src="{{ item.img_path }}" class="float-left mr-4" width="150" height="150" alt="Building photo">
+        <img src="{{ item.img_src }}" class="float-left mr-4" width="150" height="150" alt="Building photo">
         <div>
-          <h4 class="list-group-item-heading">{{ item.name }}</h4>
+          <h4 class="list-group-item-heading">{{ item.nazov }}</h4>
+          <p class="list-group-item-text">{{ item.adresa }}</p>
           <p class="list-group-item-text">{{ item.description }}</p>
         </div>
       </a>

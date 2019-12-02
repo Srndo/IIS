@@ -62,7 +62,8 @@ INSERT INTO "ponuka_trvala_nabidka" ("id","id_provozny") VALUES ('19998','123'),
  ('16665','255'),
  ('31156','147'),
  ('26815','012');
-INSERT INTO "TRVALA_NABIDKA" ("id","platnost_od","platnost_do","id_provozny") VALUES ('19998','2019-09-23','2019-12-20',123),
+INSERT INTO "TRVALA_NABIDKA" ("id","platnost_od","platnost_do","id_provozny") VALUES
+ ('19998','2019-09-23','2019-12-20',123),
  ('16665','2019-12-21','2020-03-19',255),
  ('31156','2020-03-20','2020-06-20',147),
  ('26815','2020-06-21','2020-09-22',12);
@@ -70,10 +71,13 @@ INSERT INTO "spravuje_provoznu" ("id","id_operatora") VALUES ('123','12'),
  ('255','13'),
  ('147','14'),
  ('012','15');
-INSERT INTO "PROVOZNA" ("id","nazov","adresa","uzavierka","id_operatora") VALUES (123,'Pizzeria Mozarella','Kolejni 2 ','2017-07-23 20:00:00','12'),
- (255,'U troch opic','Palackeho trida 77','2017-06-23 19:00:00','13'),
- (147,'Everest','Grohova 6','2018-02-01 18:30:00','14'),
- (12,'Pivni staj','Veveri 38','2018-03-01 19:30:00','15');
+INSERT INTO "PROVOZNA" ("id","nazov","adresa","uzavierka","id_operatora") VALUES
+ (3,'Pizzeria Mozzarella','Kolejní 2905/2, 612 00 Brno-Královo Pole','Objednejte si pravou italskou pizzu z Pizzerie Mozzarella.','https://via.placeholder.com/150','2017-07-23 20:00:00','12'),
+ (4,'U 3 opic','Palackého tř. 200/77, 612 00 Brno-Královo Pole','Typická česká jídla k dostání přímo k vám domů z podniku U 3 opic','https://via.placeholder.com/150','2017-06-23 19:00:00','13'),
+ (6,'Everest','Veveří 61, 602 00 Brno-střed','Orientální jídla z oblasti Nepálu si můžete objednat z provozovny Everest.','https://via.placeholder.com/150','2018-02-01 18:30:00','14'),
+ (103,'Pivní stáj','Veveří 38, 602 00 Brno-střed','Nejlepší hamburgery v celém Jihomoravském kraji, za skvělé ceny, z podniku Pivní stáj.','https://via.placeholder.com/150','2018-03-01 19:30:00','15'),
+ (8,'Klub cestovatelů','Veleslavínova 183/14, 612 00 Brno','Orientální jídla z celé asie. Poznejte chuť dobrodružství s Klubem cestovatelů.','https://via.placeholder.com/150','2018-03-01 19:30:00','15'),
+ (12,'Borgeska','Palackého tř. 285/47, 612 00 Brno-Královo Pole','Klasická česká jídla, meníčka i zákusky z provozovny Borgeska.','https://via.placeholder.com/150','2018-03-01 19:30:00','15');
 INSERT INTO "id_operator_jedla" ("id","id_operatora") VALUES ('12569','12'),
  ('14598','13'),
  ('25896','14'),

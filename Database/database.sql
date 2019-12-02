@@ -19,7 +19,9 @@ CREATE TABLE IF NOT EXISTS "PROVOZNA" (
     "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "nazov" VARCHAR(100) NOT NULL,
     "adresa"    VARCHAR(100) NOT NULL,
-    "uzavierka" VARCHAR(19) NOT NULL,
+    "uzavierka" VARCHAR(19) NOT NULL, /* mozna bych nepouzival? */
+    "description"   VARCHAR(4096) NOT NULL,
+    "img_src"   VARCHAR(256) NOT NULL,
     "id_operatora"  INTEGER
 );
 CREATE TABLE IF NOT EXISTS "DENNI_MENU" (
