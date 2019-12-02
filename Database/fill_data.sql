@@ -52,10 +52,11 @@ INSERT INTO "ponuka_denni_menu" ("id","id_provozny") VALUES ('16498','123'),
  ('12365','255'),
  ('32256','147'),
  ('22215','012');
-INSERT INTO "DENNI_MENU" ("id","datum","id_provozny") VALUES ('16498',date(),123),
- ('12365','2019-12-02',255),
- ('32256','2019-12-03',147),
- ('22215','2019-12-04',12);
+INSERT INTO "DENNI_MENU" ("id","datum","id_provozny") VALUES
+ ('16498',date(),123),
+ ('12365',date(),255),
+ ('32256',date(),147),
+ ('22215',date(),12);
 INSERT INTO "JIDLO_TRVALA_NABIDKA" ("jidlo_id","trvala_nabidka_id") VALUES ('12569','19998'),
  ('14598','16665'),
  ('24875','31156'),
