@@ -27,10 +27,10 @@ db = SQLAlchemy(app)
 
 class Uzivatel(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
-    meno = db.Column('meno', db.String(20), nullable=False)
-    priezvisko = db.Column('priezvisko', db.String(20), nullable=False)
-    adresa = db.Column('adresa', db.String(20), nullable=False)
-    cislo = db.Column('tel_cislo', db.String(13), nullable=False)
+    #meno = db.Column('meno', db.String(20), nullable=False)
+    #priezvisko = db.Column('priezvisko', db.String(20), nullable=False)
+    #adresa = db.Column('adresa', db.String(20), nullable=False)
+    #cislo = db.Column('tel_cislo', db.String(13), nullable=False)
     email = db.Column('email', db.String(100), nullable=False)
     heslo = db.Column('heslo', db.Unicode, nullable=False)
 
@@ -113,7 +113,7 @@ class Denni_menu(db.Model):
 ########################################
 
 @app.before_request
-def before_request():
+def load_logged_in_user():
     g.user = None
     if 'user' in session:
         g.user = session['user']
@@ -134,34 +134,29 @@ def exception_handler(e):
 @app.route('/')
 def index():
     canteens = Provozna.query.order_by(Provozna.id).all()
-    print(canteens)
     return render_template('index.html', items=canteens)
 
 
-@app.route('/showSignUp', methods=['POST', 'GET'])
-def singup():
+@app.route('/register', methods=['POST', 'GET'])
+def register():
     if request.method == 'POST':
-        user_name = request.form['meno']
         user_email = request.form['email']
-        user_password = sha256_crypt.encrypt(request.form['heslo'])
-        user_tel = request.form['cislo']
+        user_password = sha256_crypt.encrypt(request.form['password'])
 
-        regex = re.compile('^(\+\d{12}|\d{10})$')
-        if regex.match(user_tel):
-            pass
-        else:
-            return '<h2>Zadaj cislo v style:</h2><h3>+421999999999<br>090111222333</h3>'
+        #regex = re.compile('^(\+\d{12}|\d{10})$')
+        #if regex.match(user_tel):
+        #    pass
+        #else:
+        #    return '<h2>Zadaj cislo v style:</h2><h3>+421999999999<br>090111222333</h3>'
 
         new_user = Uzivatel(
-            meno=user_name,
-            priezvisko='Test',
-            adresa='',
-            cislo=user_tel,
             email=user_email,
             heslo=user_password,
             )
 
         last_user = Uzivatel.query.order_by(Uzivatel.id.desc()).first()
+        print("new_user: ", new_user)
+        print("last_user: ", last_user)
         new_stravnik = Stravnik(cislo_karty='', id=last_user.id + 1)
 
         try:
@@ -171,9 +166,7 @@ def singup():
             return redirect('/')
         except Exception as e:
             return 'There was a issue with adding your task.'
-    else:
-
-        return render_template('showSignUp.html')
+    return render_template('register.html')
 
 
 @app.route('/logIn', methods=['POST', 'GET'])
