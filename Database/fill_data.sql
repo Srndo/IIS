@@ -1,7 +1,7 @@
 /* All passwords in the following table are hashed from "asdfasdf" */
 INSERT INTO "UZIVATEL" ("id","meno","priezvisko","adresa","tel_cislo","email","heslo") VALUES
- ('0','Leopold','Halaj','Zahrebska 97','+421908013019','Leopold.Halaj@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
- ('1','Izabela','Sokolova','Vodova 61','+420786666954','Izabela.Sokolova@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
+ ('0','Leopold','Halaj','Zahrebska 97','+421908013019','admin@admin.com','$5$rounds=535000$j5W2T2N2MrQLbrDU$rDX0Ht1e98BKpl4Lcimo5KUipz63Ml.XSaTj3rMCJE1'),
+ ('1','Izabela','Sokolova','Vodova 61','+420786666954','operator@operator.com','$5$rounds=535000$Fwi7.92RJQj.Wqs0$4kq10RO7vEV3dldJHoOJ/qowpiT7W3t0fuPTScimx6D'),
  ('2','Julia','Cermakova','Technicka 1','+420778695444','Julia.Cermakova@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
  ('3','David','Silber','Gorkeho 42','+421569863457','David.Silber@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
  ('4','Andrea','Villova','Botanicka 77','+420968569832','Andrea.Villova@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
@@ -21,7 +21,7 @@ INSERT INTO "STRAVNIK" ("cislo_karty","id") VALUES (4468987566982569,'0'),
  (4587652358746589,'2'),
  (1245652366665897,'3');
 INSERT INTO "OPERATOR" ("sluzobny_tel","id") VALUES ('+420987565369','12'),
- ('+421986654269','13'),
+ ('+421986654269','1'),
  ('+420777569832','14'),
  ('+421915623587','15');
 INSERT INTO "RIDIC" ("spz","id") VALUES ('4L09515','2356897845'),
@@ -29,7 +29,7 @@ INSERT INTO "RIDIC" ("spz","id") VALUES ('4L09515','2356897845'),
  ('S012025','10'),
  ('BB204FI','11');
 INSERT INTO "ADMIN" ("id_ntb","id") VALUES ('7946132584','4'),
- ('8569743215','5'),
+ ('8569743215','0'),
  ('3625956874','6'),
  ('1346978526','7');
 INSERT INTO "JIDLO" ("id","nazov","typ","popis","alergeny","cena","id_objednavky","id_operator") VALUES ('12569','Rajec','napoj','Syteny napoj bez cukru','0',0.8,'1546958732','12'),
