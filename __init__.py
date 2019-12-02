@@ -3,9 +3,10 @@ import random
 import re
 import os
 from flask import Flask, render_template, url_for, request, redirect, session, g
+from flask_sqlalchemy_session import current_session
 from werkzeug.exceptions import HTTPException
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
+from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 
 
@@ -237,7 +238,7 @@ def logout():
     return redirect('/')
 
 
-@app.route('/canteen/<canteen_id>')
+@app.route('/canteen/<int:canteen_id>')
 def canteen_page(canteen_id):
     canteen = Provozna.query.filter(Provozna.id == canteen_id).first()
     if canteen is None:
@@ -247,7 +248,7 @@ def canteen_page(canteen_id):
     if permanent is None or daily is None:
         abort(500)
 
-    q = (session.querry(Denni_menu, Jidlo, FoodInDaily)
+    q = (current_session.querry(Denni_menu, Jidlo, FoodInDaily)
         .filter(Denni_menu.id == FoodInDaily.daily_id)
         .filter(Jidlo.id == FoodInDaily.food_id)
         .order_by(Jidlo.id)
