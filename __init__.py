@@ -109,13 +109,13 @@ class Denni_menu(db.Model):
 
 
 class FoodInDaily(db.Model):
-    food_id = db.Column('jidlo_id', db.Integer, nullable=False)
-    daily_id = db.Column('denne_menu_id', db.Integer, nullable=False)
+    food_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
+    daily_id = db.Column('denne_menu_id', db.Integer, nullable=False, primary_key=True)
 
 
 class FoodInPermanent(db.Model):
-    food_id = db.Column('jidlo_id', db.Integer, nullable=False)
-    permanent_id = db.Column('trvala_nabidka_id', db.Integer, nullable=False)
+    food_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
+    permanent_id = db.Column('trvala_nabidka_id', db.Integer, nullable=False, primary_key=True)
 
 
 ########################################
