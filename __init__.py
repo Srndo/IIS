@@ -109,13 +109,13 @@ class Denni_menu(db.Model):
 
 
 class Jidlo_denni_menu(db.Model):
-    food_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
-    daily_id = db.Column('denne_menu_id', db.Integer, nullable=False, primary_key=True)
+    jidlo_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
+    denne_menu_id = db.Column('denne_menu_id', db.Integer, nullable=False, primary_key=True)
 
 
 class Jidlo_trvala_nabidka(db.Model):
-    food_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
-    permanent_id = db.Column('trvala_nabidka_id', db.Integer, nullable=False, primary_key=True)
+    jidlo_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
+    trvala_nabidka_id = db.Column('trvala_nabidka_id', db.Integer, nullable=False, primary_key=True)
 
 
 ########################################
@@ -248,8 +248,8 @@ def canteen_page(canteen_id):
 
     daily_foods = []
     q = (Denni_menu.query
-        .join(FoodInDaily, Denni_menu.id == FoodInDaily.daily_id)
-        .join(Jidlo, FoodInDaily.food_id == Jidlo.id)
+        .join(Jidlo_denni_menu, Denni_menu.id == Jidlo_denni_menu.denne_menu_id)
+        .join(Jidlo, Jidlo_denni_menu.jidlo_id == Jidlo.id)
         .all())
     print(q)
 
