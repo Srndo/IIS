@@ -121,10 +121,12 @@ def load_logged_in_user():
 
 @app.errorhandler(Exception)
 def exception_handler(e):
-    print(traceback.format_exc())
     if isinstance(e, HTTPException):
+        print(e)
         return render_template("error.html", code=e.code, name=e.name, desc=e.description), e.code
-    return render_template("error.html", code=500), 500
+    else:
+        print(traceback.format_exc())
+        return render_template("error.html", code=500), 500
 
 
 ########################################
@@ -141,54 +143,68 @@ def index():
 def register():
     if request.method == 'POST':
         user_email = request.form['email']
-        user_password = sha256_crypt.encrypt(request.form['password'])
+        user_password = request.form['password']
 
-        #regex = re.compile('^(\+\d{12}|\d{10})$')
-        #if regex.match(user_tel):
-        #    pass
-        #else:
-        #    return '<h2>Zadaj cislo v style:</h2><h3>+421999999999<br>090111222333</h3>'
+        error = None
+        if email is None:
+            error = "Username is required"
+        elif password is None:
+            error = "Password is required"
+        elif Uzivatel.query.filter(Uzivatel.email == user_email).first() is not None:
+            error = f"Email {user_email} is already registered."
 
-        new_user = Uzivatel(
-            email=user_email,
-            heslo=user_password,
-            )
+        if error is None:
+            #regex = re.compile('^(\+\d{12}|\d{10})$')
+            #if regex.match(user_tel):
+            #    pass
+            #else:
+            #    return '<h2>Zadaj cislo v style:</h2><h3>+421999999999<br>090111222333</h3>'
 
-        last_user = Uzivatel.query.order_by(Uzivatel.id.desc()).first()
-        print("new_user: ", new_user)
-        print("last_user: ", last_user)
-        new_stravnik = Stravnik(cislo_karty='', id=last_user.id + 1)
-
-        try:
+            encrypted = sha256_crypt.encrypt(user_password)
+            new_user = Uzivatel(
+                email=user_email,
+                heslo=encrypted,
+                )
             db.session.add(new_user)
+            db.session.commit()
+
+            new_user = Uzivatel.query.order_by(Uzivatel.id.desc()).first()
+            new_stravnik = Stravnik(cislo_karty='', id=last_user.id)
             db.session.add(new_stravnik)
             db.session.commit()
-            return redirect('/')
-        except Exception as e:
-            return 'There was a issue with adding your task.'
+            return redirect('/login')
+        else:
+            return render_template("error.html", name="Registration error", desc=error), 400
     return render_template('register.html')
 
 
-@app.route('/logIn', methods=['POST', 'GET'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        session.pop('user', None)
+        user_email = request.form['email']
+        user_password = request.form['password']
+        error = None
+        if not email:
+            error = "Username is required."
+        elif not password:
+            error = "Password is required."
+        else:
+            user = Uzivatel.query.filter(Uzivatel.email == entred_email).first()
+            if user is None or not sha256_crypt.verify(user_password, user.heslo):
+                error = f"Wrong email or password."
 
-        entred_password = request.form['heslo']
-        entred_email = request.form['email']
-
-        user = Uzivatel.query.filter(Uzivatel.email == entred_email).first()
-
-        if sha256_crypt.verify(entred_password, user.heslo):
-            session['user'] = user.id
-            return redirect('/menu')
-
-    return render_template('logIn.html')
+        if error is None:
+            session.clear()
+            session["user_id"] = user.id
+            return redirect("/")
+        else:
+            return render_template("error.html", name="Login error", desc=error), 400
+    return render_template("login.html")
 
 
-@app.route('/logOut')
+@app.route('/logout')
 def logout():
-    session.pop('user', None)
+    session.clear()
     return redirect('/')
 
 
