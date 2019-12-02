@@ -108,6 +108,16 @@ class Denni_menu(db.Model):
     id_provozny = db.Column('id_provozny', db.Integer, nullable=False)
 
 
+class FoodInDaily(db.Model):
+    food_id = db.Column('jidlo_id', db.Integer, nullable=False)
+    daily_id = db.Column('denne_menu_id', db.Integer, nullable=False)
+
+
+class FoodInPermanent(db.Model):
+    food_id = db.Column('jidlo_id', db.Integer, nullable=False)
+    permanent_id = db.Column('trvala_nabidka_id', db.Integer, nullable=False)
+
+
 ########################################
 # Auxiliary methods and utilities
 ########################################
@@ -234,6 +244,14 @@ def canteen_page(canteen_id):
     daily = Denni_menu.query.filter(Denni_menu.id_provozny == canteen_id)
     if permanent is None or daily is None:
         abort(500)
+
+    q = Session.querry(Denni_menu, Jidlo, FoodInDaily)
+        .filter(Denni_menu.id == FoodInDaily.daily_id)
+        .filter(Jidlo.id == FoodInDaily.food_id)
+        .order_by(Jidlo.id)
+        .all()
+    print(q)
+
     return render_template('canteen.html', canteen=canteen, daily=daily, permanent=permanent)
 
 
