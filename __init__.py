@@ -108,12 +108,12 @@ class Denni_menu(db.Model):
     id_provozny = db.Column('id_provozny', db.Integer, nullable=False)
 
 
-class FoodInDaily(db.Model):
+class Jidlo_denni_menu(db.Model):
     food_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
     daily_id = db.Column('denne_menu_id', db.Integer, nullable=False, primary_key=True)
 
 
-class FoodInPermanent(db.Model):
+class Jidlo_trvala_nabidka(db.Model):
     food_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
     permanent_id = db.Column('trvala_nabidka_id', db.Integer, nullable=False, primary_key=True)
 
@@ -151,7 +151,6 @@ def load_logged_in_user():
             g.admin = False
         else:
             g.admin = True
-            
 
 
 @app.errorhandler(Exception)
