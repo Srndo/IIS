@@ -225,6 +225,18 @@ def logout():
     return redirect('/')
 
 
+@app.route('/canteen/<canteen_id>')
+def canteen_page(canteen_id):
+    canteen = Provozna.query.filter(Provozna.id == canteen_id).first()
+    if canteen is None:
+        abort(404)
+    permanent = Trvala_nabidka.query.filter(Trvala_nabidka.id_provozny == canteen_id)
+    daily = Denni_menu.query.filter(Denni_menu.id_provozny == canteen_id)
+    if permanent is None or daily is None:
+        abort(500)
+    return render_template('canteen.html', canteen=canteen, daily=daily, permanent=permanent)
+
+
 @app.route('/trvalaNabidka')
 def trvalanabidka():
     provozny = Provozna.query.order_by(Provozna.id).all()
