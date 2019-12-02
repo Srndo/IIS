@@ -8,6 +8,9 @@
     {% for order in orders %}
         <div class="list-group-item">
         	<div class="row">
+            {% if order.stav == "Evidovana" %}
+            <h4 class="list-group-item-heading col-sm text-center text-primary">{{ order.stav }}</h4>
+            {% endif %}
 				{% if order.stav == "Prijata" %}
       			<h4 class="list-group-item-heading col-sm text-center text-primary">{{ order.stav }}</h4>
         		{% endif %}

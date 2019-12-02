@@ -281,7 +281,7 @@ def new_order(id):
         id_stravnika = g.user_id
         
         
-        new_order = Objednavka(id=id_objednavky, cena_celkom=cena_celkom, id_operatora=id_operatora, id_stravnika=id_stravnika)
+        new_order = Objednavka(id=id_objednavky, cena_celkom=cena_celkom, id_operatora=id_operatora, id_stravnika=id_stravnika, stav='Evidated')
         db.session.add(new_order)
         db.session.commit()
         return render_template('all_done.html', desc="Ordered")
