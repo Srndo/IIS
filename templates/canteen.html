@@ -6,18 +6,19 @@
   <p class="text-muted">{{ canteen.adresa }}</p>
   <p class="mb-5">{{ canteen.description }}</p>
   {% if not daily_foods and not permanent_foods %}
-  <p class="text-muted">Omlouváme se, vypadá to, že tato provozovna momentálně nemá v nabídce žádná jídla.<br/>Zkuste prosím některou z našich <a href="/" class="text-primary">dalších provozoven</a>.</p>
+  <p class="text-muted">We are sorry, this canteen have nothing to offer.<br/>Pleas try one from our <a href="/" class="text-primary">other canteens</a>.</p>
   {% endif %}
   {% if daily_foods %}
-  <h4>Denní menu</h4>
+  <h4>Daily menu</h4>
   <table class="table mb-5">
     <thead class="thead-light">
       <tr>
-        <th scope="col">Název</th>
-        <th scope="col">Typ</th>
-        <th scope="col">Popis</th>
-        <th scope="col">Alergeny</th>
-        <th scope="col">Cena</th>
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">Description</th>
+        <th scope="col">Alergens</th>
+        <th scope="col">Price</th>
+        <th scope="col">Order</th>
       </tr>
     </thead>
     <tbody>
@@ -28,21 +29,23 @@
         <td>{{ food.popis }}</td>
         <td>{{ food.alergeny }}</td>
         <td>{{ food.cena }} &euro;</td>
+        <td><a href="/add_canteen"><button type="button" class="btn-outline-dark">Order</button></a></td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
   {% endif %}
   {% if permanent_foods %}
-  <h4>Stálá nabídka</h4>
+  <h4>Offer</h4>
   <table class="table">
     <thead class="thead-light">
       <tr>
-        <th scope="col">Název</th>
-        <th scope="col">Typ</th>
-        <th scope="col">Popis</th>
-        <th scope="col">Alergeny</th>
-        <th scope="col">Cena</th>
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">Description</th>
+        <th scope="col">Alergens</th>
+        <th scope="col">Price</th>
+        <th scope="col">Order</th>
       </tr>
     </thead>
     <tbody>
@@ -53,6 +56,7 @@
         <td>{{ food.popis }}</td>
         <td>{{ food.alergeny }}</td>
         <td>{{ food.cena }} &euro;</td>
+        <td><a href="/add_canteen"><button type="button" class="btn-outline-dark">Order</button></a></td>
       </tr>
     {% endfor %}
     </tbody>
