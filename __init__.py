@@ -146,9 +146,9 @@ def register():
         user_password = request.form['password']
 
         error = None
-        if email is None:
+        if user_email is None:
             error = "Username is required"
-        elif password is None:
+        elif user_password is None:
             error = "Password is required"
         elif Uzivatel.query.filter(Uzivatel.email == user_email).first() is not None:
             error = f"Email {user_email} is already registered."
