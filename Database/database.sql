@@ -111,10 +111,10 @@ CREATE TABLE IF NOT EXISTS "ADMIN" (
 );
 CREATE TABLE IF NOT EXISTS "UZIVATEL" (
     "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    /*"meno"  VARCHAR(20) NOT NULL,
-    "priezvisko"    VARCHAR(20) NOT NULL,
-    "adresa"    VARCHAR(20) NOT NULL,
-    "tel_cislo" VARCHAR(13) NOT NULL,*/
+    "meno"  VARCHAR(20) NULL,
+    "priezvisko"    VARCHAR(20) NULL,
+    "adresa"    VARCHAR(20) NULL,
+    "tel_cislo" VARCHAR(13) NULL,
     "email" VARCHAR(100) NOT NULL UNIQUE,
     "heslo" VARCHAR(20) NOT NULL
 );

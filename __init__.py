@@ -27,10 +27,10 @@ db = SQLAlchemy(app)
 
 class Uzivatel(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
-    #meno = db.Column('meno', db.String(20), nullable=False)
-    #priezvisko = db.Column('priezvisko', db.String(20), nullable=False)
-    #adresa = db.Column('adresa', db.String(20), nullable=False)
-    #cislo = db.Column('tel_cislo', db.String(13), nullable=False)
+    meno = db.Column('meno', db.String(20))
+    priezvisko = db.Column('priezvisko', db.String(20))
+    adresa = db.Column('adresa', db.String(20))
+    cislo = db.Column('tel_cislo', db.String(13))
     email = db.Column('email', db.String(100), nullable=False)
     heslo = db.Column('heslo', db.Unicode, nullable=False)
 
