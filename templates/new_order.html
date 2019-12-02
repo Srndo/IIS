@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron">
+	<h3>New order</h3>
+</div>
+<div class="container">
+	<div class="row">
+		<h4 class="list-group-item-heading col-sm text-center">Price</h4>
+		<h4 class="list-group-item-heading col-sm text-center">Order</h4>
+		<div class="w-100"></div>
+		<div class="list-group-item-text col-sm text-center">{{ price }}</div>
+		<form class="form-auth" method="post">
+    		<input type="submit" class="btn btn-lg btn-primary btn-block" value="Order">
+  		</form>
+	</div>
+</div>
+{% endblock %}

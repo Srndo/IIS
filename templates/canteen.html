@@ -29,7 +29,7 @@
         <td>{{ food.popis }}</td>
         <td>{{ food.alergeny }}</td>
         <td>{{ food.cena }} &euro;</td>
-        <td><a href="/add_canteen"><button type="button" class="btn-outline-dark">Order</button></a></td>
+        <td><a href="/new_order/{{ food.id }}"><button type="button" class="btn-outline-dark">Order</button></a></td>
       </tr>
     {% endfor %}
     </tbody>

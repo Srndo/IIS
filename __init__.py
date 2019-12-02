@@ -265,46 +265,27 @@ def canteen_page(canteen_id):
         permanent_foods=permanent_foods)
 
 
-@app.route('/trvalaNabidka')
-def trvalanabidka():
-    provozny = Provozna.query.order_by(Provozna.id).all()
-    nabidky = Trvala_nabidka.query.order_by(Trvala_nabidka.id).all()
-    for nabidka in nabidky:
-        for nabidka2 in nabidky:
-            if nabidka.id_provozny == nabidka2.id_provozny and nabidka.id != nabidka2.id:
-                if nabidka.platnost_do > nabidka2.platnost_od:
-                    return render_template('platnost_error.html', nabidka=nabidka, nabidka2=nabidka2)
-    return render_template('provozny.html', provozny=provozny, nabidky=nabidky)
-
-
-@app.route('/menu', methods=['GET', 'POST'])
-def order():
-    if g.user_id:
-        if request.method == 'POST':
-            pocet_operatorov = Operator.query.count()
-            operator = Operator.query.all()
-            id_operatora = operator[random.randint(0, pocet_operatorov - 1)].id
-            cena_celkom = 1000
-            objednavka = Objednavka.query.order_by(Objednavka.id.desc()).first()
-            id_objednavky = objednavka.id + 1
-            new_order = Objednavka(
-                id=id_objednavky,
-                cena_celkom=cena_celkom,
-                id_operatora=id_operatora,
-                id_stravnika=g.user_id)
-
-            try:
-                db.session.add(new_order)
-                db.session.commit()
-                return redirect('/objednavky')
-            except Exception as e:
-                print(e)
-                return 'There was a issue with adding your order.'
-        else:
-            return 'Menu for' + str(g.user)
-    else:
-        return redirect('/logIn')
-
+@app.route('/new_order/<int:id>', methods=['GET', 'POST'])
+def new_order(id):
+    if g.user:
+        pocet_operatorov = Operator.query.count()
+        operator = Operator.query.all()
+        id_operatora = operator[random.randint(0, pocet_operatorov - 1)].id
+        
+        objednavka = Objednavka.query.order_by(Objednavka.id.desc()).first()
+        id_objednavky = objednavka.id + 1
+        
+        cena_celkom = Jidlo.query.filter(Jidlo.id == id).first().cena
+        
+        
+        id_stravnika = g.user_id
+        
+        
+        new_order = Objednavka(id=id_objednavky, cena_celkom=cena_celkom, id_operatora=id_operatora, id_stravnika=id_stravnika)
+        db.session.add(new_order)
+        db.session.commit()
+        return render_template('all_done.html', desc="Ordered")
+    return render_template('error.html', desc="Only registered user can order")
 
 @app.route('/orders')
 def show_objednavky():
