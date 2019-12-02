@@ -241,8 +241,8 @@ def canteen_page(canteen_id):
     canteen = Provozna.query.filter(Provozna.id == canteen_id).first()
     if canteen is None:
         abort(404)
-    permanent = Trvala_nabidka.query.filter(Trvala_nabidka.id_provozny == canteen_id)
-    daily = Denni_menu.query.filter(Denni_menu.id_provozny == canteen_id)
+    permanent = Trvala_nabidka.query.filter(Trvala_nabidka.id_provozny == canteen_id).first()
+    daily = Denni_menu.query.filter(Denni_menu.id_provozny == canteen_id).first()
     if permanent is None or daily is None:
         abort(500)
 
