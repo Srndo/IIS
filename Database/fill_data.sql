@@ -71,7 +71,7 @@ INSERT INTO "spravuje_provoznu" ("id","id_operatora") VALUES ('123','12'),
  ('255','13'),
  ('147','14'),
  ('012','15');
-INSERT INTO "PROVOZNA" ("id","nazov","adresa","uzavierka","id_operatora") VALUES
+INSERT INTO "PROVOZNA" ("id","nazov","adresa","description","img_src","uzavierka","id_operatora") VALUES
  (3,'Pizzeria Mozzarella','Kolejní 2905/2, 612 00 Brno-Královo Pole','Objednejte si pravou italskou pizzu z Pizzerie Mozzarella.','https://via.placeholder.com/150','2017-07-23 20:00:00','12'),
  (4,'U 3 opic','Palackého tř. 200/77, 612 00 Brno-Královo Pole','Typická česká jídla k dostání přímo k vám domů z podniku U 3 opic','https://via.placeholder.com/150','2017-06-23 19:00:00','13'),
  (6,'Everest','Veveří 61, 602 00 Brno-střed','Orientální jídla z oblasti Nepálu si můžete objednat z provozovny Everest.','https://via.placeholder.com/150','2018-02-01 18:30:00','14'),
