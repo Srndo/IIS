@@ -184,12 +184,12 @@ def login():
         user_email = request.form['email']
         user_password = request.form['password']
         error = None
-        if not email:
+        if not user_email:
             error = "Username is required."
-        elif not password:
+        elif not user_password:
             error = "Password is required."
         else:
-            user = Uzivatel.query.filter(Uzivatel.email == entred_email).first()
+            user = Uzivatel.query.filter(Uzivatel.email == user_email).first()
             if user is None or not sha256_crypt.verify(user_password, user.heslo):
                 error = f"Wrong email or password."
 
