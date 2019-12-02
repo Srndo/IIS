@@ -3,6 +3,7 @@ import random
 import re
 import os
 from flask import Flask, render_template, url_for, request, redirect, session, g
+from werkzeug.exceptions import HTTPException
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from passlib.hash import sha256_crypt
