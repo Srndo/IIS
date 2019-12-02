@@ -89,6 +89,8 @@ class Provozna(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     nazov = db.Column('nazov', db.String(100), nullable=False)
     adresa = db.Column('adresa', db.String(100), nullable=False)
+    description = db.Column('description', db.String(4096), nullable=False)
+    img_src = db.Column('img_src', db.String(256), nullable=False)
     uzavierka = db.Column('uzavierka', db.DateTime, nullable=False)
     id_operatora = db.Column('id_operatora', db.String(10), nullable=True)
 
