@@ -51,10 +51,18 @@ INSERT INTO "PLAN_RIDICE" ("id_planu","region","id_operator","id_ridica") VALUES
  ('9966885575','Plzensky region','14','10'),
  ('1111171458','Prazsky region','15','11');
 INSERT INTO "JIDLO_DENNI_MENU" ("jidlo_id","denne_menu_id") VALUES
+ ('14785','16498'),
+ ('55589','16498'),
  ('25896','16498'),
+ ('36985','12365'),
  ('14785','12365'),
  ('36985','32256'),
- ('55589','22215');
+ ('25896','32256'),
+ ('55589','22215'),
+ ('25896','22215'),
+ ('55589','15'),
+ ('14785','15'),
+ ('36985','15');
 INSERT INTO "ponuka_denni_menu" ("id","id_provozny") VALUES
  ('16498','123'),
  ('12365','255'),
@@ -64,7 +72,8 @@ INSERT INTO "DENNI_MENU" ("id","datum","id_provozny") VALUES
  ('16498','2019-12-01',123),
  ('12365','2019-12-02',255),
  ('32256','2019-12-03',147),
- ('22215','2019-12-04',12);
+ ('22215','2019-12-04',12),
+ ('15','2019-12-01',149);
 INSERT INTO "JIDLO_TRVALA_NABIDKA" ("jidlo_id","trvala_nabidka_id") VALUES
  ('12569','19998'),
  ('14598','16665'),
