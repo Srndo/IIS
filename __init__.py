@@ -165,7 +165,7 @@ def singup():
             db.session.add(new_stravnik)
             db.session.commit()
             return redirect('/')
-        except Exception, e:
+        except Exception as e:
             return 'There was a issue with adding your task.'
     else:
 
@@ -201,8 +201,7 @@ def trvalanabidka():
     nabidky = Trvala_nabidka.query.order_by(Trvala_nabidka.id).all()
     for nabidka in nabidky:
         for nabidka2 in nabidky:
-            if nabidka.id_provozny == nabidka2.id_provozny \
-                and nabidka.id != nabidka2.id:
+            if nabidka.id_provozny == nabidka2.id_provozny and nabidka.id != nabidka2.id:
                 if nabidka.platnost_do > nabidka2.platnost_od:
                     return render_template('platnost_error.html', nabidka=nabidka, nabidka2=nabidka2)
     return render_template('provozny.html', provozny=provozny, nabidky=nabidky)
@@ -228,8 +227,8 @@ def order():
                 db.session.add(new_order)
                 db.session.commit()
                 return redirect('/objednavky')
-            except Exception, e:
-                print e
+            except Exception as e:
+                print(e)
                 return 'There was a issue with adding your order.'
         else:
             return 'Menu for' + str(g.user)
