@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron">
+	<div>
+		{% for order in orders %}
+		<h4 class="list-group-item-heading">{{ order.stav }}</h4>
+		<p class="list-group-item-text"><span style="font-weight: bold">Price (€)</span><br>{{ order.cena_celkom }}</p>
+		<p class="list-group-item-text"><span style="font-weight: bold">Arrive time</span><br>{{ order.cas_dorucenia }}</p>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

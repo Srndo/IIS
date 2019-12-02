@@ -122,6 +122,18 @@ def load_logged_in_user():
             session.clear()
             abort(500)
         g.user = user.email
+        g.user_id = user.id
+        operator = Operator.query.filter(Operator.id == user.id).first()
+        if operator is None:
+            g.operator = False
+        else:
+            g.operator = True
+        admin = Admin.query.filter(Admin.id == user.id).first()
+        if admin is None:
+            g.admin = False
+        else:
+            g.admin = True
+            
 
 
 @app.errorhandler(Exception)
@@ -227,7 +239,7 @@ def trvalanabidka():
 
 @app.route('/menu', methods=['GET', 'POST'])
 def order():
-    if g.user:
+    if g.user_id:
         if request.method == 'POST':
             pocet_operatorov = Operator.query.count()
             operator = Operator.query.all()
@@ -239,7 +251,7 @@ def order():
                 id=id_objednavky,
                 cena_celkom=cena_celkom,
                 id_operatora=id_operatora,
-                id_stravnika=g.user)
+                id_stravnika=g.user_id)
 
             try:
                 db.session.add(new_order)
@@ -254,13 +266,20 @@ def order():
         return redirect('/logIn')
 
 
-@app.route('/objednavky')
+@app.route('/orders')
 def show_objednavky():
     if g.user:
-        objednavky = Objednavka.query.filter(Objednavka.id_stravnika == g.user).all()
-        return render_template('objednavky.html', orders=objednavky)
-    return redirect('/logIn')
+        objednavky = Objednavka.query.filter(Objednavka.id_stravnika == g.user_id).all()
+        return render_template('orders.html', orders=objednavky)
+    return redirect('/login')
 
+
+@app.route('/profile')
+def show_profile():
+    if g.user:
+        user = Uzivatel.query.filter(Uzivatel.id == g.user_id).first()
+        return render_template('profile.html', user=user)
+    return redirect('/login')
 
 ########################################
 # Main module guard
