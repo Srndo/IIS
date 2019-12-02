@@ -11,7 +11,7 @@ INSERT INTO "UZIVATEL" ("id","meno","priezvisko","adresa","tel_cislo","email","h
  ('8','Arnold','Noga','Bozetechova 16','+420123569866','Arnold.Noga@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
  ('9','Oliver','Stanek','Husitska 97','+420485967256','Oliver.Stanek@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
  ('10','Andrej','Dolnik','Reisigova 785','+421958658489','Andrej.Dolnik@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
- ('11','Denis','Dovicic','Hlavna 78','+421456987221','Denis.Dovicic@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
+ ('11','Denis','Dovicic','Hlavna 78','+421456987221','driver@driver.com','$5$rounds=535000$6E.ocpRaWlhC202o$KDal580PDfyGR5du6YojKEXyizt1LU1PkpCkuOqq.29'),
  ('12','Antonia','Horna','Nova 35','+421985625333','Antonia.Horna@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
  ('13','Vincent','Kocis','Tererova 51','+421915612359','Vincent.Kocis@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
  ('14','Zora','Fererova','Masarikova 154','+420799652114','Zora.Fererova@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),

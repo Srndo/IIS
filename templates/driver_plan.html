@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron">
+	<div>
+		{% for plan in plans %}
+		<h4 class="list-group-item-heading">{{ plan.region }}</h4>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

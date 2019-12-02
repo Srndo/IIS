@@ -58,7 +58,7 @@ class Stravnik(db.Model):
 class Plan_ridice(db.Model):
     id_planu = db.Column('id_planu', db.Integer, primary_key=True)
     region = db.Column('region', db.String(10), nullable=False)
-    id_operatora = db.Column('id_operatora', db.String(10),
+    id_operatora = db.Column('id_operator', db.String(10),
                              nullable=False)
     id_ridica = db.Column('id_ridica', db.String(10), nullable=False)
 
@@ -123,11 +123,19 @@ def load_logged_in_user():
             abort(500)
         g.user = user.email
         g.user_id = user.id
+        
+        ridic = Ridic.query.filter(Ridic.id == user.id).first()
+        if ridic is None:
+            g.driver = False
+        else:
+            g.driver = True
+        
         operator = Operator.query.filter(Operator.id == user.id).first()
         if operator is None:
             g.operator = False
         else:
             g.operator = True
+        
         admin = Admin.query.filter(Admin.id == user.id).first()
         if admin is None:
             g.admin = False
@@ -171,12 +179,6 @@ def register():
             error = f"Email {user_email} is already registered."
 
         if error is None:
-            #regex = re.compile('^(\+\d{12}|\d{10})$')
-            #if regex.match(user_tel):
-            #    pass
-            #else:
-            #    return '<h2>Zadaj cislo v style:</h2><h3>+421999999999<br>090111222333</h3>'
-
             encrypted = sha256_crypt.encrypt(user_password)
             new_user = Uzivatel(
                 email=user_email,
@@ -292,6 +294,35 @@ def show_profile():
         user = Uzivatel.query.filter(Uzivatel.id == g.user_id).first()
         return render_template('profile.html', user=user)
     return redirect('/login')
+
+@app.route('/create_plan', methods=['POST', 'GET'])
+def create_plan():
+    if g.operator or g.admin:
+        if request.method == 'POST':
+            region = request.form['region']
+            driver_name = request.form['name']
+            driver_surname = request.form['surname']
+            drivers = Uzivatel.query.filter(Uzivatel.meno == driver_name and Uzivatel.priezvisko == driver_surname).all()
+            for driver in drivers:
+                selected_driver = Ridic.query.filter(Ridic.id == driver.id).first()
+                if driver is not None:
+                    break
+            print(selected_driver)
+            new_plan = Plan_ridice(id_operatora=g.user_id, region=region, id_ridica=selected_driver.id)
+            
+            db.session.add(new_plan)
+            db.session.commit()
+            return redirect('/create_plan')
+        else:
+            return render_template('create_plan.html')
+    return redirect('login')
+        
+        
+@app.route('/driver_plan')
+def show_plan():
+    if g.driver:
+        plans = Plan_ridice.query.filter(Plan_ridice.id_ridica == g.user_id).all()
+        return render_template('driver_plan.html', plans=plans)
 
 ########################################
 # Main module guard

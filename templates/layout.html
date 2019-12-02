@@ -42,6 +42,11 @@
           <li clas="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
           </li>
+          {% if g.driver %}
+          <li clas="nav-item">
+            <a class="nav-link" href="/driver_plan">Your plans</a>
+          </li>
+          {% endif %}
           {% if g.operator or g.admin %}
           <li clas="nav-item">
             <a class="nav-link" href="/create_plan">Create driver plan</a>
