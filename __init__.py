@@ -248,7 +248,10 @@ def canteen_page(canteen_id):
         abort(500)
 
     daily_foods = []
-    q = Denni_menu.query.join(FoodInDaily).join(Jidlo).filter_by(Denni_menu.id == FoodInDaily.daily_id, FoodInDaily.food_id == Jidlo.id).all()
+    q = (Denni_menu.query
+        .join(FoodInDaily, Denni_menu.id == FoodInDaily.daily_id)
+        .join(Jidlo, FoodInDaily.food_id == Jidlo.id)
+        .all()
     print(q)
 
     return render_template('canteen.html', canteen=canteen, daily=daily, permanent=permanent)
