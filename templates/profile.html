@@ -1,18 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="jumbotron">
-	<div>
-		<h4 class="list-group-item-heading">Name</h4>
-		<p class="list-group-item-text">{{ user.meno }}</p>
-		<h4 class="list-group-item-heading">Surname</h4>
-		<p class="list-group-item-text">{{ user.priezvisko }}</p>
-		<h4 class="list-group-item-heading">Address</h4>
-		<p class="list-group-item-text">{{ user.adresa }}</p>
-		<h4 class="list-group-item-heading">Phone number</h4>
-		<p class="list-group-item-text">{{ user.cislo }}</p>
-		<h4 class="list-group-item-heading">Email</h4>
-		<p class="list-group-item-text">{{ user.email }}</p>
-		<h4 class="list-group-item-heading"><a href="/orders">My orders</a></h4>
+	<h3>Profile</h3>
+</div>
+<div class="container">
+	<div class="row">
+		<h4 class="list-group-item-heading col-sm text-center">Name</h4>
+		<h4 class="list-group-item-heading col-sm text-center">Surname</h4>
+		<h4 class="list-group-item-heading col-sm text-center">Address</h4>
+		<h4 class="list-group-item-heading col-sm text-center">Phone number</h4>
+		<h4 class="list-group-item-heading col-sm text-center">Email</h4>
+		<div class="w-100"></div>
+		<div class="list-group-item-text col-sm text-center">{{ user.meno }}</div>
+		<div class="list-group-item-text col-sm text-center">{{ user.priezvisko }}</div>
+		<div class="list-group-item-text col-sm text-center">{{ user.adresa }}</div>
+		<div class="list-group-item-text col-sm text-center">{{ user.cislo }}</div>
+		<div class="list-group-item-text col-sm text-center">{{ user.email }}</div>
+	</div>
+	<div class="row">
+		<h4 class="list-group-item-heading col-sm text-center" style="padding-top: 30px"><a href="/orders">My orders</a></h4>
 	</div>
 </div>
 {% endblock %}
