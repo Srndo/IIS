@@ -169,7 +169,7 @@ def register():
             db.session.commit()
 
             new_user = Uzivatel.query.order_by(Uzivatel.id.desc()).first()
-            new_stravnik = Stravnik(cislo_karty='', id=last_user.id)
+            new_stravnik = Stravnik(cislo_karty='', id=new_user.id)
             db.session.add(new_stravnik)
             db.session.commit()
             return redirect('/login')
