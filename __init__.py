@@ -131,6 +131,7 @@ def exception_handler(e):
 @app.route('/')
 def index():
     canteens = Provozna.query.order_by(Provozna.id).all()
+    print(canteens)
     return render_template('index.html', items=canteens)
 
 
