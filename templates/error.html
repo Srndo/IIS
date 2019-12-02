@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron">
+  {% if code is not defined %}
+  <h2>{{ name }}</h2>
+  <p>{{ desc }}</p>
+  {% elif code == 500 %}
+  <h2>Oh no! Something went wrong :(</h2>
+  <p>Our team of highly specialized monkeys is working on that right now.<br/>Please, try again after a while.</p>
+  {% else %}
+  <h2>{{ code }} - {{ name }}</h2>
+  <p>{{ desc }}</p>
+  {% endif %}
+</div>
+{% endblock %}
+

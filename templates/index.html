@@ -1,59 +1,20 @@
-{% extends 'base.html' %}
-
-{% block head %}
-
-        <title>IIS 2019</title>
-
-{% endblock %}
-
-
-
-{% block body %}
-        <div class="content">
-                <h1>Úvodná strana</h1>
-                <button><a href="/logIn">LOG IN</a></button><button><a href="/trvalaNabidka">SHOW MENU</a></button>
-                {% if users|length < 1 %}
-                <h4>There are no user. Create one below!</h4>
-                {% else %}
-
-                <table>
-                        <tr>
-                                <th>Id</>
-                                <th>Meno</th>
-                                <th>Priezvisko</th>
-                                <th>Telefon</th>
-                                <th>Email</th>
-                        </tr>
-                        {% for user in users %}
-                        <tr>
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.meno }}</td>
-                                <td>{{ user.priezvisko }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.cislo }}</td>
-                        </tr>
-                        {% endfor %}
-                </table>
-                {% endif %}
-                
-                {% if stravnici|length < 1 %}
-                <h4>There are no stravik. Create one below!</h4>
-                {% else %}
-
-                <table>
-                        <tr>
-                                <th>Id</>
-                                <th>Cislo Karty</th>
-                        </tr>
-                        {% for stravnik in stravnici %}
-                        <tr>
-                                <td>{{ stravnik.id }}</td>
-                                <td>{{ stravnik.cislo_karty }}</td>
-                        </tr>
-                        {% endfor %}
-                </table>
-                {% endif %}
-                        <button><a href="/showSignUp">SIGN UP</a></button>
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron">
+  <h3>Vyberte si z nabídky provozoven Hladové pandy</h3>
+</div>
+<div class="container">
+  <div class="list-group">
+    {% for item in items %}
+      <a href="#" class="list-group-item justify-content">
+        <img src="{{ item.img_path }}" class="float-left mr-4" width="150" height="150" alt="Building photo">
+        <div>
+          <h4 class="list-group-item-heading">{{ item.name }}</h4>
+          <p class="list-group-item-text">{{ item.description }}</p>
         </div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}
 

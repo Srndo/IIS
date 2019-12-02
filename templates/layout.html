@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+
+  <!-- Reqired meta tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hungry Panda</title>
+
+  <!-- Libraries -->
+  <link rel="stylesheet" href="../static/css/layout.css"">
+  <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+  <script src="../static/js/jquery-3.4.1.js"></script>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="../static/img/favicon.ico">
+
+</head>
+
+<body>
+  <!-- Navigation -->
+  <div class="bg-light custom-header">
+    <div class="container">
+      <nav class="navbar navbar-expand navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+          <img src="../static/img/favicon.ico" class="align-middle" width="80" height="80" alt="Hungry Panda Logo">
+          Hungry Panda {{g.user}}
+        </a>
+        <ul class="navbar-nav ml-auto">
+          {% if g.user %}
+          <li clas="nav-item">
+            <p>{{ g.user }}</p>
+          </li>
+          <li clas="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li clas="nav-item">
+            <a class="nav-link" href="/#">Profile</a>
+          </li>
+          <li clas="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          {% else %}
+          <li clas="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li clas="nav-item">
+            <a class="nav-link" href="/login">Log in</a>
+          </li>
+          <li clas="nav-item">
+            <a class="nav-link" href="/register">Register</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container">
+  {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="page-footer row-fluid pt-5 bg-light">
+    <p class="m-0 text-center">Copyright &copy; 2019 Šimon Šesták, David Hás, Martina Jendrálová</p>
+  </footer>
+
+</body>
+
+</html>
+

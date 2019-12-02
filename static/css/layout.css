@@ -1,0 +1,68 @@
+body {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Custom page header */
+.custom-header {
+  padding-top: 20px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 30px;
+}
+
+.form-auth {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-auth .btn {
+  max-width: 330px;
+}
+
+.form-auth .form-input {
+  max-width: 330px;
+  position: relative;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-bottom: 0;
+  line-height: 40px;
+  background-color: black;
+}
+
+/* Custom page footer */
+footer {
+  margin-top: 30px;
+  border-top: 1px solid #e5e5e5;
+  bottom: 0px;
+  padding-bottom: 40px;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  background-color: coral;
+}
+.jumbotron .btn {
+  padding: 14px 24px;
+  font-size: 21px;
+  background-color: black;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+}
+
+.marketing h4 {
+  margin-top: 28px;
+  background-color: black;
+}
+
