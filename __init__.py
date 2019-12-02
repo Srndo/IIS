@@ -323,6 +323,22 @@ def show_plan():
     if g.driver:
         plans = Plan_ridice.query.filter(Plan_ridice.id_ridica == g.user_id).all()
         return render_template('driver_plan.html', plans=plans)
+        
+@app.route('/manage_users', methods=['POST', 'GET'])
+def manage_users():
+    if g.admin:
+        users = Uzivatel.query.all()
+        customers = Stravnik.query.filter(Uzivatel.id == Stravnik.id).all()
+        drivers = Ridic.query.filter(Uzivatel.id == Ridic.id).all()
+        operators = Operator.query.filter(Uzivatel.id == Operator.id).all()
+        admins = Admin.query.filter(Uzivatel.id == Admin.id).all()
+        if request.method == 'POST':
+            pass
+        else:
+            #return render_template('manage_users.html', admins=admins, operators=operators, drivers=drivers, customers=customers)
+            return render_template('manage_users.html', users=users)
+    
+    return redirect('/login')
 
 ########################################
 # Main module guard
