@@ -91,7 +91,7 @@ class Provozna(db.Model):
     adresa = db.Column('adresa', db.String(100), nullable=False)
     description = db.Column('description', db.String(4096), nullable=False)
     img_src = db.Column('img_src', db.String(256), nullable=False)
-    uzavierka = db.Column('uzavierka', db.DateTime, nullable=False)
+    uzavierka = db.Column('uzavierka', db.String(19), nullable=False)
     id_operatora = db.Column('id_operatora', db.String(10), nullable=True)
 
 
@@ -305,9 +305,8 @@ def create_plan():
             drivers = Uzivatel.query.filter(Uzivatel.meno == driver_name and Uzivatel.priezvisko == driver_surname).all()
             for driver in drivers:
                 selected_driver = Ridic.query.filter(Ridic.id == driver.id).first()
-                if driver is not None:
+                if selected_driver is not None:
                     break
-            print(selected_driver)
             new_plan = Plan_ridice(id_operatora=g.user_id, region=region, id_ridica=selected_driver.id)
             
             db.session.add(new_plan)
@@ -385,6 +384,100 @@ def edit_user(id):
             
         else:
             return render_template('edit_user.html', user=user)
+    return redirect('/login')
+    
+@app.route('/add_canteen', methods=['POST', 'GET'])
+def add_canteen():
+    if g.operator or g.admin:
+        if request.method == 'POST':
+            name = request.form['name']
+            address = request.form['address']
+            description = request.form['description']
+            deadline = request.form['deadline']
+            operator_name = request.form['operator_name']
+            operator_surname = request.form['operator_surname']
+            
+            operators = Operator.query.all()
+            operators = Uzivatel.query.filter(Uzivatel.meno == operator_name and Uzivatel.priezvisko == operator_surname).all()
+            for operator in operators:
+                selected_operator = Operator.query.filter(Operator.id == operator.id).first()
+                if selected_operator is not None:
+                    break
+            
+            new_canteen = Provozna(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=selected_operator.id, img_src='https://via.placeholder.com/150')
+            db.session.add(new_canteen)
+            db.session.commit()
+            
+            return render_template('all_done.html', desc="New canteen aded")
+            
+        else:
+            return render_template('add_canteen.html')
+        
+    return redirect('/login')
+
+@app.route('/add_item', methods=['POST', 'GET'])
+def add_item():
+    if g.operator or g.admin:
+        if request.method == 'POST':
+            name = request.form['name']
+            type = request.form['type']
+            description = request.form['description']
+            alergens = request.form['alergens']
+            price = request.form['price']
+            
+            new_item = Jidlo(nazov=name, typ=type, popis=description, alergeny=alergens, cena=price)
+            db.session.add(new_item)
+            db.session.commit()
+            
+            return render_template('all_done.html', desc="New item aded")
+            
+        else:
+            return render_template('add_item.html')
+        
+    return redirect('/login')
+
+@app.route('/remove_canteen', methods=['POST', 'GET'])
+def remove_canteen():
+    if g.operator or g.admin:
+        if request.method == 'POST':
+            name = request.form['name']
+            canteen = Provozna.query.filter(Provozna.nazov == name).first()
+            db.session.delete(canteen)
+            db.session.commit()
+            
+            return render_template('all_done.html', desc="Canteen removed")
+                
+        else:
+            return render_template('remove_canteen.html')
+        
+    return redirect('/login')
+    
+@app.route('/remove_item', methods=['POST', 'GET'])
+def remove_item():
+    if g.operator or g.admin:
+        if request.method == 'POST':
+            name = request.form['name']
+            item = Jidlo.query.filter(Jidlo.nazov == name).first()
+            db.session.delete(item)
+            db.session.commit()
+            
+            return render_template('all_done.html', desc="Item removed")
+                
+        else:
+            return render_template('remove_item.html')
+        
+    return redirect('/login')
+    
+@app.route('/add')
+def add():
+    if g.operator or g.admin:
+        return render_template('add.html')
+    return redirect('/login')
+    
+@app.route('/remove')
+def remove():
+    if g.operator or g.admin:
+        return render_template('remove.html')
     return redirect('/login')
 ########################################
 # Main module guard

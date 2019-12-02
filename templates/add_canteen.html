@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron">
+  <h2>Add canteen</h2>
+  <form class="form-auth" method="post">
+    <input type="text" name="name" class="form-input btn-block" placeholder="Name" maxlength=256 autofocus required>
+    <input type="text" name="address" class="form-input btn-block" placeholder="Address" maxlength=256 required>
+    <input type="text" name="description" class="form-input btn-block" placeholder="Description" maxlength=256 required>
+    <input type="text" name="deadline" class="form-input btn-block" placeholder="Deadline" maxlength=256 required>
+    <input type="text" name="operator_name" class="form-input btn-block" placeholder="Operator name" maxlength=256 required>
+    <input type="text" name="operator_surname" class="form-input btn-block" placeholder="Operator surname" maxlength=256 required>
+    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Add">
+  </form>
+</div>
+{% endblock %}
+
