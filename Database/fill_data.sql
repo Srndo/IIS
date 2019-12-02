@@ -32,7 +32,8 @@ INSERT INTO "ADMIN" ("id_ntb","id") VALUES ('7946132584','4'),
  ('8569743215','0'),
  ('3625956874','6'),
  ('1346978526','7');
-INSERT INTO "JIDLO" ("id","nazov","typ","popis","alergeny","cena","id_objednavky","id_operator") VALUES ('12569','Rajec','napoj','Syteny napoj bez cukru','0',0.8,'1546958732','12'),
+INSERT INTO "JIDLO" ("id","nazov","typ","popis","alergeny","cena","id_objednavky","id_operator") VALUES
+ ('12569','Rajec','napoj','Syteny napoj bez cukru','0',0.8,'1546958732','12'),
  ('14598','Zemiakova kasa','priloha','Kasa varena z domacich zemiakov s bazalkou','4',3,'9685743625','13'),
  ('24875','Cicerova polievka','polievka','Strukovinova polievka so zemiakmi a mrkvou','7,9',4,'9152364859','14'),
  ('33654','Ryza','priloha','Gulatozrnna ryza s kari korenim','10',3.5,'7589621548','15'),
