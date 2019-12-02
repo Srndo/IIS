@@ -248,8 +248,8 @@ def canteen_page(canteen_id):
 
     daily_foods = []
     q = (Jidlo.query
-        .join(Jidlo_denni_menu, Jidlo_denni_menu.jidlo_id == Jidlo.id)
-        .join(Denni_menu, Denni_menu.id == Jidlo_denni_menu.denne_menu_id)
+        #.join(Jidlo_denni_menu, Jidlo_denni_menu.jidlo_id == Jidlo.id)
+        #.join(Denni_menu, Denni_menu.id == Jidlo_denni_menu.denne_menu_id)
         .all())
     print(q)
 
