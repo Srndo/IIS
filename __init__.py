@@ -115,8 +115,13 @@ class Denni_menu(db.Model):
 @app.before_request
 def load_logged_in_user():
     g.user = None
-    if 'user' in session:
-        g.user = session['user']
+    user_id = session.get('user_id')
+    if user_id is not None:
+        user_name = Uzivatel.query.filter(Uzivatel.id == user_id).first()
+        if user_name is None:
+            session.clear()
+            abort(500)
+        g.user = user_name
 
 
 @app.errorhandler(Exception)
