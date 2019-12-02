@@ -1,7 +1,7 @@
 /* All passwords in the following table are hashed from "asdfasdf" */
 INSERT INTO "UZIVATEL" ("id","meno","priezvisko","adresa","tel_cislo","email","heslo") VALUES
- ('0','Leopold','Halaj','Zahrebska 97','+421908013019','admin@admin.com','$5$rounds=535000$j5W2T2N2MrQLbrDU$rDX0Ht1e98BKpl4Lcimo5KUipz63Ml.XSaTj3rMCJE1'),
- ('1','Izabela','Sokolova','Vodova 61','+420786666954','operator@operator.com','$5$rounds=535000$Fwi7.92RJQj.Wqs0$4kq10RO7vEV3dldJHoOJ/qowpiT7W3t0fuPTScimx6D'),
+ ('0','Leopold','Halaj','Zahrebska 97','+421908013019','admin@admin.com','$5$rounds=535000$j5W2T2N2MrQLbrDU$rDX0Ht1e98BKpl4Lcimo5KUipz63Ml.XSaTj3rMCJE1'), /* password: admin */
+ ('1','Izabela','Sokolova','Vodova 61','+420786666954','operator@operator.com','$5$rounds=535000$Fwi7.92RJQj.Wqs0$4kq10RO7vEV3dldJHoOJ/qowpiT7W3t0fuPTScimx6D'), /* password: operator */
  ('2','Julia','Cermakova','Technicka 1','+420778695444','Julia.Cermakova@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
  ('3','David','Silber','Gorkeho 42','+421569863457','David.Silber@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
  ('4','Andrea','Villova','Botanicka 77','+420968569832','Andrea.Villova@gmail.com','$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2'),
