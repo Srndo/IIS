@@ -251,7 +251,7 @@ def canteen_page(canteen_id):
     q = (Denni_menu.query
         .join(FoodInDaily, Denni_menu.id == FoodInDaily.daily_id)
         .join(Jidlo, FoodInDaily.food_id == Jidlo.id)
-        .all()
+        .all())
     print(q)
 
     return render_template('canteen.html', canteen=canteen, daily=daily, permanent=permanent)
