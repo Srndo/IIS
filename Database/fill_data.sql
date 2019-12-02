@@ -37,19 +37,18 @@ INSERT INTO "ADMIN" ("id_ntb","id") VALUES
  ('3625956874','6'),
  ('1346978526','7');
 INSERT INTO "JIDLO" ("id","nazov","typ","popis","alergeny","cena","id_objednavky","id_operator") VALUES
- ('12569','Rajec','napoj','Syteny napoj bez cukru','0',0.8,'1546958732','12'),
- ('14598','Zemiakova kasa','priloha','Kasa varena z domacich zemiakov s bazalkou','4',3,'9685743625','13'),
- ('24875','Cicerova polievka','polievka','Strukovinova polievka so zemiakmi a mrkvou','7,9',4,'9152364859','14'),
- ('33654','Ryza','priloha','Gulatozrnna ryza s kari korenim','10',3.5,'7589621548','15'),
- ('25896','Veg Madras, Rajcatova polevka','MENU','Varena zelenina v stredne palivej omacke a ako priloha Nan','5,6',0.8,'1546958732','12'),
- ('14785','Tatarsky biftek, Zeleninova polevka','MENU','Mlete hovadzie maso s korenim','2,4,7',3,'9685743625','13'),
- ('36985','Spaghety Bolognese, Cesnekova polevka','MENU','Spagety s lahodnou omackou','7,8',4,'9152364859','14'),
- ('55589','Pizza Syrova, Brokolicova polevka','MENU','Pizza s tromi druhmi syra','1,2,4,10',3.5,'7589621548','15');
-INSERT INTO "PLAN_RIDICE" ("id_planu","region","id_operator","id_ridica") VALUES
- ('5869745812','Moravsky region','12','2356897845'),
- ('2585554471','Sumava','13','0012503654'),
- ('9966885575','Plzensky region','14','10'),
- ('1111171458','Prazsky region','15','11');
+ ('12569','Rajec','drink','Sugar-less sparkling water','0',0.8,'1546958732','12'),
+ ('14598','Mashed potatoes','side dish','Mashed of home made potatoes with basil','4',3,'9685743625','13'),
+ ('24875','Chickpeas soup','soup','Legumes soup with potatoes and carot','7,9',4,'9152364859','14'),
+ ('33654','Rice','side dish','Long grain rice with curry','10',3.5,'7589621548','15'),
+ ('25896','Veg Madras, Tomato soup','MENU','Cooked vegetables with spicy sauce with Naan','5,6',0.8,'1546958732','12'),
+ ('14785','Steak tartare, Vegetable soup','MENU','Grind beef with spices','2,4,7',3,'9685743625','13'),
+ ('36985','Spaghetti bolognese, Garlic soup','MENU','Spaghetti with delicious meat sauce','7,8',4,'9152364859','14'),
+ ('55589','Cheese pizza, Brocolli soup','MENU','Pizza with three types of cheese','1,2,4,10',3.5,'7589621548','15');
+INSERT INTO "PLAN_RIDICE" ("id_planu","region","id_operator","id_ridica") VALUES ('5869745812','Moravsky region','12','2356897845'),
+ ('2585554471','Královo pole','13','0012503654'),
+ ('9966885575','Bystrc','14','10'),
+ ('1111171458','Pisárky','15','11');
 INSERT INTO "JIDLO_DENNI_MENU" ("jidlo_id","denne_menu_id") VALUES
  ('14785','16498'),
  ('55589','16498'),
@@ -95,12 +94,12 @@ INSERT INTO "spravuje_provoznu" ("id","id_operatora") VALUES
  ('147','14'),
  ('012','15');
 INSERT INTO "PROVOZNA" ("id","nazov","adresa","description","img_src","uzavierka","id_operatora") VALUES
- (123,'Pizzeria Mozzarella','Kolejní 2905/2, 612 00 Brno-Královo Pole','Objednejte si pravou italskou pizzu z Pizzerie Mozzarella.','https://i.imgur.com/mjy5rt7.jpg','2017-07-23 20:00:00','12'),
- (255,'U 3 opic','Palackého tř. 200/77, 612 00 Brno-Královo Pole','Typická česká jídla k dostání přímo k vám domů z podniku U 3 opic','https://i.imgur.com/gSMIT7u.jpg','2017-06-23 19:00:00','13'),
- (147,'Everest','Veveří 61, 602 00 Brno-střed','Orientální jídla z oblasti Nepálu si můžete objednat z provozovny Everest.','https://i.imgur.com/qhNgPj8.jpg','2018-02-01 18:30:00','14'),
- (12,'Klub cestovatelů','Veleslavínova 183/14, 612 00 Brno','Orientální jídla z celé Asie. Poznejte chuť dobrodružství s Klubem cestovatelů.','https://i.imgur.com/W2NhNwR.jpg','2018-03-01 19:30:00','15'),
- (149,'Pivní stáj','Veveří 38, 602 00 Brno-střed','Nejlepší hamburgery v celém Jihomoravském kraji, za skvělé ceny, z podniku Pivní stáj.','https://i.imgur.com/RX8fTFm.jpg','2018-03-01 19:30:00','15'),
- (150,'Borgeska','Palackého tř. 285/47, 612 00 Brno-Královo Pole','Klasická česká jídla, meníčka i zákusky z provozovny Borgeska.','https://i.imgur.com/42oGtPp.jpg','2018-03-01 19:30:00','15');
+ (123,'Pizzeria Mozzarella','Kolejní 2905/2, 612 00 Brno-Královo Pole','Order some genuine italian pizza from Pizzeria Mozzarella.','https://i.imgur.com/vZW9NnN.jpg','2017-07-23 20:00:00','12'),
+ (255,'U 3 opic','Palackého tř. 200/77, 612 00 Brno-Královo Pole','Traditionall czech dishes directly to your home can be ordered from restaurant U 3 opic.','https://via.placeholder.com/150','2017-06-23 19:00:00','13'),
+ (147,'Everest','Veveří 61, 602 00 Brno-střed','Oriental dishes specially from the Nepal province are available in restaurant Everest.','https://via.placeholder.com/150','2018-02-01 18:30:00','14'),
+ (149,'Pivní stáj','Veveří 38, 602 00 Brno-střed','The best burgers in South Moravian Region with great prices are available at Pivní stáj.','https://via.placeholder.com/150','2018-03-01 19:30:00','15'),
+ (12,'Klub cestovatelů','Veleslavínova 183/14, 612 00 Brno','Oriental dishes from the whole Asia. Discover the taste of adventure with the Klub cestovatelů restaurant.','https://via.placeholder.com/150','2018-03-01 19:30:00','15'),
+ (150,'Borgeska','Palackého tř. 285/47, 612 00 Brno-Královo Pole','Traditionall czech dishes, menu and desserts from Borgeska restaurant.','https://via.placeholder.com/150','2018-03-01 19:30:00','15');
 INSERT INTO "id_operator_jedla" ("id","id_operatora") VALUES
  ('12569','12'),
  ('14598','13'),

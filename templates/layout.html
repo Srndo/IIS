@@ -44,12 +44,18 @@
           </li>
           {% if g.driver %}
           <li clas="nav-item">
-            <a class="nav-link" href="/driver_plan">Your plans</a>
+            <a class="nav-link" href="/driver_plan">Your regions</a>
           </li>
           {% endif %}
           {% if g.operator or g.admin %}
           <li clas="nav-item">
-            <a class="nav-link" href="/create_plan">Create driver plan</a>
+            <a class="nav-link" href="/create_plan">Create plan</a>
+          </li>
+          <li clas="nav-item">
+            <a class="nav-link" href="/add">Add</a>
+          </li>
+          <li clas="nav-item">
+            <a class="nav-link" href="/remove">Remove</a>
           </li>
           {% if g.admin %}
           <li clas="nav-item">
