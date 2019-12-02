@@ -104,7 +104,7 @@ class Trvala_nabidka(db.Model):
 
 class Denni_menu(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
-    datum = db.Column('datum', db.DateTime, nullable=False)
+    datum = db.Column('datum', db.String(10), nullable=False)
     id_provozny = db.Column('id_provozny', db.Integer, nullable=False)
 
 
