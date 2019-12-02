@@ -3,7 +3,6 @@ import random
 import re
 import os
 from flask import Flask, render_template, url_for, request, redirect, session, g
-from flask_sqlalchemy_session import current_session
 from werkzeug.exceptions import HTTPException
 from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
@@ -248,11 +247,8 @@ def canteen_page(canteen_id):
     if permanent is None or daily is None:
         abort(500)
 
-    q = (current_session.querry(Denni_menu, Jidlo, FoodInDaily)
-        .filter(Denni_menu.id == FoodInDaily.daily_id)
-        .filter(Jidlo.id == FoodInDaily.food_id)
-        .order_by(Jidlo.id)
-        .all())
+    daily_foods = []
+    q = Denni_menu.query.join(FoodInDaily).join(Jidlo).filter_by(Denni_menu.id == FoodInDaily.daily_id, FoodInDaily.food_id == Jidlo.id).all()
     print(q)
 
     return render_template('canteen.html', canteen=canteen, daily=daily, permanent=permanent)
@@ -314,6 +310,7 @@ def show_profile():
         return render_template('profile.html', user=user)
     return redirect('/login')
 
+
 @app.route('/create_plan', methods=['POST', 'GET'])
 def create_plan():
     if g.operator or g.admin:
@@ -335,14 +332,15 @@ def create_plan():
         else:
             return render_template('create_plan.html')
     return redirect('login')
-        
-        
+
+
 @app.route('/driver_plan')
 def show_plan():
     if g.driver:
         plans = Plan_ridice.query.filter(Plan_ridice.id_ridica == g.user_id).all()
         return render_template('driver_plan.html', plans=plans)
-        
+
+
 @app.route('/manage_users', methods=['POST', 'GET'])
 def manage_users():
     if g.admin:
@@ -357,9 +355,9 @@ def manage_users():
         else:
             #return render_template('manage_users.html', admins=admins, operators=operators, drivers=drivers, customers=customers)
             return render_template('manage_users.html', users=users)
-    
     return redirect('/login')
-    
+
+
 @app.route('/edit_user/<id>', methods=['GET', 'POST'])
 def edit_user(id):
     print(g.user_id)
@@ -405,6 +403,8 @@ def edit_user(id):
         else:
             return render_template('edit_user.html', user=user)
     return redirect('/login')
+
+
 ########################################
 # Main module guard
 ########################################
