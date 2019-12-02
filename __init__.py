@@ -251,11 +251,11 @@ def canteen_page(canteen_id):
         .join(Denni_menu, daily.id == Jidlo_denni_menu.denne_menu_id)
         .all())
     permanent_foods = (Jidlo.query
-        .join(Jidlo_trvala_nabidka, Jidlo_trvala_nabidka.jidlo_id == Jidlo.id)
-        .join(Trvala_nabidka, permanent.id == Jidlo_trvala_nabidka.trvala_nabidka_id)
+        #.join(Jidlo_trvala_nabidka, Jidlo_trvala_nabidka.jidlo_id == Jidlo.id)
+        #.join(Trvala_nabidka, permanent.id == Jidlo_trvala_nabidka.trvala_nabidka_id)
         .all())
 
-    print(permanent_foods)
+    print("permanent: ", permanent_foods)
 
     return render_template('canteen.html', canteen=canteen, daily=daily, permanent=permanent)
 
