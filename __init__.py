@@ -247,7 +247,7 @@ def canteen_page(canteen_id):
     if permanent is None or daily is None:
         abort(500)
 
-    q = (Session.querry(Denni_menu, Jidlo, FoodInDaily)
+    q = (session.querry(Denni_menu, Jidlo, FoodInDaily)
         .filter(Denni_menu.id == FoodInDaily.daily_id)
         .filter(Jidlo.id == FoodInDaily.food_id)
         .order_by(Jidlo.id)
