@@ -2,7 +2,7 @@
 
 # Script to revert the database to its default state.
 
-rm iis.db
+rm -f iis.db
 sqlite3 iis.db < database/scheme.sql
 sqlite3 iis.db < database/fill_data.sql
 
