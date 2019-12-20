@@ -21,7 +21,7 @@
 
 <body>
   <!-- Navigation -->
-  <div class="bg-light custom-header">
+  <div class="bg-light custom-header" style="height: 14vh">
     <div class="container">
       <nav class="navbar navbar-expand navbar-light bg-light">
         <a class="navbar-brand" href="/">
@@ -52,10 +52,7 @@
             <a class="nav-link" href="/create_plan">Create plan</a>
           </li>
           <li clas="nav-item">
-            <a class="nav-link" href="/add">Add</a>
-          </li>
-          <li clas="nav-item">
-            <a class="nav-link" href="/remove">Remove</a>
+            <a class="nav-link" href="/manage_canteen">Manage canteens</a>
           </li>
           {% if g.admin %}
           <li clas="nav-item">
@@ -80,12 +77,12 @@
   </div>
 
   <!-- Page content -->
-  <div class="container">
+  <div class="container" style="min-height: 69.5vh">
   {% block content %}{% endblock %}
   </div>
 
   <!-- Footer -->
-  <footer class="page-footer row-fluid pt-5 bg-light">
+  <footer class="page-footer row-fluid pt-5 bg-light" style="height: 10vh">
     <p class="m-0 text-center">Copyright &copy; 2019 Šimon Šesták, David Hás, Martina Jendrálová</p>
   </footer>
 

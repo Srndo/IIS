@@ -176,8 +176,13 @@ def index():
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
+        name = request.form['name']
+        surname = request.form['surname']
+        address = request.form['address']
+        tel = request.form['tel']
         user_email = request.form['email']
         user_password = request.form['password']
+        role = request.form['role']
 
         error = None
         if user_email is None:
@@ -190,6 +195,10 @@ def register():
         if error is None:
             encrypted = sha256_crypt.encrypt(user_password)
             new_user = Uzivatel(
+                meno=name,
+                priezvisko=surname,
+                adresa=address,
+                cislo=tel,
                 email=user_email,
                 heslo=encrypted,
                 )
@@ -197,10 +206,20 @@ def register():
             db.session.commit()
 
             new_user = Uzivatel.query.order_by(Uzivatel.id.desc()).first()
-            new_stravnik = Stravnik(cislo_karty='', id=new_user.id)
-            db.session.add(new_stravnik)
+            print("ROLA JE:")
+            print(role)
+            if role == 'user':
+                new_stravnik = Stravnik(cislo_karty='', id=new_user.id)
+                db.session.add(new_stravnik)
+            
+            elif role == 'driver':
+                new_driver = Ridic(spz='', id=new_user.id)
+                db.session.add(new_driver)
+                print("HERE")
+
             db.session.commit()
-            return redirect('/login')
+
+            return render_template('all_done.html', desc="Succesfully registered")
         else:
             return render_template("error.html", name="Registration error", desc=error), 400
     return render_template('register.html')
@@ -349,51 +368,91 @@ def manage_users():
     return redirect('/login')
 
 
-@app.route('/edit_user/<id>', methods=['GET', 'POST'])
+@app.route('/edit_user/<int:id>', methods=['GET', 'POST'])
 def edit_user(id):
-    print(g.user_id)
-    print(id)
     if str(g.user_id) == str(id) or g.admin:
         user = Uzivatel.query.filter(Uzivatel.id == id).first()
+        role = None
+
+        pom = Ridic.query.filter(Ridic.id == id).first()
+        if pom is not None:
+            role = 'Driver'
+
+        pom = Operator.query.filter(Operator.id == id).first()
+        if pom is not None:
+            role = 'Operator'
+
+        pom = Admin.query.filter(Admin.id == id).first()
+        if pom is not None:
+            role = 'Admin'
+
+        if role is None:
+            role = 'User'
+
         if request.method == 'POST':
             new_name = request.form['name']
-            if new_name is None:
-                new_name = user.meno
-            
             new_surname = request.form['surname']
-            if new_surname is None:
-                new_surname = user.priezvisko
-            
             new_email = request.form['email']
-            if new_email is None:
-                new_email = user.email
-            
             new_address = request.form['address']
-            if new_address is None:
-                new_address = user.adresa
-            
             new_tel = request.form['tel']
-            if new_tel is None:
-                new_tel = user.cislo
-                
             new_password = request.form['password']
-            if new_password is None:
-                new_password = user.heslo
+
+            if new_name:
+                user.meno = new_name
+            if new_surname:
+                user.priezvisko = new_surname
+            if new_address:
+                user.adresa = new_address
+            if new_tel:
+                user.cislo = new_tel
+            if new_email:
+                user.email = new_email
+            if new_password:
+                user.heslo = sha256_crypt.encrypt(new_password)
+
+            new_role = request.form['role']
+            if new_role != role:
+                delete = None
+                if role == 'Driver':
+                    delete = Ridic.query.filter(Ridic.id == id).first()
+                if role == 'Operator':
+                    delete = Operator.query.filter(Operator.id == id).first()
+                if role == 'Admin':
+                    delete = Admin.query.filter(Admin.id == id).first()
+                    admin_count = Admin.query.count()
+                    if admin_count == 1:
+                        return render_template('error.html', name="Edit error", desc="There must be at least one admin!" )
                 
-            user.meno = new_name
-            user.priezvisko = new_surname
-            user.adresa = new_address
-            user.cislo = new_tel
-            user.email = new_email
-            user.heslo = sha256_crypt.encrypt(new_password)
-            db.session.commit()
+                if delete is not None:
+                    db.session.delete(delete)
+
+                if new_role == 'driver':
+                    new = Ridic(spz='', id=id)
+                if new_role == 'operator':
+                    new = Operator(sluzobny_tel='', id=id)
+                if new_role == 'admin':
+                    new = Admin(id_ntb='', id=id)
+
+                if new_role != 'user':
+                    db.session.add(new)
+                db.session.commit()
             
             return render_template('all_done.html', desc="Informations change")
 
         else:
-            return render_template('edit_user.html', user=user)
+            return render_template('edit_user.html', user=user, role=role)
     return redirect('/login')
 
+@app.route('/remove_user/<int:id>')
+def remove_user(id):
+    if g.admin:
+        user = Uzivatel.query.filter(Uzivatel.id == id).first()
+        db.session.delete(user)
+        db.session.commit()
+
+        return render_template('all_done.html', desc="User removed")
+        
+    return redirect('/login')
 
 @app.route('/add_canteen', methods=['POST', 'GET'])
 def add_canteen():
@@ -403,26 +462,30 @@ def add_canteen():
             address = request.form['address']
             description = request.form['description']
             deadline = request.form['deadline']
-            operator_name = request.form['operator_name']
-            operator_surname = request.form['operator_surname']
+            id_operator = request.form['operator']
 
-            operators = Operator.query.all()
-            operators = Uzivatel.query.filter(Uzivatel.meno == operator_name and Uzivatel.priezvisko == operator_surname).all()
-            for operator in operators:
-                selected_operator = Operator.query.filter(Operator.id == operator.id).first()
-                if selected_operator is not None:
-                    break
+            #operator = Uzivatel.query.filter(Uzivatel.id ==id_operator).first()
 
-            new_canteen = Provozna(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=selected_operator.id, img_src='https://via.placeholder.com/150')
+            new_canteen = Provozna(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=id_operator, img_src='https://via.placeholder.com/150')
             db.session.add(new_canteen)
             db.session.commit()
 
             return render_template('all_done.html', desc="New canteen aded")
 
         else:
-            return render_template('add_canteen.html')
+            operators = Uzivatel.query.filter(Uzivatel.id == Operator.id).all()
+            return render_template('add_canteen.html', operators=operators)
 
     return redirect('/login')
+
+@app.route('/manage_canteen')
+def manage_canteen():
+    if g.operator or g.admin:
+        canteens = Provozna.query.all()
+        return render_template('manage_canteen.html', canteens=canteens)
+    else:
+        return redirect('/login')
+
 
 
 @app.route('/add_item', methods=['POST', 'GET'])
@@ -447,19 +510,14 @@ def add_item():
     return redirect('/login')
 
 
-@app.route('/remove_canteen', methods=['POST', 'GET'])
-def remove_canteen():
+@app.route('/remove_canteen/<int:canteen_id>')
+def remove_canteen(canteen_id):
     if g.operator or g.admin:
-        if request.method == 'POST':
-            name = request.form['name']
-            canteen = Provozna.query.filter(Provozna.nazov == name).first()
-            db.session.delete(canteen)
-            db.session.commit()
-            
-            return render_template('all_done.html', desc="Canteen removed")
-                
-        else:
-            return render_template('remove_canteen.html')
+        canteen = Provozna.query.filter(Provozna.id == canteen_id).first()
+        db.session.delete(canteen)
+        db.session.commit()
+        
+        return render_template('all_done.html', desc="Canteen removed")
         
     return redirect('/login')
 

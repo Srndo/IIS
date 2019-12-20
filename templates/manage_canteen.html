@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron">
+	<h3>Canteens</h3>
+</div>
+<div class="container text-center">
+  <a href="/add_canteen"><button type="button" class="btn btn-outline-dark col-sm text-center mb-3" style="width: 150px">Create new</button></a>
+  <div class="list-group">
+    <div class="list-group-item">
+  		<div class="row">
+  			<div class="font-weight-bold col-sm text-center">Name</div>
+  			<div class="font-weight-bold col-sm text-center">Address</div>
+        	<div class="font-weight-bold col-sm text-center" style="max-width: 50px"></div>
+      </div>
+    </div>
+    {% for canteen in canteens %}
+    <div class="list-group-item">
+      <div class="row">
+  			<div class="col-sm text-center">{{ canteen.nazov }}</div>
+        <div class="col-sm text-center">{{ canteen.adresa }}</div>
+        <a href="/remove_canteen/{{ canteen.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Remove</button></a>
+  		</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

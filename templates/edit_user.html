@@ -9,6 +9,36 @@
     <input type="text" name="tel" class="form-input btn-block" value="{{ user.cislo }}" minlength=10 maxlength=20>
     <input type="text" name="email" class="form-input btn-block" value="{{ user.email }}" maxlength=256>
     <input type="password" name="password" class="form-input btn-block" placeholder="Password (at least 6 characters)" minlength=6 maxlength=256>
+    {% if g.admin %}
+    <div class="input-group mt-2 mb-2">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="select_register">Role</label>
+      </div>
+      <select class="custom-select" id="select_register" name="role">
+        {% if role == 'User' %}
+        <option value="user" selected>User</option>
+        <option value="driver">Driver</option>
+        <option value="operator">Operator</option>
+        <option value="admin">Admin</option>
+        {% elif role == 'Driver' %}
+        <option value="user">User</option>
+        <option value="driver" selected>Driver</option>
+        <option value="operator">Operator</option>
+        <option value="admin">Admin</option>
+        {% elif role == 'Operator' %}
+        <option value="user">User</option>
+        <option value="driver">Driver</option>
+        <option value="operator" selected>Operator</option>
+        <option value="admin">Admin</option>
+        {% elif role == 'Admin' %}
+        <option value="user">User</option>
+        <option value="driver">Driver</option>
+        <option value="operator">Operator</option>
+        <option value="admin" selected>Admin</option>
+        {% endif %}
+      </select>
+    </div>
+    {% endif %}
     <input type="submit" class="btn btn-lg btn-primary btn-block" value="Change">
   </form>
 </div>

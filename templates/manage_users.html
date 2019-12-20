@@ -13,6 +13,7 @@
         <div class="font-weight-bold col-sm text-center">Phone</div>
         <div class="font-weight-bold col-sm text-center">Address</div>
         <div class="font-weight-bold col-sm text-center" style="max-width: 50px"></div>
+        <div class="font-weight-bold col-sm text-center" style="max-width: 90px"></div>
       </div>
     </div>
     {% for user in users %}
@@ -24,6 +25,7 @@
         <div class="col-sm text-center"><a href="tel:{{ user.cislo }}">{{ user.cislo }}</a></div>
         <div class="col-sm text-center">{{ user.adresa }}</div>
         <a href="/edit_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Edit</button></a>
+        <a href="/remove_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center ml-1">Remove</button></a>
   		</div>
     </div>
     {% endfor %}

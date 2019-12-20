@@ -3,8 +3,22 @@
 <div class="jumbotron">
   <h2>Create a new account</h2>
   <form class="form-auth" method="post">
-    <input type="text" name="email" class="form-input btn-block" placeholder="Email" maxlength=256 required autofocus>
-    <input type="password" name="password" class="form-input btn-block" placeholder="Password (at least 6 characters)" maxlength=256 minlength=6 required>
+  	<input type="text" name="name" class="form-input btn-block" placeholder="Name *" maxlength=256 required autofocus>
+  	<input type="text" name="surname" class="form-input btn-block" placeholder="Surname *" maxlength=256 required>
+  	<input type="text" name="address" class="form-input btn-block" placeholder="Address *" maxlength=256 required>
+  	<input type="text" name="tel" class="form-input btn-block" placeholder="0918345280 *" maxlength=256 required>
+    <input type="text" name="email" class="form-input btn-block" placeholder="Email *" maxlength=256 required>
+    <input type="password" name="password" class="form-input btn-block" placeholder="Password (at least 6 characters) *" maxlength=256 minlength=6 required>
+    <div class="input-group mt-2 mb-2">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="select_register">Register as</label>
+      </div>
+      <select class="custom-select" id="select_register" name="role">
+        <option value="user" selected>User</option>
+        <option value="driver">Driver</option>
+      </select>
+    </div>
+    <div class="text-danger mb-2" style="opacity:0.75">* column is required</div>
     <input type="submit" class="btn btn-lg btn-primary btn-block" value="Register">
   </form>
 </div>
