@@ -32,52 +32,52 @@
         <ul class="navbar-nav ml-auto">
           {% if g.user %}
           <li clas="nav-item mx-4">
-            <a class="nav-link mx-4 text-primary disabled">{{ g.user }}</a>
+            <a class="nav-link mx-4 align-middle" href="/profile">{{ g.user }}</a>
           </li>
           <li clas="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link align-middle" href="/">Home</a>
           </li>
           <li clas="nav-item">
-            <a class="nav-link" href="/profile">Profile</a>
+            <a class="nav-link align-middle" href="/profile">Profile</a>
           </li>
           <li clas="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
+            <a class="nav-link align-middle" href="/logout">Logout</a>
           </li>
           {% if g.driver %}
           <li clas="nav-item">
-            <a class="nav-link" href="/driver_plan">Your regions</a>
+            <a class="nav-link align-middle" href="/driver_plan">Your regions</a>
           </li>
           {% endif %}
           {% if g.operator or g.admin %}
           <li clas="nav-item">
-            <a class="nav-link" href="/create_plan">Create plan</a>
+            <a class="nav-link align-middle" href="/create_plan">Create plan</a>
           </li>
           <li clas="nav-item">
-            <a class="nav-link" href="/manage_orders">Manage orders</a>
+            <a class="nav-link align-middle" href="/manage_orders">Manage orders</a>
           </li>
           <li clas="nav-item">
-            <a class="nav-link" href="/manage_canteen">Manage canteens</a>
+            <a class="nav-link align-middle" href="/manage_canteen">Manage canteens</a>
           </li>
           {% if g.admin %}
           <li clas="nav-item">
-            <a class="nav-link" href="/manage_users">Manage users</a>
+            <a class="nav-link align-middle" href="/manage_users">Manage users</a>
           </li>
           {% endif %}
           {% endif %}
           {% else %}
           <li clas="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link align-middle" href="/">Home</a>
           </li>
           <li clas="nav-item">
-            <a class="nav-link" href="/login">Log in</a>
+            <a class="nav-link align-middle" href="/login">Log in</a>
           </li>
           <li clas="nav-item">
-            <a class="nav-link" href="/register">Register</a>
+            <a class="nav-link align-middle" href="/register">Register</a>
           </li>
           {% endif %}
           <li clas="nav-item">
-            <a class="nav-link" href="/shopping-cart">
-              <img src="../static/img/shopping-cart.png" class="rounded mx-auto d-block" width="40" height="40" alt="Shopping cart" title="Shopping cart">
+            <a class="nav-link align-middle" href="/shopping-cart">
+              <img src="../static/img/shopping-cart.png" width="40" height="40" alt="Shopping cart" title="Shopping cart">
             </a>
           </li>
           </a>
