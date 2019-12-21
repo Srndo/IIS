@@ -487,6 +487,14 @@ def manage_canteen():
         return redirect('/login')
 
 
+@app.route('/manage_orders')
+def manage_canteen():
+    if g.operator or g.admin:
+        return render_template('manage_orders.html')
+    else:
+        return redirect('/login')
+
+
 
 @app.route('/add_item', methods=['POST', 'GET'])
 def add_item():
