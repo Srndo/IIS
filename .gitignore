@@ -7,4 +7,6 @@ __pycache__
 # Database files
 *.db
 
+# macOS system files
 .DS_Store
+
