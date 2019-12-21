@@ -29,10 +29,10 @@
           <img src="../static/img/favicon.ico" class="align-middle" width="80" height="80" alt="Hungry Panda Logo" title="Hungry Panda">
           Hungry Panda
         </a>
-        <ul class="navbar-nav ml-auto align-middle">
+        <ul class="navbar-nav ml-auto">
           {% if g.user %}
           <li clas="nav-item mx-4">
-            <a class="nav-link mx-4 align-middle text-primary" href="/profile">{{ g.user }}</a>
+            <a class="nav-link mx-4 text-primary" href="/profile">{{ g.user }}</a>
           </li>
           <li clas="nav-item">
             <a class="nav-link" href="/">Home</a>
@@ -40,7 +40,7 @@
           <li clas="nav-item">
             <a class="nav-link" href="/profile">Profile</a>
           </li>
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
           </li>
           {% if g.driver %}
@@ -49,34 +49,34 @@
           </li>
           {% endif %}
           {% if g.operator or g.admin %}
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/create_plan">Create plan</a>
           </li>
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/manage_orders">Manage orders</a>
           </li>
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/manage_canteen">Manage canteens</a>
           </li>
           {% if g.admin %}
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/manage_users">Manage users</a>
           </li>
           {% endif %}
           {% endif %}
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/shopping-cart">
               <img src="../static/img/shopping-cart.png" width="40" height="40" alt="Shopping cart" title="Shopping cart">
             </a>
           </li>
           {% else %}
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/">Home</a>
           </li>
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/login">Log in</a>
           </li>
-          <li clas="nav-item align-middle">
+          <li clas="nav-item">
             <a class="nav-link" href="/register">Register</a>
           </li>
           {% endif %}
