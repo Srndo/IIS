@@ -140,4 +140,3 @@ INSERT INTO "id_operatora_plan_ridice" ("id_planu","id_operatora") VALUES
  ('2585554471','13'),
  ('9966885575','14'),
  ('1111171458','15');
-COMMIT;
