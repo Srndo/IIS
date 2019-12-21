@@ -3,65 +3,9 @@
 {% block content %}
 <div class="jumbotron bg-light">
   <h2>Manage orders</h2>
-  <p class="text-muted">{{ canteen.adresa }}</p>
-  <p class="mb-5">{{ canteen.description }}</p>
-  {% if not daily_foods and not permanent_foods %}
-  <p class="text-muted">We are sorry, this canteen have nothing to offer.<br/>Pleas try one from our <a href="/" class="text-primary">other canteens</a>.</p>
-  {% endif %}
-  {% if daily_foods %}
+  <p class="text-muted">adresa</p>
+  <p class="mb-5">popis</p>
   <h4>Daily menu</h4>
-  <table class="table mb-5">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Description</th>
-        <th scope="col">Alergens</th>
-        <th scope="col">Price</th>
-        <th scope="col">Order</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for food in daily_foods %}
-      <tr>
-        <th scope="row">{{ food.nazov }}</th>
-        <td>{{ food.typ }}</td>
-        <td>{{ food.popis }}</td>
-        <td>{{ food.alergeny }}</td>
-        <td>{{ food.cena }} &euro;</td>
-        <td><a href="/new_order/{{ food.id }}"><button type="button" class="btn-outline-dark">Order</button></a></td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-  {% endif %}
-  {% if permanent_foods %}
-  <h4>Offer</h4>
-  <table class="table">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Description</th>
-        <th scope="col">Alergens</th>
-        <th scope="col">Price</th>
-        <th scope="col">Order</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for food in permanent_foods %}
-      <tr>
-        <th scope="row">{{ food.nazov }}</th>
-        <td>{{ food.typ }}</td>
-        <td>{{ food.popis }}</td>
-        <td>{{ food.alergeny }}</td>
-        <td>{{ food.cena }} &euro;</td>
-        <td><a href="/add_canteen"><button type="button" class="btn-outline-dark">Order</button></a></td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-  {% endif %}
 </div>
 {% endblock %}
 
