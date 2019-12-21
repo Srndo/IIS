@@ -322,6 +322,13 @@ def show_profile():
     return redirect('/login')
 
 
+@app.route('/shopping-cart')
+def show_shopping_cart():
+    if g.user:
+        return render_template('shopping-cart.html')
+    return redirect('/login')
+
+
 @app.route('/create_plan', methods=['POST', 'GET'])
 def create_plan():
     if g.operator or g.admin:
