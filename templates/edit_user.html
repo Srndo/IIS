@@ -3,11 +3,11 @@
 <div class="jumbotron">
   <h2>Edit user</h2>
   <form class="form-auth" method="post">
-    <input type="text" name="name" class="form-input btn-block" value="{{ user.meno }}" maxlength=256 autofocus>
-    <input type="text" name="surname" class="form-input btn-block" value="{{ user.priezvisko }}" maxlength=256>
-    <input type="text" name="address" class="form-input btn-block" value="{{ user.adresa }}" maxlength=256>
-    <input type="text" name="tel" class="form-input btn-block" value="{{ user.cislo }}" minlength=10 maxlength=20>
-    <input type="text" name="email" class="form-input btn-block" value="{{ user.email }}" maxlength=256>
+    <input type="text" name="name" class="form-input btn-block" placeholder="{{ user.meno }}" maxlength=256 autofocus>
+    <input type="text" name="surname" class="form-input btn-block" placeholder="{{ user.priezvisko }}" maxlength=256>
+    <input type="text" name="address" class="form-input btn-block" placeholder="{{ user.adresa }}" maxlength=256>
+    <input type="text" name="tel" class="form-input btn-block" placeholder="{{ user.cislo }}" minlength=10 maxlength=20>
+    <input type="text" name="email" class="form-input btn-block" placeholder="{{ user.email }}" maxlength=256>
     <input type="password" name="password" class="form-input btn-block" placeholder="Password (at least 6 characters)" minlength=6 maxlength=256>
     {% if g.admin %}
     <div class="input-group mt-2 mb-2">
