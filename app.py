@@ -297,7 +297,7 @@ def new_order(id):
 @app.route('/orders')
 def show_objednavky():
     if g.user:
-        objednavky = Objednavka.query.filter(Objednavka.id_stravnika == g.user_id).all()
+        objednavky = Order.query.filter(Order.id_user == g.user_id).all()
         return render_template('orders.html', orders=objednavky)
     return redirect('/login')
 

@@ -8,27 +8,26 @@
     {% for order in orders %}
         <div class="list-group-item">
         	<div class="row">
-            {% if order.stav == "Evidovana" %}
-            <h4 class="list-group-item-heading col-sm text-center text-primary">{{ order.stav }}</h4>
-            {% endif %}
-				{% if order.stav == "Prijata" %}
-      			<h4 class="list-group-item-heading col-sm text-center text-primary">{{ order.stav }}</h4>
+            {% if order.status == "Created" %}
+            <h4 class="list-group-item-heading col-sm text-center text-primary">{{ order.status }}</h4>
+
+        		{% elif order.status == "Confirmed" %}
+      			<h4 class="list-group-item-heading col-sm text-center text-info">{{ order.status }}</h4>
+
+        		{% elif order.status == "Delivered" %}
+      			<h4 class="list-group-item-heading col-sm text-center text-success">{{ order.status }}</h4>
+
+            {% else %}
+            <h4 class="list-group-item-heading col-sm text-center text-danger">{{ order.status }}</h4>
         		{% endif %}
 
-        		{% if order.stav == "Priprava" %}
-      			<h4 class="list-group-item-heading col-sm text-center text-info">{{ order.stav }}</h4>
-        		{% endif %}
-
-        		{% if order.stav == "Dorucene" %}
-      			<h4 class="list-group-item-heading col-sm text-center text-success">{{ order.stav }}</h4>
-        		{% endif %}
       		</div>
       		<div class="row">
       			<div class="font-weight-bold col-sm text-center">Price</div>
-      			<div class="font-weight-bold col-sm text-center">Arrive time</div>
+      			<div class="font-weight-bold col-sm text-center">Order time</div>
       			<div class="w-100"></div>
       			<div class="col-sm text-center">{{ order.cena_celkom }} €</div>
-				<div class="col-sm text-center">{{ order.cas_dorucenia }}</div>
+				<div class="col-sm text-center">{{ order.order_time }}</div>
       		</div>
         </div>
     {% endfor %}
