@@ -86,7 +86,7 @@ class CartItem(db.Model):
     id_user = db.Column('id_user', db.Integer, primary_key=True, autoincrement=False)
     id_food = db.Column('id_food', db.Integer, primary_key=True, autoincrement=False)
     qty = db.Column('qty', db.Integer, nullable=False)
-    
+
 class User(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String(256), nullable=False, unique=True)
@@ -600,6 +600,14 @@ def manage_orders():
     else:
         return redirect('/login')
 
+@app.route('/manage_items', methods=['GET', 'POST'])
+def manage_items():
+    if g.operator or g.admin:
+        items = Food.query.all()
+        return render_template('manage_items.html', items=items)
+    else:
+        return redirect('/login')
+
 
 @app.route('/add_item', methods=['POST', 'GET'])
 def add_item():
@@ -609,9 +617,9 @@ def add_item():
             type = request.form['type']
             description = request.form['description']
             alergens = request.form['alergens']
-            price = request.form['price']
+            price = float(request.form['price'])
             
-            new_item = Food(nazov=name, typ=type, popis=description, alergeny=alergens, cena=price)
+            new_item = Food(name=name, type=type, description=description, allergens=alergens, price=price)
             db.session.add(new_item)
             db.session.commit()
             
@@ -635,19 +643,14 @@ def remove_canteen(canteen_id):
     return redirect('/login')
 
 
-@app.route('/remove_item', methods=['POST', 'GET'])
-def remove_item():
+@app.route('/remove_item/<int:id>')
+def remove_item(id):
     if g.operator or g.admin:
-        if request.method == 'POST':
-            name = request.form['name']
-            item = Food.query.filter(Food.name == name).first()
-            db.session.delete(item)
-            db.session.commit()
-            
-            return render_template('all_done.html', desc="Item removed")
-                
-        else:
-            return render_template('remove_item.html')
+        item = Food.query.filter(Food.id == id).first()
+        db.session.delete(item)
+        db.session.commit()
+        
+        return render_template('all_done.html', desc="Item removed")
         
     return redirect('/login')
 
