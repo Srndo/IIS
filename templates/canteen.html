@@ -2,8 +2,8 @@
 {% block content %}
 <div class="jumbotron bg-light">
   <img src="{{ canteen.img_src }}" class="mb-5" width="150" height="150" alt="Building photo">
-  <h2>{{ canteen.nazov }}</h2>
-  <p class="text-muted">{{ canteen.adresa }}</p>
+  <h2>{{ canteen.name }}</h2>
+  <p class="text-muted">{{ canteen.address }}</p>
   <p class="mb-5">{{ canteen.description }}</p>
   {% if not daily_foods and not permanent_foods %}
   <p class="text-muted">We are sorry, but this canteen's menu seems currently empty.<br/>Pleas try one from our <a href="/" class="text-primary">other canteens</a>.</p>

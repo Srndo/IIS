@@ -19,11 +19,11 @@
     {% for user in users %}
     <div class="list-group-item">
       <div class="row">
-  			<div class="col-sm text-center">{{ user.meno }}</div>
-        <div class="col-sm text-center">{{ user.priezvisko }}</div>
+  			<div class="col-sm text-center">{{ user.name }}</div>
+        <div class="col-sm text-center">{{ user.surname }}</div>
         <div class="col-sm text-center"><a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
-        <div class="col-sm text-center"><a href="tel:{{ user.cislo }}">{{ user.cislo }}</a></div>
-        <div class="col-sm text-center">{{ user.adresa }}</div>
+        <div class="col-sm text-center"><a href="tel:{{ user.cislo }}">{{ user.phone }}</a></div>
+        <div class="col-sm text-center">{{ user.address }}</div>
         <a href="/edit_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Edit</button></a>
         <a href="/remove_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center ml-1">Remove</button></a>
   		</div>
