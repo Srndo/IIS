@@ -4,17 +4,26 @@
 INSERT INTO "canteen" ("id", "name", "address", "description", "img_src", "id_daily", "id_permanent") VALUES
     ('0', 'Klub cestovatelů', 'Veleslavínova 183/14, 612 00 Brno', 'Oriental dishes from the whole Asia. Discover the taste of adventure with the Klub cestovatelů restaurant.', 'https://i.imgur.com/W2NhNwR.jpg', '0', '0'),
     ('1', 'Pizzeria Mozzarella', 'Kolejní 2905/2, 612 00 Brno-Královo Pole', 'Order some genuine italian pizza from Pizzeria Mozzarella.', 'https://i.imgur.com/mjy5rt7.jpg', '1', '1'),
-    ('2', 'Everest', 'Veveří 61, 602 00 Brno-střed', 'Oriental dishes specially from the Nepal province are available in restaurant Everest.', 'https://i.imgur.com/qhNgPj8.jpg', '2', '2');
+    ('2', 'Everest', 'Veveří 61, 602 00 Brno-střed', 'Oriental dishes specially from the Nepal province are available in restaurant Everest.', 'https://i.imgur.com/qhNgPj8.jpg', '2', '2'),
+    ('3', 'Pivní stáj', 'Veveří 38, 602 00 Brno-střed', 'The best burgers in South Moravian Region with great prices are available at Pivní stáj.', 'https://i.imgur.com/RX8fTFm.jpg', '3', '3'),
+    ('4', 'Borgeska', 'Palackého tř. 285/47, 612 00 Brno-Královo Pole', 'Traditional czech dishes, menu and desserts from Borgeska restaurant.', 'https://i.imgur.com/42oGtPp.jpg', '4', '4'),
+    ('5', 'U 3 opic', 'Palackého tř. 200/77, 612 00 Brno-Královo Pole', 'Traditional czech dishes directly to your home can be ordered from restaurant U 3 opic.', 'https://i.imgur.com/gSMIT7u.jpg', '5', '5');
 
 INSERT INTO "daily_menu" ("id") VALUES
     ('0'),
     ('1'),
-    ('2');
+    ('2'),
+    ('3'),
+    ('4'),
+    ('5');
 
 INSERT INTO "permanent_menu" ("id") VALUES
     ('0'),
     ('1'),
-    ('2');
+    ('2'),
+    ('3'),
+    ('4'),
+    ('5');
 
 INSERT INTO "food" ("id", "name", "type", "description", "allergens", "price") VALUES
     ('0', 'Veg Madras, Tomato soup', 'LUNCH', 'Cooked vegetables with spicy sauce with naan.', '5, 6', '4.20'),
@@ -23,7 +32,25 @@ INSERT INTO "food" ("id", "name", "type", "description", "allergens", "price") V
     ('3', 'Chickpeas soup', 'Soup', 'Legumes soup with potatoes and carrot.', '7, 9', '1.10'),
     ('4', 'Pork chop', 'Meat', 'Juicy honey garlic pork chop with caramelised edges.', '5, 7', '5.15'),
     ('5', 'Jasmine rice', 'Side dish', 'Moist and soft Thailand rice.', ' ', '1.90'),
-    ('6', 'Greek salad', 'Salad', 'Fresh and colorful greek salad.', '7', '3.80');
+    ('6', 'Greek salad', 'Salad', 'Fresh and colorful greek salad.', '7', '3.80'),
+    ('7', 'Strong beef broth', 'Soup', 'Beef broth with vermicelli and root vegetables.', '7, 9', '1.20'),
+    ('8', 'Potato soup', 'Soup', 'Home-made potato soup with boletus mushrooms and fresh marjoram.', '6, 9', '1.25'),
+    ('9', 'Cabbage soup', 'Soup', 'Cabbage soup with chicken stock and fresh vegetables.', '6, 9', '1.30'),
+    ('10', 'Schnitzels on a board', 'Meat', 'Traditional schnitzels served with spicy cheese and garlic sauce.', '2, 8', '5.40'),
+    ('11', 'Flank steak', 'Meat', 'Steak with roasted green beans and bacon.', '2, 8', '4.80'),
+    ('12', 'Marinated salmon', 'Meat', 'Marinated salmon steak in lime juice with herbs.', '4, 8', '5.50'),
+    ('13', 'Texas hamburger with chips, Potato soup', 'LUNCH', 'Beef hamburger with barbecue sauce and cheddar.', '5, 6', '4.70'),
+    ('14', 'Panner Pakora, Dal Soup', 'LUNCH', 'Fried indian cheese with gramflour combinated with Idian lentils soup.', '3, 7', '4.15'),
+    ('15', 'Pizza Margherita, Tomato soup with cream', 'LUNCH', 'Pizza with tomato sugo and mozzarella combined with tomato soup.', '5, 7', '4.90'),
+    ('16', 'Mashed potatoes with onion and bacon', 'Side dish', 'Potatoes bought from a local farmer with fresh onion and bacon.', '1', '1.80'),
+    ('17', 'French fries', 'Side dish', 'Fries baked in oven.', '3', '1.50'),
+    ('18', 'Egg Fried Rice', 'Side dish', 'Indian rice fried with eggs.', '3', '1.50'),
+    ('19', 'Caesar salad', 'Salad', 'Salad with chicken slices and toasted baguette.', '7', '3.95'),
+    ('20', 'Chicken salad', 'Salad', 'Salad with roasted chicken pieces and mix of lettuce salads.', '9', '3.80'),
+    ('21', 'Cheese salad', 'Salad', 'Salad with grilled goat cheese and honey dressing.', '9', '4.20'),
+    ('22', 'Strawberry Lemonade', 'Drink', 'Home-made refreshing combination of fresh strawberries, lemon juice and sugar.', '5', '1.70'),
+    ('23', 'Lemon water', 'Drink', 'Water with sliced lemon pieces.', '5', '1.00'),
+    ('24', 'Pepsi', 'Drink', 'Carbonated soft drink in 0.5 l bottle.', '7', '1.30');
 
 INSERT INTO "order" ("id", "status", "order_time", "name", "surname", "address", "postcode", "city", "phone", "email", "id_user", "id_driver") VALUES
     ('0', 'Created', '20', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', NULL),
@@ -39,16 +66,43 @@ INSERT INTO "order" ("id", "status", "order_time", "name", "surname", "address",
  ************/
 INSERT INTO food_in_daily ("id_food", "id_daily") VALUES
     ('0', '0'),
-    ('0', '1'),
-    ('1', '2'),
-    ('1', '0');
+    ('1', '0'),
+    ('15', '1'),
+    ('14', '2'),
+    ('13', '3'),
+    ('15', '4'),
+    ('1', '5');
 
 INSERT INTO food_in_permanent ("id_food", "id_permanent") VALUES
     ('2', '0'),
     ('3', '0'),
     ('4', '1'),
     ('5', '1'),
-    ('6', '2');
+    ('6', '2'),
+    ('7', '3'),
+    ('8', '4'),
+    ('9', '5'),
+    ('10', '5'),
+    ('10', '4'),
+    ('11', '3'),
+    ('11', '4'),
+    ('12', '2'),
+    ('12', '0'),
+    ('16', '4'),
+    ('16', '5'),
+    ('17', '1'),
+    ('17', '0'),
+    ('18', '2'),
+    ('19', '3'),
+    ('20', '3'),
+    ('20', '0'),
+    ('20', '1'),
+    ('21', '5'),
+    ('22', '1'),
+    ('23', '3'),
+    ('23', '2'),
+    ('24', '4'),
+    ('24', '5');
 
 INSERT INTO food_in_order ("id_food", "id_order") VALUES
     ('0', '0'),
@@ -77,4 +131,3 @@ INSERT INTO "operator" ("id") VALUES
 
 INSERT INTO "admin" ("id") VALUES
     ('0');
-
