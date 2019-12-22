@@ -86,8 +86,7 @@ class CartItem(db.Model):
     id_user = db.Column('id_user', db.Integer, primary_key=True, autoincrement=False)
     id_food = db.Column('id_food', db.Integer, primary_key=True, autoincrement=False)
     qty = db.Column('qty', db.Integer, nullable=False)
-
-
+    
 class User(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     email = db.Column('email', db.String(256), nullable=False, unique=True)
@@ -118,6 +117,13 @@ class Admin(db.Model):
 
 @app.before_request
 def load_logged_in_user():
+    g.user_id = User.query.order_by(User.id.desc()).first()
+    
+    if g.user_id is None:
+        g.user_id = 0
+    else:
+        g.user_id = g.user_id.id + 999999
+
     g.user = None
     user_id = session.get('user_id')
     if user_id is not None:
@@ -273,23 +279,23 @@ def add_to_cart():
     food = Food.query.filter(Food.id == food_id).first()
     if food is None:
         abort(400)
-    if g.user:
-        item = (CartItem.query
-                .filter(CartItem.id_user == g.user_id)
-                .filter(CartItem.id_food == food_id)
-                .first())
-        if item:
-            item.qty += 1
-        else:
-            new_item = CartItem(
-                id_user=g.user_id,
-                id_food=food_id,
-                qty=1
-            )
-            db.session.add(new_item)
-        db.session.commit()
-        return redirect(request.form['redirect'])
-    return render_template('error.html', name="Order error.", desc="Only registered user can order.")
+    #if g.user:
+    item = (CartItem.query
+            .filter(CartItem.id_user == g.user_id)
+            .filter(CartItem.id_food == food_id)
+            .first())
+    if item:
+        item.qty += 1
+    else:
+        new_item = CartItem(
+            id_user=g.user_id,
+            id_food=food_id,
+            qty=1
+        )
+        db.session.add(new_item)
+    db.session.commit()
+    return redirect(request.form['redirect'])
+    #return render_template('error.html', name="Order error.", desc="Only registered user can order.")
     # TODO replace with abort(401)
 
 
@@ -299,8 +305,8 @@ def remove_from_cart():
     food = Food.query.filter(Food.id == food_id).first()
     if food is None:
         abort(400)
-    if not g.user:
-        abort(401)
+    #if not g.user:
+    #    abort(401)
     item = (CartItem.query
             .filter(CartItem.id_user == g.user_id)
             .filter(CartItem.id_food == food_id)
@@ -314,8 +320,8 @@ def remove_from_cart():
 
 @app.route('/update-cart', methods=['POST'])
 def update_cart():
-    if not g.user:
-        abort(401)
+    #if not g.user:
+    #    abort(401)
     for food_id, qty in request.form.items():
         qty = int(qty)
         food = Food.query.filter_by(id=food_id).first()
@@ -334,22 +340,27 @@ def update_cart():
 
 @app.route('/shopping-cart')
 def show_cart():
-    if g.user:
-        items, total = get_cart_items(g.user_id)
-        return render_template('shopping_cart.html', items=items, total=total)
-    return redirect('/login')
+    #if g.user:
+    items, total = get_cart_items(g.user_id)
+    
+    return render_template('shopping_cart.html', items=items, total=total)
+    #return redirect('/login')
 
 
 @app.route('/checkout', methods=['POST', 'GET'])
 def checkout():
-    if not g.user:
-        return redirect('/login')
+    #if not g.user:
+    #    return redirect('/login')
     items, total = get_cart_items(g.user_id)
     if not items or total <= 0:
         abort(400)
-    user = User.query.filter_by(id=g.user_id).first()
-    if request.method == 'GET':
-        return render_template('checkout.html', items=items, total=total, user=user)
+    if g.user:
+        user = User.query.filter_by(id=g.user_id).first()
+        if request.method == 'GET':
+            return render_template('checkout.html', items=items, total=total, user=user)
+    else:
+        if request.method == 'GET':
+            return render_template('checkout.html', items=items, total=total)
     email = request.form['email']
     phone = request.form['phone']
     name = request.form['name']
@@ -380,7 +391,7 @@ def checkout():
             id_order=new_order.id
         )
         db.session.add(new_food_in_order)
-    CartItem.query.filter_by(id_user=user.id).delete()
+    CartItem.query.filter_by(id_user=g.user_id).delete()
     db.session.commit()
     return redirect("/")
 
@@ -507,11 +518,11 @@ def edit_user(id):
                     db.session.delete(delete)
 
                 if new_role == 'driver':
-                    new = Driver(spz='', id=id)
+                    new = Driver(id=id)
                 if new_role == 'operator':
-                    new = Operator(sluzobny_tel='', id=id)
+                    new = Operator(id=id)
                 if new_role == 'admin':
-                    new = Admin(id_ntb='', id=id)
+                    new = Admin(id=id)
 
                 if new_role != 'user':
                     db.session.add(new)
@@ -545,12 +556,9 @@ def add_canteen():
             name = request.form['name']
             address = request.form['address']
             description = request.form['description']
-            deadline = request.form['deadline']
             id_operator = request.form['operator']
 
-            #operator = User.query.filter(User.id ==id_operator).first()
-
-            new_canteen = Canteen(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=id_operator, img_src='https://via.placeholder.com/150')
+            new_canteen = Canteen(name=name, address=address, description=description, img_src='https://via.placeholder.com/150')
             db.session.add(new_canteen)
             db.session.commit()
 

@@ -6,14 +6,13 @@
     <input type="text" name="name" class="form-input btn-block" placeholder="Name" maxlength=256 autofocus required>
     <input type="text" name="address" class="form-input btn-block" placeholder="Address" maxlength=256 required>
     <input type="text" name="description" class="form-input btn-block" placeholder="Description" maxlength=256 required>
-    <input type="text" name="deadline" class="form-input btn-block" placeholder="Deadline" maxlength=256 required>
     <div class="input-group mt-2 mb-2">
       <div class="input-group-prepend">
         <label class="input-group-text" for="select_operator">Operator</label>
       </div>
       <select class="custom-select" id="select_operator" name="operator">
         {% for operator in operators %}
-        <option value="{{ operator.id }}">{{ operator.meno }} {{ operator.priezvisko }}</option>
+        <option value="{{ operator.id }}">{{ operator.name }} {{ operator.surname }}</option>
         {% endfor %}
       </select>
     </div>
