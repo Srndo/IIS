@@ -3,7 +3,7 @@
 
 <head>
 
-  <!-- Reqired meta tags -->
+  <!-- Required meta tags -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -31,47 +31,53 @@
         </a>
         <ul class="navbar-nav ml-auto">
           {% if g.user %}
-          <li clas="nav-item mx-4">
+          <li class="nav-item mx-4">
             <a class="nav-link mx-4 text-primary" href="/profile">{{ g.user }}</a>
           </li>
-          <li clas="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/logout">Logout</a>
           </li>
           {% if g.driver %}
-          <li clas="nav-item">
-            <a class="nav-link" href="/driver_plan">Your regions</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/driver_plan">Your regions</a>
           </li>
           {% endif %}
           {% if g.operator or g.admin %}
-          <li clas="nav-item">
-            <a class="nav-link" href="/create_plan">Create plan</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/create_plan">Create plan</a>
           </li>
-          <li clas="nav-item">
-            <a class="nav-link" href="/manage_orders">Manage orders</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/manage_orders">Manage orders</a>
           </li>
-          <li clas="nav-item">
-            <a class="nav-link" href="/manage_canteen">Manage canteens</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/manage_canteen">Manage canteens</a>
           </li>
           {% if g.admin %}
-          <li clas="nav-item">
-            <a class="nav-link" href="/manage_users">Manage users</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/manage_users">Manage users</a>
           </li>
           {% endif %}
           {% endif %}
-          <li clas="nav-item">
+          <li class="nav-item">
             <a href="/shopping-cart" class="mx-3">
               <img src="../static/img/shopping-cart.png" onmouseover="this.src='../static/img/shopping-cart-hover.png';" onmouseout="this.src='../static/img/shopping-cart.png';" class="mt-1" width="30" height="30" alt="Shopping cart" title="Shopping cart">
             </a>
           </li>
           {% else %}
-          <li clas="nav-item">
-            <a class="nav-link" href="/">Home</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/">Home</a>
           </li>
-          <li clas="nav-item">
-            <a class="nav-link" href="/login">Log in</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/login">Log in</a>
           </li>
-          <li clas="nav-item">
-            <a class="nav-link" href="/register">Register</a>
+          <li class="nav-item">
+            <a class="nav-link text-center" href="/register">Register</a>
           </li>
           {% endif %}
         </ul>

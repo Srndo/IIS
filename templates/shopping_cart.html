@@ -1,33 +1,64 @@
-<!-- Arguments: order{name, price, quantity} -->
+<!-- Arguments: items (tuple (id, name, type, price, qty)), total (int) -->
 {% extends "layout.html" %}
 {% block content %}
 <div class="jumbotron bg-light">
-  <img src="{{ canteen.img_src }}" class="mb-5" width="150" height="150" alt="Building photo">
-  <h2>Shopping cart</h2>
+  <h2 class="mb-5">Shopping cart</h2>
   <table class="table mb-5">
     <thead class="thead-light">
       <tr>
         <th scope="col">Item</th>
+        <th scope="col">Type</th>
         <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
+        <th style="width: 15%" scope="col">Quantity</th>
         <th scope="col">Total</th>
         <th scope="col"></th> <!-- Remove item -->
       </tr>
     </thead>
     <tbody>
-    {% for item in order %}
-      <tr>
-        <th scope="row">{{ item.name }}</th>
-        <td>{{ item.price }} &euro;</td>
-        <td>- {{ item.quantity }} +</td>
-        <td>{{ item.quantity * item.price }} &euro;</td>
-        <td>REMOVE</td>
-        <!--<td><a href="/new_order/{{ food.id }}"><button type="button" class="btn-outline-dark">Order</button></a></td>
-        -->
+      {% for id, name, type, price, qty in items %}
+        <tr>
+          <th scope="row">{{ name }}</th>
+          <td>{{ type }}</td>
+          <td>{{ '%.2f' | format(price | round(2, "ceil")) }} &euro;</td>
+          <td>
+            <input type="text" form="form-recalculate" name="{{ id }}" class="w-50 form-input text-center" maxlength=32 value="{{ qty }}" required >
+          </td>
+          <td>{{ '%.2f' | format((qty * price)|round(2, "ceil")) }} &euro;</td>
+          <td>
+            <form action="/remove-from-cart" method="POST">
+              <input type="hidden" name="food_id" value="{{ id }}" />
+              <button type="submit" class="btn btn-secondary btn-sm">Remove</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      <tr class="thead-light">
+        <th scope="row">Total</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>{{ '%.2f' | format((total)|round(2, "ceil")) }} &euro;</th>
+        <th></th>
       </tr>
-    {% endfor %}
     </tbody>
   </table>
+  {% if items %}
+    <div class="row justify-content-end">
+      <div class="col-auto">
+        <form id="form-recalculate" action="/update-cart" method="POST">
+          <button type="submit" class="btn btn-secondary btn-lg">Recalculate</button>
+        </form>
+      </div>
+      <div class="col-auto">
+        <a href="/" class="btn btn-secondary btn-lg">Add items</a>
+      </div>
+      <div class="col-auto">
+        <a class="btn btn-dark btn-lg" href="/checkout">Checkout</a>
+      </div>
+    </div>
+  {% else %}
+    <h5 class="text-secondary mb-2" style="opacity:0.75">Your shopping cart is empty.</h5>
+  {% endif %}
 </div>
 {% endblock %}
 

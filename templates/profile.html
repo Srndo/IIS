@@ -1,26 +1,101 @@
+<!-- Arguments: user (User), role (string), orders (list of Order) -->
 {% extends "layout.html" %}
 {% block content %}
-<div class="jumbotron">
-	<h3>Profile</h3>
-</div>
-<div class="container">
-	<div class="row">
-		<h4 class="list-group-item-heading col-sm text-center">Name</h4>
-		<h4 class="list-group-item-heading col-sm text-center">Surname</h4>
-		<h4 class="list-group-item-heading col-sm text-center">Address</h4>
-		<h4 class="list-group-item-heading col-sm text-center">Phone number</h4>
-		<h4 class="list-group-item-heading col-sm text-center">Email</h4>
-		<div class="font-weight-bold col-sm text-center" style="max-width: 50px"></div>
-		<div class="w-100"></div>
-		<div class="list-group-item-text col-sm text-center">{{ user.name }}</div>
-		<div class="list-group-item-text col-sm text-center">{{ user.surname }}</div>
-		<div class="list-group-item-text col-sm text-center">{{ user.address }}</div>
-		<div class="list-group-item-text col-sm text-center">{{ user.phone }}</div>
-		<div class="list-group-item-text col-sm text-center">{{ user.email }}</div>
-		<a href="/edit_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Edit</button></a>
-	</div>
-	<div class="row">
-		<h4 class="list-group-item-heading col-sm text-center" style="padding-top: 30px"><a href="/orders">My orders</a></h4>
-	</div>
-</div>
+  <div class="jumbotron bg-light">
+
+    <h2 class="pb-4">My profile</h2>
+
+    <nav>
+      <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-account-tab" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="true" >Account info</a>
+        <a class="nav-item nav-link"        id="nav-orders-tab"   data-toggle="tab" href="#nav-orders"   role="tab" aria-controls="nav-orders"   aria-selected="false">My orders</a>
+      </div>
+    </nav>
+
+    <div class="tab-content py-3 px-3 px-sm-0">
+
+      <div class="tab-pane fade show active" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
+        <div class="text-secondary pb-5 pt-4">
+          Your account info is used as default when you create an order.<br/>But you can always specify it manually, for example if you make an order to a different place.
+        </div>
+        <form method="POST">
+          <div class="form-group row">
+            <label for="input-email" class="col text-right">Email</label>
+            <input type="text" id="input-email" class="form-control mx-sm-3 col" readonly value="{{ user.email }}">
+            <div class="col"></div>
+          </div>
+          <div class="form-group row">
+            <label for="input-password" class="col text-right">Password</label>
+            <input type="password" id="input-password" class="form-control mx-sm-3 col" aria-describedby="password-help" readonly>
+            <small id="password-help" class="text-muted text-left col">
+              Must be 5-64 characters long.
+            </small>
+          </div>
+          <div class="form-group row">
+            <label for="input-name" class="col text-right">Name</label>
+            <input type="text" id="input-name" class="form-control mx-sm-3 col" readonly value="{{ user.name }}">
+            <div class="col"></div>
+          </div>
+          <div class="form-group row">
+            <label for="input-surname" class="col text-right">Surname</label>
+            <input type="text" id="input-surname" class="form-control mx-sm-3 col" readonly value="{{ user.surname }}">
+            <div class="col"></div>
+          </div>
+          <div class="form-group row">
+            <label for="input-address" class="col text-right">Address</label>
+            <input type="text" id="input-address" class="form-control mx-sm-3 col" readonly value="{{ user.address }}">
+            <div class="col"></div>
+          </div>
+          <div class="form-group row">
+            <label for="input-postcode" class="col text-right">Postcode</label>
+            <input type="text" id="input-postcode" class="form-control mx-sm-3 col" readonly value="{{ user.postcode }}">
+            <div class="col"></div>
+          </div>
+          <div class="form-group row">
+            <label for="input-city" class="col text-right">City</label>
+            <input type="text" id="input-city" class="form-control mx-sm-3 col" readonly value="{{ user.city }}">
+            <div class="col"></div>
+          </div>
+          <div class="form-group row">
+            <label for="input-phone" class="col text-right">Phone</label>
+            <input type="text" id="input-phone" class="form-control mx-sm-3 col" readonly value="{{ user.phone }}">
+            <div class="col"></div>
+          </div>
+          <div class="form-group row">
+            <label for="input-role" class="col text-right">Role</label>
+            <input type="text" id="input-role" class="form-control mx-sm-3 col" readonly value="{{ role }}">
+            <div class="col"></div>
+          </div>
+          <a href="/edit_user/{{ user.id }}"><button type="button" class="btn btn-dark btn-lg">Edit</button></a>
+        </form>
+      </div>
+
+      <div class="tab-pane fade" id="nav-orders" role="tabpanel" aria-labelledby="nav-orders-tab">
+        {% if orders %}
+          <table class="table mb-5">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">Status</th>
+                <th scope="col">Created at</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+                <tr>
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.status }}</td>
+                  <td>{{ int_to_time(order.order_time) }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <h5 class="text-secondary mb-2">You have no orders.</h5>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
 {% endblock %}

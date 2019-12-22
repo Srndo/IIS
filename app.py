@@ -1,9 +1,10 @@
 import traceback
+import datetime
 import random
+import time
 import os
 from flask import Flask, render_template, request, redirect, session, g, abort
 from werkzeug.exceptions import HTTPException
-from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 
@@ -30,7 +31,6 @@ class Canteen(db.Model):
     address = db.Column('address', db.String(256), nullable=False)
     description = db.Column('description', db.String(4096), nullable=False)
     img_src = db.Column('img_src', db.String(256), nullable=False)
-    id_operator = db.Column('id_operator', db.Integer)
     id_daily = db.Column('id_daily', db.Integer)
     id_permanent = db.Column('id_permanent', db.Integer)
 
@@ -80,6 +80,12 @@ class FoodInPermanent(db.Model):
 class FoodInOrder(db.Model):
     id_food = db.Column('id_food', db.Integer, primary_key=True, autoincrement=False)
     id_order = db.Column('id_order', db.Integer, primary_key=True, autoincrement=False)
+
+
+class CartItem(db.Model):
+    id_user = db.Column('id_user', db.Integer, primary_key=True, autoincrement=False)
+    id_food = db.Column('id_food', db.Integer, primary_key=True, autoincrement=False)
+    qty = db.Column('qty', db.Integer, nullable=False)
 
 
 class User(db.Model):
@@ -144,11 +150,31 @@ def load_logged_in_user():
 @app.errorhandler(Exception)
 def exception_handler(e):
     if isinstance(e, HTTPException):
-        print(e)
+        print(f"{e.code} {e.name}: {e.description}")
         return render_template("error.html", code=e.code, name=e.name, desc=e.description), e.code
     else:
         print(traceback.format_exc())
         return render_template("error.html", code=500), 500
+
+
+def get_cart_items(user_id):
+    items = CartItem.query.filter(CartItem.id_user == user_id).all()
+    total = 0
+    result = []
+    for item in items:
+        food = Food.query.filter(Food.id == item.id_food).first()
+        result.append((food.id, food.name, food.type, food.price, item.qty))
+        total += food.price * item.qty
+    return result, total
+
+
+def int_to_time(timestamp):
+    date = datetime.datetime.fromtimestamp(timestamp)
+    return date.strftime("%Y-%m-%d %H:%M:%S %z %Z")
+
+
+app.jinja_env.globals.update(int_to_time=int_to_time)
+
 
 
 ########################################
@@ -164,77 +190,48 @@ def index():
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
         name = request.form['name']
         surname = request.form['surname']
         address = request.form['address']
-        tel = request.form['tel']
-        user_email = request.form['email']
-        user_password = request.form['password']
-        role = request.form['role']
-
-        error = None
-        if user_email is None:
-            error = "Username is required"
-        elif user_password is None:
-            error = "Password is required"
-        elif User.query.filter(User.email == user_email).first() is not None:
-            error = f"Email {user_email} is already registered."
-
-        if error is None:
-            encrypted = sha256_crypt.encrypt(user_password)
-            new_user = User(
-                # TODO!
-                name=name,
-                surname=surname,
-                address=address,
-                phone=tel,
-                email=user_email,
-                password=encrypted,
-                )
-            db.session.add(new_user)
-            db.session.commit()
-
-            new_user = User.query.order_by(User.id.desc()).first()
-            print("ROLA JE:")
-            print(role)
-            if role == 'user':
-                new_stravnik = Stravnik(cislo_karty='', id=new_user.id)
-                db.session.add(new_stravnik)
-            
-            elif role == 'driver':
-                new_driver = Driver(spz='', id=new_user.id)
-                db.session.add(new_driver)
-                print("HERE")
-
-            db.session.commit()
-
-            return render_template('all_done.html', desc="Succesfully registered")
-        else:
-            return render_template("error.html", name="Registration error", desc=error), 400
+        postcode = request.form['postcode']
+        city = request.form['city']
+        phone = request.form['phone']
+        new_user = User(
+            email=email,
+            password="",
+            name=name,
+            surname=surname,
+            address=address,
+            postcode=postcode,
+            city=city,
+            phone=phone
+            )
+        if None in (email, password, name, surname, address, postcode, city, phone):
+            return render_template("register.html", user=new_user, error="Please fill in all required fields."), 400
+        if User.query.filter(User.email == email).first() is not None:
+            return render_template("register.html", user=new_user, error=f"Email {email} is already registered."), 400
+        new_user.password = sha256_crypt.encrypt(password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect("/login")
     return render_template('register.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        user_email = request.form['email']
-        user_password = request.form['password']
-        error = None
-        if not user_email:
-            error = "Username is required."
-        elif not user_password:
-            error = "Password is required."
-        else:
-            user = User.query.filter(User.email == user_email).first()
-            if user is None or not sha256_crypt.verify(user_password, user.password):
-                error = f"Wrong email or password."
-
-        if error is None:
-            session.clear()
-            session["user_id"] = user.id
-            return redirect("/")
-        else:
-            return render_template("error.html", name="Login error", desc=error), 400
+        email = request.form['email']
+        password = request.form['password']
+        if None in (email, password):
+            return render_template("login.html", email=email, error="Please fill in all required fields."), 400
+        user = User.query.filter(User.email == email).first()
+        if user is None or not sha256_crypt.verify(password, user.password):
+            return render_template("login.html", email=email, error="Wrong email or password."), 400
+        session.clear()
+        session["user_id"] = user.id
+        return redirect("/")
     return render_template("login.html")
 
 
@@ -245,27 +242,24 @@ def logout():
 
 
 @app.route('/canteen/<int:canteen_id>')
-def canteen_page(canteen_id):
+def show_canteen(canteen_id):
     canteen = Canteen.query.filter(Canteen.id == canteen_id).first()
     if canteen is None:
         abort(404)
-
     permanent_foods = None
-    permanent = PermanentMenu.query.filter(PermanentMenu.id_provozny == canteen_id).first()
-    if permanent is not None:
+    permanent_menu_id = canteen.id_permanent
+    if permanent_menu_id is not None:
         permanent_foods = (Food.query
                            .join(FoodInPermanent, FoodInPermanent.id_food == Food.id)
-                           .join(PermanentMenu, permanent.id == FoodInPermanent.id_permanent)
+                           .join(PermanentMenu, permanent_menu_id == FoodInPermanent.id_permanent)
                            .all())
-
     daily_foods = None
-    daily = DailyMenu.query.filter(DailyMenu.id_provozny == canteen_id).first()
-    if daily is not None:
+    daily_menu_id = canteen.id_daily
+    if daily_menu_id is not None:
         daily_foods = (Food.query
                        .join(FoodInDaily, FoodInDaily.id_food == Food.id)
-                       .join(DailyMenu, daily.id == FoodInDaily.id_daily)
+                       .join(DailyMenu, daily_menu_id == FoodInDaily.id_daily)
                        .all())
-
     return render_template(
         'canteen.html',
         canteen=canteen,
@@ -273,48 +267,138 @@ def canteen_page(canteen_id):
         permanent_foods=permanent_foods)
 
 
-@app.route('/new_order/<int:id>', methods=['GET', 'POST'])
-def new_order(id):
+@app.route('/add-to-cart', methods=['POST'])
+def add_to_cart():
+    food_id = int(request.form['food_id'])
+    food = Food.query.filter(Food.id == food_id).first()
+    if food is None:
+        abort(400)
     if g.user:
-        pocet_operatorov = Operator.query.count()
-        operator = Operator.query.all()
-        id_operatora = operator[random.randint(0, pocet_operatorov - 1)].id
-        
-        objednavka = Objednavka.query.order_by(Objednavka.id.desc()).first()
-        id_objednavky = objednavka.id + 1
-        
-        cena_celkom = Food.query.filter(Food.id == id).first().cena
-        
-        
-        id_stravnika = g.user_id
-        
-        
-        new_order = Objednavka(id=id_objednavky, cena_celkom=cena_celkom, id_operatora=id_operatora, id_stravnika=id_stravnika, stav='Evidated')
-        db.session.add(new_order)
+        item = (CartItem.query
+                .filter(CartItem.id_user == g.user_id)
+                .filter(CartItem.id_food == food_id)
+                .first())
+        if item:
+            item.qty += 1
+        else:
+            new_item = CartItem(
+                id_user=g.user_id,
+                id_food=food_id,
+                qty=1
+            )
+            db.session.add(new_item)
         db.session.commit()
-        return render_template('all_done.html', desc="Ordered")
-    return render_template('error.html', desc="Only registered user can order")
+        return redirect(request.form['redirect'])
+    return render_template('error.html', name="Order error.", desc="Only registered user can order.")
+    # TODO replace with abort(401)
 
-@app.route('/orders')
-def show_objednavky():
+
+@app.route('/remove-from-cart', methods=['POST'])
+def remove_from_cart():
+    food_id = int(request.form['food_id'])
+    food = Food.query.filter(Food.id == food_id).first()
+    if food is None:
+        abort(400)
+    if not g.user:
+        abort(401)
+    item = (CartItem.query
+            .filter(CartItem.id_user == g.user_id)
+            .filter(CartItem.id_food == food_id)
+            .first())
+    if not item:
+        abort(400)
+    db.session.delete(item)
+    db.session.commit()
+    return redirect('/shopping-cart')
+
+
+@app.route('/update-cart', methods=['POST'])
+def update_cart():
+    if not g.user:
+        abort(401)
+    for food_id, qty in request.form.items():
+        qty = int(qty)
+        food = Food.query.filter_by(id=food_id).first()
+        if food is None:
+            abort(400)
+        item = CartItem.query.filter_by(id_food=food_id).first()
+        if item is None:
+            abort(400)
+        if qty == 0:
+            db.session.delete(item)
+        elif qty > 0:
+            item.qty = qty
+    db.session.commit()
+    return redirect('/shopping-cart')
+
+
+@app.route('/shopping-cart')
+def show_cart():
     if g.user:
-        objednavky = Order.query.filter(Order.id_user == g.user_id).all()
-        return render_template('orders.html', orders=objednavky)
+        items, total = get_cart_items(g.user_id)
+        return render_template('shopping_cart.html', items=items, total=total)
     return redirect('/login')
+
+
+@app.route('/checkout', methods=['POST', 'GET'])
+def checkout():
+    if not g.user:
+        return redirect('/login')
+    items, total = get_cart_items(g.user_id)
+    if not items or total <= 0:
+        abort(400)
+    user = User.query.filter_by(id=g.user_id).first()
+    if request.method == 'GET':
+        return render_template('checkout.html', items=items, total=total, user=user)
+    email = request.form['email']
+    phone = request.form['phone']
+    name = request.form['name']
+    surname = request.form['surname']
+    address = request.form['address']
+    postcode = request.form['postcode']
+    city = request.form['city']
+    if None in (email, phone, name, surname, address, postcode, city):
+        abort(400)
+    new_order = Order(
+        status="Created",
+        order_time=time.time(),
+        name=name,
+        surname=surname,
+        address=address,
+        postcode=postcode,
+        city=city,
+        phone=phone,
+        email=email,
+        id_user=g.user_id,
+        id_driver=None
+    )
+    db.session.add(new_order)
+    db.session.commit()
+    for food_id, _, _, _, _ in items:
+        new_food_in_order = FoodInOrder(
+            id_food=food_id,
+            id_order=new_order.id
+        )
+        db.session.add(new_food_in_order)
+    CartItem.query.filter_by(id_user=user.id).delete()
+    db.session.commit()
+    return redirect("/")
 
 
 @app.route('/profile')
 def show_profile():
     if g.user:
+        if g.driver:
+            role = "Driver"
+        elif g.operator:
+            role = "Operator"
+        elif g.admin:
+            role = "Administrator"
+        else:
+            role = "Customer"
         user = User.query.filter(User.id == g.user_id).first()
-        return render_template('profile.html', user=user)
-    return redirect('/login')
-
-
-@app.route('/shopping-cart')
-def show_shopping_cart():
-    if g.user:
-        return render_template('shopping_cart.html')
+        orders = Order.query.filter_by(id_user=g.user_id).all()
+        return render_template('profile.html', user=user, role=role, orders=orders)
     return redirect('/login')
 
 
@@ -423,11 +507,11 @@ def edit_user(id):
                     db.session.delete(delete)
 
                 if new_role == 'driver':
-                    new = Driver(id=id)
+                    new = Driver(spz='', id=id)
                 if new_role == 'operator':
-                    new = Operator(id=id)
+                    new = Operator(sluzobny_tel='', id=id)
                 if new_role == 'admin':
-                    new = Admin(id=id)
+                    new = Admin(id_ntb='', id=id)
 
                 if new_role != 'user':
                     db.session.add(new)
@@ -439,12 +523,12 @@ def edit_user(id):
             return render_template('edit_user.html', user=user, role=role)
     return redirect('/login')
 
+
 @app.route('/remove_user/<int:id>')
 def remove_user(id):
     if g.admin:
         if id == g.user_id:
             return render_template('error.html', name="Edit error", desc="You cannot delete yourself!")
-            
         user = User.query.filter(User.id == id).first()
         db.session.delete(user)
         db.session.commit()
@@ -453,6 +537,7 @@ def remove_user(id):
         
     return redirect('/login')
 
+
 @app.route('/add_canteen', methods=['POST', 'GET'])
 def add_canteen():
     if g.operator or g.admin:
@@ -460,12 +545,12 @@ def add_canteen():
             name = request.form['name']
             address = request.form['address']
             description = request.form['description']
-            #deadline = request.form['deadline']
+            deadline = request.form['deadline']
             id_operator = request.form['operator']
 
-            operator = User.query.filter(User.id == id_operator).first()
+            #operator = User.query.filter(User.id ==id_operator).first()
 
-            new_canteen = Canteen(name=name, address=address, description=description, id_operator=id_operator, img_src='https://via.placeholder.com/150')
+            new_canteen = Canteen(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=id_operator, img_src='https://via.placeholder.com/150')
             db.session.add(new_canteen)
             db.session.commit()
 
@@ -476,6 +561,7 @@ def add_canteen():
             return render_template('add_canteen.html', operators=operators)
 
     return redirect('/login')
+
 
 @app.route('/edit_canteen_picture/<int:id_canteen>', methods=['POST', 'GET'])
 def edit_canteen_picture(id_canteen):
@@ -488,6 +574,7 @@ def edit_canteen_picture(id_canteen):
             return render_template('edit_canteen_picture.html', canteen=canteen)
         else:
             return render_template('edit_canteen_picture.html', canteen=canteen)
+
 
 @app.route('/manage_canteen')
 def manage_canteen():
@@ -504,7 +591,6 @@ def manage_orders():
         return render_template('manage_orders.html')
     else:
         return redirect('/login')
-
 
 
 @app.route('/add_item', methods=['POST', 'GET'])
@@ -557,20 +643,13 @@ def remove_item():
         
     return redirect('/login')
 
-"""
-@app.route('/add')
-def add():
-    if g.operator or g.admin:
-        return render_template('add.html')
-    return redirect('/login')
-
 
 @app.route('/remove')
 def remove():
     if g.operator or g.admin:
         return render_template('remove.html')
     return redirect('/login')
-"""
+
 
 ########################################
 # Main module guard

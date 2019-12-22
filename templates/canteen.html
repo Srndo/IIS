@@ -16,20 +16,26 @@
         <th scope="col">Name</th>
         <th scope="col">Type</th>
         <th scope="col">Description</th>
-        <th scope="col">Alergens</th>
+        <th scope="col">Allergens</th>
         <th scope="col">Price</th>
-        <th scope="col">Order</th>
+        <th scope="col"></th><!-- Order button -->
       </tr>
     </thead>
     <tbody>
     {% for food in daily_foods %}
       <tr>
-        <th scope="row">{{ food.nazov }}</th>
-        <td>{{ food.typ }}</td>
-        <td>{{ food.popis }}</td>
-        <td>{{ food.alergeny }}</td>
-        <td>{{ food.cena }} &euro;</td>
-        <td><a href="/new_order/{{ food.id }}"><button type="button" class="btn-outline-dark">Order</button></a></td>
+        <th scope="row">{{ food.name }}</th>
+        <td>{{ food.type }}</td>
+        <td>{{ food.description }}</td>
+        <td>{{ food.allergens }}</td>
+        <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
+        <td>
+          <form action="/add-to-cart" method="POST">
+            <input type="hidden" name="food_id" value="{{ food.id }}" />
+            <input type="hidden" name="redirect" value="/canteen/{{ canteen.id }}"/>
+            <button type="submit" class="btn-outline-dark">Order</button>
+          </form>
+        </td>
       </tr>
     {% endfor %}
     </tbody>
@@ -43,20 +49,26 @@
         <th scope="col">Name</th>
         <th scope="col">Type</th>
         <th scope="col">Description</th>
-        <th scope="col">Alergens</th>
+        <th scope="col">Allergens</th>
         <th scope="col">Price</th>
-        <th scope="col">Order</th>
+        <th scope="col"></th><!-- Order button -->
       </tr>
     </thead>
     <tbody>
     {% for food in permanent_foods %}
       <tr>
-        <th scope="row">{{ food.nazov }}</th>
-        <td>{{ food.typ }}</td>
-        <td>{{ food.popis }}</td>
-        <td>{{ food.alergeny }}</td>
-        <td>{{ food.cena }} &euro;</td>
-        <td><a href="/{{ food.id }}"><button type="button" class="btn-outline-dark">Order</button></a></td>
+        <th scope="row">{{ food.name }}</th>
+        <td>{{ food.type }}</td>
+        <td>{{ food.description }}</td>
+        <td>{{ food.allergens }}</td>
+        <td>{{ food.price }} &euro;</td>
+        <td>
+          <form action="/add-to-cart" method="POST">
+            <input type="hidden" name="food_id" value="{{ food.id }}" />
+            <input type="hidden" name="redirect" value="/canteen/{{ canteen.id }}"/>
+            <button type="submit" class="btn-outline-dark">Order</button>
+          </form>
+        </td>
       </tr>
     {% endfor %}
     </tbody>
@@ -64,4 +76,3 @@
   {% endif %}
 </div>
 {% endblock %}
-

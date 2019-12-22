@@ -2,7 +2,7 @@
 {% block content %}
 <div class="jumbotron">
   {% if code is not defined %}
-  <h2 class="text-danger">{{ name }}</h2>
+  <h2>{{ name }}</h2>
   <p>{{ desc }}</p>
   {% elif code == 500 %}
   <h2>Oh no! Something went wrong :(</h2>

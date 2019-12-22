@@ -7,10 +7,8 @@ CREATE TABLE IF NOT EXISTS "canteen" (
     "address" VARCHAR(256) NOT NULL,
     "description" VARCHAR(4096) NOT NULL,
     "img_src" VARCHAR(256) NOT NULL,
-    "id_operator" INTEGER,
     "id_daily" INTEGER,
     "id_permanent" INTEGER
-    /*FOREIGN KEY ("id_operator") REFERENCES "user" ("id")*/
 );
 CREATE TABLE IF NOT EXISTS "daily_menu" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
@@ -47,20 +45,29 @@ CREATE TABLE IF NOT EXISTS "order" (
  ************/
 CREATE TABLE IF NOT EXISTS "food_in_daily" (
     "id_food" INTEGER NOT NULL,
-    "id_daily" INTEGER NOT NULL
+    "id_daily" INTEGER NOT NULL,
+    PRIMARY KEY ("id_food", "id_daily")
 );
 CREATE TABLE IF NOT EXISTS "food_in_permanent" (
     "id_food" INTEGER NOT NULL,
-    "id_permanent" INTEGER NOT NULL
+    "id_permanent" INTEGER NOT NULL,
+    PRIMARY KEY ("id_food", "id_permanent")
 );
 CREATE TABLE IF NOT EXISTS "food_in_order" (
     "id_food" INTEGER NOT NULL,
-    "id_order" INTEGER NOT NULL
+    "id_order" INTEGER NOT NULL,
+    PRIMARY KEY ("id_food", "id_order")
+);
+CREATE TABLE IF NOT EXISTS "cart_item" (
+    "id_user" INTEGER NOT NULL,
+    "id_food" INTEGER NOT NULL,
+    "qty" INTEGER NOT NULL,
+    PRIMARY KEY ("id_user", "id_food")
 );
 
 
 /**************
- * Usage roles
+ * Roles
  **************/
 CREATE TABLE IF NOT EXISTS "user" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

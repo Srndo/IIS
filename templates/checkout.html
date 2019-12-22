@@ -1,0 +1,85 @@
+<!-- Arguments: items (tuple (id, name, type, price, qty)), total (int), user (User) -->
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron bg-light">
+  <h2 class="mb-5">Checkout</h2>
+  <table class="table mb-5">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">Type</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for id, name, type, price, qty in items %}
+        <tr>
+          <th scope="row">{{ name }}</th>
+          <td>{{ type }}</td>
+          <td>{{ '%.2f' | format(price | round(2, "ceil")) }} &euro;</td>
+          <td>{{ qty }}</td>
+          <td>{{ '%.2f' | format((qty * price)|round(2, "ceil")) }} &euro;</td>
+        </tr>
+      {% endfor %}
+      <tr class="thead-light">
+        <th scope="row">Total</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>{{ '%.2f' | format((total)|round(2, "ceil")) }} &euro;</th>
+      </tr>
+    </tbody>
+  </table>
+  <form method="POST">
+    <div class="form-group row">
+      <label for="input-email" class="col text-right">Contact email</label>
+      <input type="text" name="email" id="input-email" class="form-control mx-sm-3 col" value="{{ user.email }}" required>
+      <div class="col"></div>
+    </div>
+    <div class="form-group row">
+      <label for="input-phone" class="col text-right">Contact phone</label>
+      <input type="text" name="phone" id="input-phone" class="form-control mx-sm-3 col" value="{{ user.phone }}" required>
+      <div class="col"></div>
+    </div>
+    <div class="form-group row">
+      <label for="input-name" class="col text-right">Name</label>
+      <input type="text" name="name" id="input-name" class="form-control mx-sm-3 col" value="{{ user.name }}" required>
+      <div class="col"></div>
+    </div>
+    <div class="form-group row">
+      <label for="input-surname" class="col text-right">Surname</label>
+      <input type="text" name="surname" id="input-surname" class="form-control mx-sm-3 col" value="{{ user.surname }}" required>
+      <div class="col"></div>
+    </div>
+    <div class="form-group row">
+      <label for="input-address" class="col text-right">Address</label>
+      <input type="text" name="address" id="input-address" class="form-control mx-sm-3 col" value="{{ user.address }}" required>
+      <div class="col"></div>
+    </div>
+    <div class="form-group row">
+      <label for="input-postcode" class="col text-right">Postcode</label>
+      <input type="text" name="postcode" id="input-postcode" class="form-control mx-sm-3 col" value="{{ user.postcode }}" required>
+      <div class="col"></div>
+    </div>
+    <div class="form-group row">
+      <label for="input-city" class="col text-right">City</label>
+      <input type="text" name="city" id="input-city" class="form-control mx-sm-3 col" value="{{ user.city }}" required>
+      <div class="col"></div>
+    </div>
+    <h3 class="pt-4">
+      Order price: {{ '%.2f' | format((total)|round(2, "ceil")) }} &euro;
+    </h3>
+    <div class="row justify-content-center pt-4">
+      <div class="col-auto">
+        <a href="/shopping-cart" class="btn btn-secondary btn-lg">Back to cart</a>
+      </div>
+      <div class="col-auto">
+        <input type="submit" class="btn btn-dark btn-lg" value="Confirm">
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+

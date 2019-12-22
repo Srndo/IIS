@@ -1,26 +1,24 @@
+<!-- Arguments: user (if pre-fill), error (string) -->
 {% extends "layout.html" %}
 {% block content %}
 <div class="jumbotron">
   <h2>Create a new account</h2>
-  <form class="form-auth" method="post">
-  	<input type="text" name="name" class="form-input btn-block" placeholder="Name *" maxlength=256 required autofocus>
-  	<input type="text" name="surname" class="form-input btn-block" placeholder="Surname *" maxlength=256 required>
-  	<input type="text" name="address" class="form-input btn-block" placeholder="Address *" maxlength=256 required>
-  	<input type="text" name="tel" class="form-input btn-block" placeholder="0918345280 *" maxlength=256 required>
-    <input type="text" name="email" class="form-input btn-block" placeholder="Email *" maxlength=256 required>
-    <input type="password" name="password" class="form-input btn-block" placeholder="Password (at least 6 characters) *" maxlength=256 minlength=6 required>
-    <div class="input-group mt-2 mb-2">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="select_register">Register as</label>
-      </div>
-      <select class="custom-select" id="select_register" name="role">
-        <option value="user" selected>User</option>
-        <option value="driver">Driver</option>
-      </select>
-    </div>
-    <div class="text-danger mb-2" style="opacity:0.75">* column is required</div>
+  <form class="form-auth form-inline" method="post">
+    {% if error %}<div class="text-danger mb-2" style="opacity:0.75">{{ error }}</div>{% endif %}
+    <!-- If user is given, pre-fill the input fields. -->
+    <input type="text" name="email" class="form-input btn-block" placeholder="Email" maxlength=256 required autofocus {% if user %}value="{{ user.email }}"{% endif %}>
+    <input type="password" name="password" class="form-input btn-block" placeholder="Password" maxlength=64 minlength=5 required aria-describedby="passwordHelpBlock">
+    <small id="passwordHelpBlock" class="form-text text-muted">
+      Your password must be 5–64 characters long.
+    </small>
+    <input type="text" name="name" class="form-input btn-block" placeholder="Name" maxlength=256 required {% if user %}value="{{ user.name }}"{% endif %}>
+    <input type="text" name="surname" class="form-input btn-block" placeholder="Surname" maxlength=256 required {% if user %}value="{{ user.surname }}"{% endif %}>
+    <input type="text" name="address" class="form-input btn-block" placeholder="Address" maxlength=256 required {% if user %}value="{{ user.address }}"{% endif %}>
+    <input type="text" name="postcode" class="form-input btn-block" placeholder="Postcode" maxlength=64 required {% if user %}value="{{ user.postcode }}"{% endif %}>
+    <input type="text" name="city" class="form-input btn-block" placeholder="City" maxlength=256 required {% if user %}value="{{ user.city }}"{% endif %}>
+    <input type="text" name="phone" class="form-input btn-block" placeholder="Phone" maxlength=64 required {% if user %}value="{{ user.phone }}"{% endif %}>
+    <div class="text-secondary mb-2" style="opacity:0.75">To register as different role than regular user, just register as usual and then ask the administrator to grant you the requested role.</div>
     <input type="submit" class="btn btn-lg btn-primary btn-block" value="Register">
   </form>
 </div>
 {% endblock %}
-

@@ -1,54 +1,54 @@
 <!-- Arguments: TODO -->
 {% extends "layout.html" %}
 {% block content %}
-<div class="jumbotron bg-light">
+  <div class="jumbotron bg-light">
 
-  <h2>Manage orders</h2>
+    <h2>Manage orders</h2>
 
-  <nav>
-    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-      <a class="nav-item nav-link active" id="nav-unassigned-tab" data-toggle="tab" href="#nav-unassigned" role="tab" aria-controls="nav-unassigned" aria-selected="true" >Unassigned orders</a>
-      <a class="nav-item nav-link"        id="nav-assigned-tab"   data-toggle="tab" href="#nav-assigned"   role="tab" aria-controls="nav-assigned"   aria-selected="false">Assigned orders</a>
-    </div>
-  </nav>
+    <nav>
+      <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-unassigned-tab" data-toggle="tab" href="#nav-unassigned" role="tab" aria-controls="nav-unassigned" aria-selected="true" >Unassigned orders</a>
+        <a class="nav-item nav-link"        id="nav-assigned-tab"   data-toggle="tab" href="#nav-assigned"   role="tab" aria-controls="nav-assigned"   aria-selected="false">Assigned orders</a>
+      </div>
+    </nav>
 
-  <div class="tab-content py-3 px-3 px-sm-0">
+    <div class="tab-content py-3 px-3 px-sm-0">
 
-    <div class="tab-pane fade show active" id="nav-unassigned" role="tabpanel" aria-labelledby="nav-unassigned-tab">
-      Unassigned.
-      <!--
-      <table class="table mb-5">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Type</th>
-            <th scope="col">Description</th>
-            <th scope="col">Alergens</th>
-            <th scope="col">Price</th>
-            <th scope="col">Order</th>
-          </tr>
-        </thead>
-        <tbody>
-        (% for food in daily_foods %)
-          <tr>
-            <th scope="row">(( food.nazov ))</th>
-            <td>(( food.typ ))</td>
-            <td>(( food.popis ))</td>
-            <td>(( food.alergeny ))</td>
-            <td>(( food.cena )) &euro;</td>
-            <td><a href="/new_order/(( food.id ))"><button type="button" class="btn-outline-dark">Order</button></a></td>
-          </tr>
-        (% endfor %)
-        </tbody>
-      </table>-->
-    </div>
+      <div class="tab-pane fade show active" id="nav-unassigned" role="tabpanel" aria-labelledby="nav-unassigned-tab">
+        Unassigned.
+        <!--
+        <table class="table mb-5">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Description</th>
+              <th scope="col">Alergens</th>
+              <th scope="col">Price</th>
+              <th scope="col">Order</th>
+            </tr>
+          </thead>
+          <tbody>
+          (% for food in daily_foods %)
+            <tr>
+              <th scope="row">(( food.nazov ))</th>
+              <td>(( food.typ ))</td>
+              <td>(( food.popis ))</td>
+              <td>(( food.alergeny ))</td>
+              <td>(( food.cena )) &euro;</td>
+              <td><a href="/new_order/(( food.id ))"><button type="button" class="btn-outline-dark">Order</button></a></td>
+            </tr>
+          (% endfor %)
+          </tbody>
+        </table>-->
+      </div>
 
-    <div class="tab-pane fade" id="nav-assigned" role="tabpanel" aria-labelledby="nav-assigned-tab">
-      Assigned.
+      <div class="tab-pane fade" id="nav-assigned" role="tabpanel" aria-labelledby="nav-assigned-tab">
+        Assigned.
+      </div>
+
     </div>
 
   </div>
-
-</div>
 {% endblock %}
 

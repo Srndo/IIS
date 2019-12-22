@@ -1,12 +1,14 @@
+<!-- Arguments: email (if pre-fill), error (string) -->
 {% extends "layout.html" %}
 {% block content %}
 <div class="jumbotron">
   <h2>Log in</h2>
   <form class="form-auth" method="post">
-    <input type="text" name="email" class="form-input btn-block" placeholder="Email" maxlength=256 required autofocus>
-    <input type="password" name="password" class="form-input btn-block" placeholder="Password (at least 6 characters)" maxlength=256 required>
+    {% if error %}<div class="text-danger mb-2" style="opacity:0.75">Wrong email or password.</div>{% endif %}
+    <!-- If email is given, pre-fill the input with this value. -->
+    <input type="text" name="email" class="form-input btn-block" placeholder="Email" maxlength=256 required autofocus {% if email %}value="{{ email }}"{% endif %}>
+    <input type="password" name="password" class="form-input btn-block" placeholder="Password" minlength=5 maxlength=128 required>
     <input type="submit" class="btn btn-lg btn-primary btn-block" value="Log in">
   </form>
 </div>
 {% endblock %}
-
