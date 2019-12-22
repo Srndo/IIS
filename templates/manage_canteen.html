@@ -18,7 +18,8 @@
       <div class="row">
   			<div class="col-sm text-center">{{ canteen.name }}</div>
         <div class="col-sm text-center">{{ canteen.address }}</div>
-        <a href="/remove_canteen/{{ canteen.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Remove</button></a>
+        <a href="/edit_canteen_picture/{{ canteen.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Edit picture</button></a>
+        <a href="/remove_canteen/{{ canteen.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center ml-1">Remove</button></a>
   		</div>
     </div>
     {% endfor %}

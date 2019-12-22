@@ -442,6 +442,9 @@ def edit_user(id):
 @app.route('/remove_user/<int:id>')
 def remove_user(id):
     if g.admin:
+        if id == g.user_id:
+            return render_template('error.html', name="Edit error", desc="You cannot delete yourself!")
+            
         user = User.query.filter(User.id == id).first()
         db.session.delete(user)
         db.session.commit()
@@ -473,6 +476,18 @@ def add_canteen():
             return render_template('add_canteen.html', operators=operators)
 
     return redirect('/login')
+
+@app.route('/edit_canteen_picture/<int:id_canteen>', methods=['POST', 'GET'])
+def edit_canteen_picture(id_canteen):
+    if g.operator or g.admin:
+        canteen = Canteen.query.filter(Canteen.id == id_canteen).first()
+        if request.method == 'POST':
+            file = request.form['source']
+            canteen.img_src = file
+            db.session.commit()
+            return render_template('edit_canteen_picture.html', canteen=canteen)
+        else:
+            return render_template('edit_canteen_picture.html', canteen=canteen)
 
 @app.route('/manage_canteen')
 def manage_canteen():
@@ -542,7 +557,7 @@ def remove_item():
         
     return redirect('/login')
 
-
+"""
 @app.route('/add')
 def add():
     if g.operator or g.admin:
@@ -555,7 +570,7 @@ def remove():
     if g.operator or g.admin:
         return render_template('remove.html')
     return redirect('/login')
-
+"""
 
 ########################################
 # Main module guard

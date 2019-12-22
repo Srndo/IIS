@@ -25,7 +25,11 @@
         <div class="col-sm text-center"><a href="tel:{{ user.cislo }}">{{ user.phone }}</a></div>
         <div class="col-sm text-center">{{ user.address }}</div>
         <a href="/edit_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Edit</button></a>
+        {% if g.user_id != user.id %}
         <a href="/remove_user/{{ user.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center ml-1">Remove</button></a>
+        {% else %}
+        <div class="font-weight-bold col-sm text-center" style="max-width: 85px"></div>
+        {% endif %} 
   		</div>
     </div>
     {% endfor %}
