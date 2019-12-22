@@ -1,0 +1,33 @@
+<!-- Arguments: order{name, price, quantity} -->
+{% extends "layout.html" %}
+{% block content %}
+<div class="jumbotron bg-light">
+  <img src="{{ canteen.img_src }}" class="mb-5" width="150" height="150" alt="Building photo">
+  <h2>Shopping cart</h2>
+  <table class="table mb-5">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Total</th>
+        <th scope="col"></th> <!-- Remove item -->
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in order %}
+      <tr>
+        <th scope="row">{{ item.name }}</th>
+        <td>{{ item.price }} &euro;</td>
+        <td>- {{ item.quantity }} +</td>
+        <td>{{ item.quantity * item.price }} &euro;</td>
+        <td>REMOVE</td>
+        <!--<td><a href="/new_order/{{ food.id }}"><button type="button" class="btn-outline-dark">Order</button></a></td>
+        -->
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+

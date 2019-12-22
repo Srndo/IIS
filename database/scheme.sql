@@ -1,123 +1,85 @@
-CREATE TABLE IF NOT EXISTS "TRVALA_NABIDKA" (
-    "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "platnost_od"   VARCHAR(10) NOT NULL,
-    "platnost_do"   VARCHAR(10) NOT NULL,
-    "id_provozny"   INTEGER(3) NOT NULL
+/**************
+ * Main tables
+ **************/
+CREATE TABLE IF NOT EXISTS "canteen" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" VARCHAR(256) NOT NULL,
+    "address" VARCHAR(256) NOT NULL,
+    "description" VARCHAR(4096) NOT NULL,
+    "img_src" VARCHAR(256) NOT NULL,
+    "id_daily" INTEGER,
+    "id_permanent" INTEGER
 );
-CREATE TABLE IF NOT EXISTS "OBJEDNAVKA" (
-    "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "cena_celkom"   INT(10) NOT NULL,
-    "stav"  VARCHAR(10) NOT NULL,
-    "cas_objednania"    VARCHAR(19) NOT NULL,
-    "cas_dorucenia" VARCHAR(19) NOT NULL,
-    "id_operatora"  INTEGER,
-    "id_stravnika"  INTEGER,
-    "id_plan_ridice"    INTEGER
+CREATE TABLE IF NOT EXISTS "daily_menu" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
 );
-CREATE TABLE IF NOT EXISTS "PROVOZNA" (
-    "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "nazov" VARCHAR(100) NOT NULL,
-    "adresa"    VARCHAR(100) NOT NULL,
-    "uzavierka" VARCHAR(19) NOT NULL, /* mozna bych nepouzival? */
-    "description"   VARCHAR(4096) NOT NULL,
-    "img_src"   VARCHAR(256) NOT NULL,
-    "id_operatora"  INTEGER
+CREATE TABLE IF NOT EXISTS "permanent_menu" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
 );
-CREATE TABLE IF NOT EXISTS "DENNI_MENU" (
-    "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "datum" VARCHAR(10) NOT NULL,
-    "id_provozny"   INTEGER(3) NOT NULL
+CREATE TABLE IF NOT EXISTS "food" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" VARCHAR(256) NOT NULL,
+    "type" VARCHAR(64) NOT NULL,
+    "description" VARCHAR(1024) NOT NULL,
+    "allergens" VARCHAR(64) NOT NULL,
+    "price" FLOAT NOT NULL
 );
-CREATE TABLE IF NOT EXISTS "ukoncuje_objednavku" (
-    "id"    INTEGER NOT NULL,
-    "id_operatora"  INTEGER NOT NULL
+CREATE TABLE IF NOT EXISTS "order" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "status" VARCHAR(64) NOT NULL,
+    "order_time" INTEGER NOT NULL,
+    "name" VARCHAR(256) NOT NULL,
+    "surname" VARCHAR(256) NOT NULL,
+    "address" VARCHAR(256) NOT NULL,
+    "postcode" VARCHAR(64) NOT NULL,
+    "city" VARCHAR(256) NOT NULL,
+    "phone" VARCHAR(64) NOT NULL,
+    "email" VARCHAR(256) NOT NULL,
+    "id_user" INTEGER,
+    "id_driver" INTEGER
 );
-CREATE TABLE IF NOT EXISTS "spravuje_provoznu" (
-    "id"    INTEGER NOT NULL,
-    "id_operatora"  INTEGER NOT NULL
+
+
+/************
+ * Relations
+ ************/
+CREATE TABLE IF NOT EXISTS "food_in_daily" (
+    "id_food" INTEGER NOT NULL,
+    "id_daily" INTEGER NOT NULL
 );
-CREATE TABLE IF NOT EXISTS "ponuka_trvala_nabidka" (
-    "id"    INTEGER NOT NULL,
-    "id_provozny"   INTEGER NOT NULL
+CREATE TABLE IF NOT EXISTS "food_in_permanent" (
+    "id_food" INTEGER NOT NULL,
+    "id_permanent" INTEGER NOT NULL
 );
-CREATE TABLE IF NOT EXISTS "ponuka_denni_menu" (
-    "id"    INTEGER NOT NULL,
-    "id_provozny"   INTEGER NOT NULL
+CREATE TABLE IF NOT EXISTS "food_in_order" (
+    "id_food" INTEGER NOT NULL,
+    "id_order" INTEGER NOT NULL
 );
-CREATE TABLE IF NOT EXISTS "obsahuje_objednavku" (
-    "id"    INTEGER NOT NULL,
-    "id_plan_ridice"    INTEGER NOT NULL
+
+
+/**************
+ * Usage roles
+ **************/
+CREATE TABLE IF NOT EXISTS "user" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "email" VARCHAR(256) NOT NULL UNIQUE,
+    "password" VARCHAR(256) NOT NULL,
+    "name" VARCHAR(256) NOT NULL,
+    "surname" VARCHAR(256) NOT NULL,
+    "address" VARCHAR(256) NOT NULL,
+    "postcode" VARCHAR(64) NOT NULL,
+    "city" VARCHAR(256) NOT NULL,
+    "phone" VARCHAR(64) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS "objednal_objednavku" (
-    "id"    INTEGER NOT NULL,
-    "id_stravnika"  INTEGER NOT NULL
+CREATE TABLE IF NOT EXISTS "driver" (
+    "id" INTEGER NOT NULL,
+    FOREIGN KEY ("id") REFERENCES "user" ("id")
 );
-CREATE TABLE IF NOT EXISTS "id_ridica_plan_ridice" (
-    "id_planu"  INTEGER NOT NULL,
-    "id_ridica" INTEGER NOT NULL
+CREATE TABLE IF NOT EXISTS "operator" (
+    "id" INTEGER NOT NULL,
+    FOREIGN KEY ("id") REFERENCES "user" ("id")
 );
-CREATE TABLE IF NOT EXISTS "id_operator_jedla" (
-    "id"    INTEGER NOT NULL,
-    "id_operatora"  INTEGER NOT NULL
-);
-CREATE TABLE IF NOT EXISTS "id_objednavky_jedla" (
-    "id"    INTEGER NOT NULL,
-    "id_objednavky" INTEGER NOT NULL
-);
-CREATE TABLE IF NOT EXISTS "STRAVNIK" (
-    "cislo_karty"   INT(16) NOT NULL,
-    "id"    INTEGER NOT NULL,
-    FOREIGN KEY("id") REFERENCES "UZIVATEL"("id")
-);
-CREATE TABLE IF NOT EXISTS "RIDIC" (
-    "spz"   VARCHAR(10) NOT NULL,
-    "id"    INTEGER NOT NULL,
-    FOREIGN KEY("id") REFERENCES "UZIVATEL"("id")
-);
-CREATE TABLE IF NOT EXISTS "PLAN_RIDICE" (
-    "id_planu"  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "region"    VARCHAR(10) NOT NULL,
-    "id_operator"   INTEGER NOT NULL,
-    "id_ridica" INTEGER NOT NULL
-);
-CREATE TABLE IF NOT EXISTS "JIDLO" (
-    "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "nazov" VARCHAR(20) NOT NULL,
-    "typ"   VARCHAR(20) NOT NULL,
-    "popis" VARCHAR(100),
-    "alergeny"  VARCHAR(20),
-    "cena"  INT(10) NOT NULL,
-    "id_objednavky" INTEGER,
-    "id_operator"   INTEGER
-);
-CREATE TABLE IF NOT EXISTS "JIDLO_DENNI_MENU" (
-    "jidlo_id"  INTEGER NOT NULL,
-    "denne_menu_id" INTEGER NOT NULL
-);
-CREATE TABLE IF NOT EXISTS "JIDLO_TRVALA_NABIDKA" (
-    "jidlo_id"  INTEGER NOT NULL,
-    "trvala_nabidka_id" INTEGER NOT NULL
-);
-CREATE TABLE IF NOT EXISTS "OPERATOR" (
-    "sluzobny_tel"  VARCHAR(13) NOT NULL,
-    "id"    INTEGER NOT NULL,
-    FOREIGN KEY("id") REFERENCES "UZIVATEL"("id")
-);
-CREATE TABLE IF NOT EXISTS "ADMIN" (
-    "id_ntb"    VARCHAR(10) NOT NULL,
-    "id"    INTEGER NOT NULL,
-    FOREIGN KEY("id") REFERENCES "UZIVATEL"("id")
-);
-CREATE TABLE IF NOT EXISTS "UZIVATEL" (
-    "id"    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "meno"  VARCHAR(20) NULL,
-    "priezvisko"    VARCHAR(20) NULL,
-    "adresa"    VARCHAR(20) NULL,
-    "tel_cislo" VARCHAR(13) NULL,
-    "email" VARCHAR(100) NOT NULL UNIQUE,
-    "heslo" VARCHAR(20) NOT NULL
-);
-CREATE TABLE IF NOT EXISTS "id_operatora_plan_ridice" (
-    "id_planu"  VARCHAR(10) NOT NULL,
-    "id_operatora"  VARCHAR(10) NOT NULL
+CREATE TABLE IF NOT EXISTS "admin" (
+    "id" INTEGER NOT NULL,
+    FOREIGN KEY ("id") REFERENCES "user" ("id")
 );

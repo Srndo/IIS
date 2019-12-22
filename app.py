@@ -1,8 +1,7 @@
 import traceback
 import random
-import re
 import os
-from flask import Flask, render_template, url_for, request, redirect, session, g, abort
+from flask import Flask, render_template, request, redirect, session, g, abort
 from werkzeug.exceptions import HTTPException
 from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
@@ -25,97 +24,85 @@ db = SQLAlchemy(app)
 # Database classes definitions
 ########################################
 
-class Uzivatel(db.Model):
+class Canteen(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
-    meno = db.Column('meno', db.String(20))
-    priezvisko = db.Column('priezvisko', db.String(20))
-    adresa = db.Column('adresa', db.String(20))
-    cislo = db.Column('tel_cislo', db.String(13))
-    email = db.Column('email', db.String(100), nullable=False)
-    heslo = db.Column('heslo', db.Unicode, nullable=False)
+    name = db.Column('name', db.String(256), nullable=False)
+    address = db.Column('address', db.String(256), nullable=False)
+    description = db.Column('description', db.String(4096), nullable=False)
+    img_src = db.Column('img_src', db.String(256), nullable=False)
+    id_daily = db.Column('id_daily', db.Integer)
+    id_permanent = db.Column('id_permanent', db.Integer)
+
+
+class DailyMenu(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True)
+
+
+class PermanentMenu(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True)
+
+
+class Food(db.Model):
+    id = db.Column('id', db.INTEGER,  primary_key=True)
+    name = db.Column('name', db.String(256), nullable=False)
+    type = db.Column('type', db.String(64), nullable=False)
+    description = db.Column('description', db.String(1024), nullable=False)
+    allergens = db.Column('allergens', db.String(64), nullable=False)
+    price = db.Column('price', db.Float, nullable=False)
+
+
+class Order(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True)
+    status = db.Column('status', db.String(64), nullable=False)
+    order_time = db.Column('order_time', db.Integer, nullable=False)
+    name = db.Column('name', db.String(256), nullable=False)
+    surname = db.Column('surname', db.String(256), nullable=False)
+    address = db.Column('address', db.String(256), nullable=False)
+    postcode = db.Column('postcode', db.String(64), nullable=False)
+    city = db.Column('city', db.String(256), nullable=False)
+    phone = db.Column('phone', db.String(64), nullable=False)
+    email = db.Column('email', db.String(256), nullable=False)
+    id_user = db.Column('id_user', db.Integer)
+    id_driver = db.Column('id_driver', db.Integer)
+
+
+class FoodInDaily(db.Model):
+    id_food = db.Column('id_food', db.Integer, primary_key=True, autoincrement=False)
+    id_daily = db.Column('id_daily', db.Integer, primary_key=True, autoincrement=False)
+
+
+class FoodInPermanent(db.Model):
+    id_food = db.Column('id_food', db.Integer, primary_key=True, autoincrement=False)
+    id_permanent = db.Column('id_permanent', db.Integer, primary_key=True, autoincrement=False)
+
+
+class FoodInOrder(db.Model):
+    id_food = db.Column('id_food', db.Integer, primary_key=True, autoincrement=False)
+    id_order = db.Column('id_order', db.Integer, primary_key=True, autoincrement=False)
+
+
+class User(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True)
+    email = db.Column('email', db.String(256), nullable=False, unique=True)
+    password = db.Column('password', db.Unicode, nullable=False)
+    name = db.Column('name', db.String(256), nullable=False)
+    surname = db.Column('surname', db.String(256), nullable=False)
+    address = db.Column('address', db.String(256), nullable=False)
+    postcode = db.Column('postcode', db.String(64), nullable=False)
+    city = db.Column('city', db.String(256), nullable=False)
+    phone = db.Column('phone', db.String(64), nullable=False)
+
+
+class Driver(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=False)
 
 
 class Operator(db.Model):
-    sluzobny_tel = db.Column('sluzobny_tel', db.String(13), nullable=False)
-    id = db.Column('id', db.String(10), primary_key=True)
-
-
-class Ridic(db.Model):
-    spz = db.Column('spz', db.String(10), nullable=False)
-    id = db.Column('id', db.String(10), primary_key=True)
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=False)
 
 
 class Admin(db.Model):
-    id_ntb = db.Column('id_ntb', db.String(10), nullable=False)
-    id = db.Column('id', db.String(10), primary_key=True)
-
-
-class Stravnik(db.Model):
-    cislo_karty = db.Column('cislo_karty', db.Integer, nullable=False)
-    id = db.Column('id', db.String(10), primary_key=True)
-
-
-class Plan_ridice(db.Model):
-    id_planu = db.Column('id_planu', db.Integer, primary_key=True)
-    region = db.Column('region', db.String(10), nullable=False)
-    id_operatora = db.Column('id_operator', db.String(10),
-                             nullable=False)
-    id_ridica = db.Column('id_ridica', db.String(10), nullable=False)
-
-
-class Objednavka(db.Model):
-    id = db.Column('id', db.Integer, primary_key=True)
-    cena_celkom = db.Column('cena_celkom', db.Integer, nullable=False)
-    stav = db.Column('stav', db.String(10), nullable=False, default='Evidovana')
-    cas_objednania = db.Column('cas_objednania', db.String(16), nullable=False, default=datetime.now)
-    cas_dorucenia = db.Column('cas_dorucenia', db.String(16), nullable=False, default=datetime.now() + timedelta(hours=1))
-    id_operatora = db.Column('id_operatora', db.String(10))
-    id_stravnika = db.Column('id_stravnika', db.String(10))
-    id_plan_ridice = db.Column('id_plan_ridice', db.String(10))
-
-
-class Jidlo(db.Model):
-    id = db.Column('id', db.Integer, primary_key=True)
-    nazov = db.Column('nazov', db.String(20), nullable=False)
-    typ = db.Column('typ', db.String(20), nullable=False)
-    popis = db.Column('popis', db.String(100), nullable=True)
-    alergeny = db.Column('alergeny', db.String(20), nullable=True)
-    cena = db.Column('cena', db.Integer, nullable=False)
-    id_objednavky = db.Column('id_objednavky', db.String(10), nullable=True)
-    id_operator = db.Column('id_operator', db.String(10), nullable=True)
-
-
-class Provozna(db.Model):
-    id = db.Column('id', db.Integer, primary_key=True)
-    nazov = db.Column('nazov', db.String(100), nullable=False)
-    adresa = db.Column('adresa', db.String(100), nullable=False)
-    description = db.Column('description', db.String(4096), nullable=False)
-    img_src = db.Column('img_src', db.String(256), nullable=False)
-    uzavierka = db.Column('uzavierka', db.String(19), nullable=False)
-    id_operatora = db.Column('id_operatora', db.String(10), nullable=True)
-
-
-class Trvala_nabidka(db.Model):
-    id = db.Column('id', db.Integer, primary_key=True)
-    platnost_od = db.Column('platnost_od', db.String(10), nullable=False)
-    platnost_do = db.Column('platnost_do', db.String(10), nullable=False)
-    id_provozny = db.Column('id_provozny', db.Integer, nullable=False)
-
-
-class Denni_menu(db.Model):
-    id = db.Column('id', db.Integer, primary_key=True)
-    datum = db.Column('datum', db.String(10), nullable=False)
-    id_provozny = db.Column('id_provozny', db.Integer, nullable=False)
-
-
-class Jidlo_denni_menu(db.Model):
-    jidlo_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
-    denne_menu_id = db.Column('denne_menu_id', db.Integer, nullable=False, primary_key=True)
-
-
-class Jidlo_trvala_nabidka(db.Model):
-    jidlo_id = db.Column('jidlo_id', db.Integer, nullable=False, primary_key=True)
-    trvala_nabidka_id = db.Column('trvala_nabidka_id', db.Integer, nullable=False, primary_key=True)
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=False)
 
 
 ########################################
@@ -127,19 +114,19 @@ def load_logged_in_user():
     g.user = None
     user_id = session.get('user_id')
     if user_id is not None:
-        user = Uzivatel.query.filter(Uzivatel.id == user_id).first()
-        if user is None: # Serious server error or data manipulation
+        user = User.query.filter(User.id == user_id).first()
+        if user is None:  # Serious server error or data manipulation
             session.clear()
             abort(500)
         g.user = user.email
         g.user_id = user.id
-        
-        ridic = Ridic.query.filter(Ridic.id == user.id).first()
-        if ridic is None:
+
+        driver = Driver.query.filter(Driver.id == user.id).first()
+        if driver is None:
             g.driver = False
         else:
             g.driver = True
-        
+
         operator = Operator.query.filter(Operator.id == user.id).first()
         if operator is None:
             g.operator = False
@@ -169,7 +156,7 @@ def exception_handler(e):
 
 @app.route('/')
 def index():
-    canteens = Provozna.query.order_by(Provozna.id).all()
+    canteens = Canteen.query.order_by(Canteen.id).all()
     return render_template('index.html', items=canteens)
 
 
@@ -189,23 +176,24 @@ def register():
             error = "Username is required"
         elif user_password is None:
             error = "Password is required"
-        elif Uzivatel.query.filter(Uzivatel.email == user_email).first() is not None:
+        elif User.query.filter(User.email == user_email).first() is not None:
             error = f"Email {user_email} is already registered."
 
         if error is None:
             encrypted = sha256_crypt.encrypt(user_password)
-            new_user = Uzivatel(
-                meno=name,
-                priezvisko=surname,
-                adresa=address,
-                cislo=tel,
+            new_user = User(
+                # TODO!
+                name=name,
+                surname=surname,
+                address=address,
+                phone=tel,
                 email=user_email,
-                heslo=encrypted,
+                password=encrypted,
                 )
             db.session.add(new_user)
             db.session.commit()
 
-            new_user = Uzivatel.query.order_by(Uzivatel.id.desc()).first()
+            new_user = User.query.order_by(User.id.desc()).first()
             print("ROLA JE:")
             print(role)
             if role == 'user':
@@ -213,7 +201,7 @@ def register():
                 db.session.add(new_stravnik)
             
             elif role == 'driver':
-                new_driver = Ridic(spz='', id=new_user.id)
+                new_driver = Driver(spz='', id=new_user.id)
                 db.session.add(new_driver)
                 print("HERE")
 
@@ -236,8 +224,8 @@ def login():
         elif not user_password:
             error = "Password is required."
         else:
-            user = Uzivatel.query.filter(Uzivatel.email == user_email).first()
-            if user is None or not sha256_crypt.verify(user_password, user.heslo):
+            user = User.query.filter(User.email == user_email).first()
+            if user is None or not sha256_crypt.verify(user_password, user.password):
                 error = f"Wrong email or password."
 
         if error is None:
@@ -257,25 +245,25 @@ def logout():
 
 @app.route('/canteen/<int:canteen_id>')
 def canteen_page(canteen_id):
-    canteen = Provozna.query.filter(Provozna.id == canteen_id).first()
+    canteen = Canteen.query.filter(Canteen.id == canteen_id).first()
     if canteen is None:
         abort(404)
 
     permanent_foods = None
-    permanent = Trvala_nabidka.query.filter(Trvala_nabidka.id_provozny == canteen_id).first()
+    permanent = PermanentMenu.query.filter(PermanentMenu.id_provozny == canteen_id).first()
     if permanent is not None:
-        permanent_foods = (Jidlo.query
-            .join(Jidlo_trvala_nabidka, Jidlo_trvala_nabidka.jidlo_id == Jidlo.id)
-            .join(Trvala_nabidka, permanent.id == Jidlo_trvala_nabidka.trvala_nabidka_id)
-            .all())
+        permanent_foods = (Food.query
+                           .join(FoodInPermanent, FoodInPermanent.id_food == Food.id)
+                           .join(PermanentMenu, permanent.id == FoodInPermanent.id_permanent)
+                           .all())
 
     daily_foods = None
-    daily = Denni_menu.query.filter(Denni_menu.id_provozny == canteen_id).first()
+    daily = DailyMenu.query.filter(DailyMenu.id_provozny == canteen_id).first()
     if daily is not None:
-        daily_foods = (Jidlo.query
-            .join(Jidlo_denni_menu, Jidlo_denni_menu.jidlo_id == Jidlo.id)
-            .join(Denni_menu, daily.id == Jidlo_denni_menu.denne_menu_id)
-            .all())
+        daily_foods = (Food.query
+                       .join(FoodInDaily, FoodInDaily.id_food == Food.id)
+                       .join(DailyMenu, daily.id == FoodInDaily.id_daily)
+                       .all())
 
     return render_template(
         'canteen.html',
@@ -294,7 +282,7 @@ def new_order(id):
         objednavka = Objednavka.query.order_by(Objednavka.id.desc()).first()
         id_objednavky = objednavka.id + 1
         
-        cena_celkom = Jidlo.query.filter(Jidlo.id == id).first().cena
+        cena_celkom = Food.query.filter(Food.id == id).first().cena
         
         
         id_stravnika = g.user_id
@@ -317,7 +305,7 @@ def show_objednavky():
 @app.route('/profile')
 def show_profile():
     if g.user:
-        user = Uzivatel.query.filter(Uzivatel.id == g.user_id).first()
+        user = User.query.filter(User.id == g.user_id).first()
         return render_template('profile.html', user=user)
     return redirect('/login')
 
@@ -325,18 +313,18 @@ def show_profile():
 @app.route('/shopping-cart')
 def show_shopping_cart():
     if g.user:
-        return render_template('shopping-cart.html')
+        return render_template('shopping_cart.html')
     return redirect('/login')
 
 
-@app.route('/create_plan', methods=['POST', 'GET'])
+""""@app.route('/create_plan', methods=['POST', 'GET'])
 def create_plan():
     if g.operator or g.admin:
         if request.method == 'POST':
             region = request.form['region']
             driver_name = request.form['name']
             driver_surname = request.form['surname']
-            drivers = Uzivatel.query.filter(Uzivatel.meno == driver_name and Uzivatel.priezvisko == driver_surname).all()
+            drivers = User.query.filter(User.name == driver_name and User.surname == driver_surname).all()
             for driver in drivers:
                 selected_driver = Ridic.query.filter(Ridic.id == driver.id).first()
                 if selected_driver is not None:
@@ -348,7 +336,7 @@ def create_plan():
             return render_template('all_done.html', desc="Plan created")
         else:
             return render_template('create_plan.html')
-    return redirect('login')
+    return redirect('login')"""
 
 
 @app.route('/driver_plan')
@@ -361,12 +349,12 @@ def show_plan():
 @app.route('/manage_users', methods=['POST', 'GET'])
 def manage_users():
     if g.admin:
-        users = Uzivatel.query.all()
+        users = User.query.all()
         #prepare for showing in different tables
-        #customers = Stravnik.query.filter(Uzivatel.id == Stravnik.id).all()
-        #drivers = Ridic.query.filter(Uzivatel.id == Ridic.id).all()
-        #operators = Operator.query.filter(Uzivatel.id == Operator.id).all()
-        #admins = Admin.query.filter(Uzivatel.id == Admin.id).all()
+        #customers = Stravnik.query.filter(User.id == Stravnik.id).all()
+        #drivers = Ridic.query.filter(User.id == Ridic.id).all()
+        #operators = Operator.query.filter(User.id == Operator.id).all()
+        #admins = Admin.query.filter(User.id == Admin.id).all()
         if request.method == 'POST':
             pass
         else:
@@ -378,10 +366,10 @@ def manage_users():
 @app.route('/edit_user/<int:id>', methods=['GET', 'POST'])
 def edit_user(id):
     if str(g.user_id) == str(id) or g.admin:
-        user = Uzivatel.query.filter(Uzivatel.id == id).first()
+        user = User.query.filter(User.id == id).first()
         role = None
 
-        pom = Ridic.query.filter(Ridic.id == id).first()
+        pom = Driver.query.filter(Driver.id == id).first()
         if pom is not None:
             role = 'Driver'
 
@@ -405,23 +393,23 @@ def edit_user(id):
             new_password = request.form['password']
 
             if new_name:
-                user.meno = new_name
+                user.name = new_name
             if new_surname:
-                user.priezvisko = new_surname
+                user.surname = new_surname
             if new_address:
-                user.adresa = new_address
+                user.address = new_address
             if new_tel:
-                user.cislo = new_tel
+                user.phone = new_tel
             if new_email:
                 user.email = new_email
             if new_password:
-                user.heslo = sha256_crypt.encrypt(new_password)
+                user.password = sha256_crypt.encrypt(new_password)
 
             new_role = request.form['role']
             if new_role != role:
                 delete = None
                 if role == 'Driver':
-                    delete = Ridic.query.filter(Ridic.id == id).first()
+                    delete = Driver.query.filter(Driver.id == id).first()
                 if role == 'Operator':
                     delete = Operator.query.filter(Operator.id == id).first()
                 if role == 'Admin':
@@ -434,7 +422,7 @@ def edit_user(id):
                     db.session.delete(delete)
 
                 if new_role == 'driver':
-                    new = Ridic(spz='', id=id)
+                    new = Driver(spz='', id=id)
                 if new_role == 'operator':
                     new = Operator(sluzobny_tel='', id=id)
                 if new_role == 'admin':
@@ -453,7 +441,7 @@ def edit_user(id):
 @app.route('/remove_user/<int:id>')
 def remove_user(id):
     if g.admin:
-        user = Uzivatel.query.filter(Uzivatel.id == id).first()
+        user = User.query.filter(User.id == id).first()
         db.session.delete(user)
         db.session.commit()
 
@@ -471,16 +459,16 @@ def add_canteen():
             deadline = request.form['deadline']
             id_operator = request.form['operator']
 
-            #operator = Uzivatel.query.filter(Uzivatel.id ==id_operator).first()
+            #operator = User.query.filter(User.id ==id_operator).first()
 
-            new_canteen = Provozna(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=id_operator, img_src='https://via.placeholder.com/150')
+            new_canteen = Canteen(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=id_operator, img_src='https://via.placeholder.com/150')
             db.session.add(new_canteen)
             db.session.commit()
 
             return render_template('all_done.html', desc="New canteen aded")
 
         else:
-            operators = Uzivatel.query.filter(Uzivatel.id == Operator.id).all()
+            operators = User.query.filter(User.id == Operator.id).all()
             return render_template('add_canteen.html', operators=operators)
 
     return redirect('/login')
@@ -488,7 +476,7 @@ def add_canteen():
 @app.route('/manage_canteen')
 def manage_canteen():
     if g.operator or g.admin:
-        canteens = Provozna.query.all()
+        canteens = Canteen.query.all()
         return render_template('manage_canteen.html', canteens=canteens)
     else:
         return redirect('/login')
@@ -513,7 +501,7 @@ def add_item():
             alergens = request.form['alergens']
             price = request.form['price']
             
-            new_item = Jidlo(nazov=name, typ=type, popis=description, alergeny=alergens, cena=price)
+            new_item = Food(nazov=name, typ=type, popis=description, alergeny=alergens, cena=price)
             db.session.add(new_item)
             db.session.commit()
             
@@ -528,7 +516,7 @@ def add_item():
 @app.route('/remove_canteen/<int:canteen_id>')
 def remove_canteen(canteen_id):
     if g.operator or g.admin:
-        canteen = Provozna.query.filter(Provozna.id == canteen_id).first()
+        canteen = Canteen.query.filter(Canteen.id == canteen_id).first()
         db.session.delete(canteen)
         db.session.commit()
         
@@ -542,7 +530,7 @@ def remove_item():
     if g.operator or g.admin:
         if request.method == 'POST':
             name = request.form['name']
-            item = Jidlo.query.filter(Jidlo.nazov == name).first()
+            item = Food.query.filter(Food.name == name).first()
             db.session.delete(item)
             db.session.commit()
             
