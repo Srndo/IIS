@@ -13,7 +13,7 @@
       </div>
       <select class="custom-select" id="select_operator" name="operator">
         {% for operator in operators %}
-        <option value="{{ operator.id }}">{{ operator.meno }} {{ operator.priezvisko }}</option>
+        <option value="{{ operator.id }}">{{ operator.name }} {{ operator.surname }}</option>
         {% endfor %}
       </select>
     </div>

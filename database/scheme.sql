@@ -7,8 +7,10 @@ CREATE TABLE IF NOT EXISTS "canteen" (
     "address" VARCHAR(256) NOT NULL,
     "description" VARCHAR(4096) NOT NULL,
     "img_src" VARCHAR(256) NOT NULL,
+    "id_operator" INTEGER,
     "id_daily" INTEGER,
     "id_permanent" INTEGER
+    /*FOREIGN KEY ("id_operator") REFERENCES "user" ("id")*/
 );
 CREATE TABLE IF NOT EXISTS "daily_menu" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT

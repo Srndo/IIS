@@ -16,8 +16,8 @@
     {% for canteen in canteens %}
     <div class="list-group-item">
       <div class="row">
-  			<div class="col-sm text-center">{{ canteen.nazov }}</div>
-        <div class="col-sm text-center">{{ canteen.adresa }}</div>
+  			<div class="col-sm text-center">{{ canteen.name }}</div>
+        <div class="col-sm text-center">{{ canteen.address }}</div>
         <a href="/remove_canteen/{{ canteen.id }}"><button type="button" class="btn btn-outline-dark col-sm text-center">Remove</button></a>
   		</div>
     </div>

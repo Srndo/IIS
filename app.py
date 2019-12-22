@@ -30,6 +30,7 @@ class Canteen(db.Model):
     address = db.Column('address', db.String(256), nullable=False)
     description = db.Column('description', db.String(4096), nullable=False)
     img_src = db.Column('img_src', db.String(256), nullable=False)
+    id_operator = db.Column('id_operator', db.Integer)
     id_daily = db.Column('id_daily', db.Integer)
     id_permanent = db.Column('id_permanent', db.Integer)
 
@@ -422,11 +423,11 @@ def edit_user(id):
                     db.session.delete(delete)
 
                 if new_role == 'driver':
-                    new = Driver(spz='', id=id)
+                    new = Driver(id=id)
                 if new_role == 'operator':
-                    new = Operator(sluzobny_tel='', id=id)
+                    new = Operator(id=id)
                 if new_role == 'admin':
-                    new = Admin(id_ntb='', id=id)
+                    new = Admin(id=id)
 
                 if new_role != 'user':
                     db.session.add(new)
@@ -456,12 +457,12 @@ def add_canteen():
             name = request.form['name']
             address = request.form['address']
             description = request.form['description']
-            deadline = request.form['deadline']
+            #deadline = request.form['deadline']
             id_operator = request.form['operator']
 
-            #operator = User.query.filter(User.id ==id_operator).first()
+            operator = User.query.filter(User.id == id_operator).first()
 
-            new_canteen = Canteen(nazov=name, adresa=address, uzavierka=deadline, description=description, id_operatora=id_operator, img_src='https://via.placeholder.com/150')
+            new_canteen = Canteen(name=name, address=address, description=description, id_operator=id_operator, img_src='https://via.placeholder.com/150')
             db.session.add(new_canteen)
             db.session.commit()
 
