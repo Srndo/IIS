@@ -435,96 +435,78 @@ def show_profile():
     return render_template('profile.html', user=user, role=role, orders=items)
 
 
-@app.route('/manage_users', methods=['POST', 'GET'])
+@app.route('/manage_users')
 def manage_users():
-    if g.admin:
-        users = User.query.all()
-        #prepare for showing in different tables
-        #customers = Stravnik.query.filter(User.id == Stravnik.id).all()
-        #drivers = Ridic.query.filter(User.id == Ridic.id).all()
-        #operators = Operator.query.filter(User.id == Operator.id).all()
-        #admins = Admin.query.filter(User.id == Admin.id).all()
-        if request.method == 'POST':
-            pass
-        else:
-            #return render_template('manage_users.html', admins=admins, operators=operators, drivers=drivers, customers=customers)
-            return render_template('manage_users.html', users=users)
-    return redirect('/login')
+    if not g.user:
+        return redirect('/login')
+    if not g.admin:
+        abort(403)
+    users = User.query.all()
+    return render_template('manage_users.html', users=users)
 
 
 @app.route('/edit_user/<int:id>', methods=['GET', 'POST'])
 def edit_user(id):
-    if str(g.user_id) == str(id) or g.admin:
-        user = User.query.filter(User.id == id).first()
-        role = None
+    if not g.user:
+        return redirect('/login')
+    if g.user_id != id and not g.admin:
+        abort(403)
 
-        pom = Driver.query.filter(Driver.id == id).first()
-        if pom is not None:
-            role = 'Driver'
+    user = User.query.filter_by(id=id).first()
+    driver = Driver.query.filter_by(id=id).first()
+    operator = Operator.query.filter_by(id=id).first()
+    admin = Admin.query.filter_by(id=id).first()
+    if driver is not None:
+        role = "Driver"
+    elif operator is not None:
+        role = "Operator"
+    elif admin is not None:
+        role = "Admin"
+    else:
+        role = "User"
 
-        pom = Operator.query.filter(Operator.id == id).first()
-        if pom is not None:
-            role = 'Operator'
+    if request.method == 'GET':
+        return render_template('edit_user.html', user=user, role=role)
 
-        pom = Admin.query.filter(Admin.id == id).first()
-        if pom is not None:
-            role = 'Admin'
+    email = request.form['email']
+    password = request.form['password']
+    name = request.form['name']
+    surname = request.form['surname']
+    address = request.form['address']
+    postcode = request.form['postcode']
+    city = request.form['city']
+    phone = request.form['phone']
+    new_role = request.form['role']
 
-        if role is None:
-            role = 'User'
+    user.email = email
+    if len(password) >= 5:
+        user.password = sha256_crypt.encrypt(password)
+    user.name = name
+    user.surname = surname
+    user.address = address
+    user.postcode = postcode
+    user.city = city
+    user.phone = phone
 
-        if request.method == 'POST':
-            new_name = request.form['name']
-            new_surname = request.form['surname']
-            new_email = request.form['email']
-            new_address = request.form['address']
-            new_tel = request.form['tel']
-            new_password = request.form['password']
-
-            if new_name:
-                user.name = new_name
-            if new_surname:
-                user.surname = new_surname
-            if new_address:
-                user.address = new_address
-            if new_tel:
-                user.phone = new_tel
-            if new_email:
-                user.email = new_email
-            if new_password:
-                user.password = sha256_crypt.encrypt(new_password)
-
-            new_role = request.form['role']
-            if new_role != role:
-                delete = None
-                if role == 'Driver':
-                    delete = Driver.query.filter(Driver.id == id).first()
-                if role == 'Operator':
-                    delete = Operator.query.filter(Operator.id == id).first()
-                if role == 'Admin':
-                    delete = Admin.query.filter(Admin.id == id).first()
-                    admin_count = Admin.query.count()
-                    if admin_count == 1:
-                        return render_template('error.html', name="Edit error", desc="There must be at least one admin!" )
-                
-                if delete is not None:
-                    db.session.delete(delete)
-
-                if new_role == 'driver':
-                    new = Driver(id=id)
-                if new_role == 'operator':
-                    new = Operator(id=id)
-                if new_role == 'admin':
-                    new = Admin(id=id)
-
-                if new_role != 'user':
-                    db.session.add(new)
+    if new_role != role:
+        if role == 'Driver':
+            db.session.delete(driver)
+        elif role == 'Operator':
+            db.session.delete(operator)
+        elif role == 'Admin':
+            if user.id == 0:
                 db.session.commit()
-            
-            return render_template('all_done.html', desc="Informations change")
-        else:
-            return render_template('edit_user.html', user=user, role=role)
-    return redirect('/login')
+                return render_template('edit_user.html', user=user, role=role, error="~* 𝔗𝔥𝔢𝔯𝔢 𝔪𝔲𝔰𝔱 𝔞𝔩𝔴𝔞𝔶𝔰 𝔟𝔢 𝔞𝔫 𝔞𝔡𝔪𝔦𝔫 *~")
+            else:
+                db.session.delete(admin)
+        if new_role == 'Driver':
+            db.session.add(Driver(id=id))
+        elif new_role == 'Operator':
+            db.session.add(Operator(id=id))
+        elif new_role == 'Admin':
+            db.session.add(Admin(id=id))
+    db.session.commit()
+    return redirect(f"/edit_user/{id}")
 
 
 @app.route('/remove_user/<int:id>')

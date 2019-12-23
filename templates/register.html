@@ -3,7 +3,7 @@
 {% block content %}
 <div class="jumbotron">
   <h2>Create a new account</h2>
-  <form class="form-auth form-inline" method="post">
+  <form class="form-auth form-inline" method="POST">
     {% if error %}<div class="text-danger mb-2" style="opacity:0.75">{{ error }}</div>{% endif %}
     <!-- If user is given, pre-fill the input fields. -->
     <input type="text" name="email" class="form-input btn-block" placeholder="Email" maxlength=256 required autofocus {% if user %}value="{{ user.email }}"{% endif %}>

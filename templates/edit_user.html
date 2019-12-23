@@ -1,46 +1,71 @@
+<!-- Arguments: user, role, error (string) -->
 {% extends "layout.html" %}
 {% block content %}
-<div class="jumbotron">
-  <h2>Edit user</h2>
-  <form class="form-auth" method="post">
-    <input type="text" name="name" class="form-input btn-block" placeholder="{{ user.name }}" maxlength=256 autofocus>
-    <input type="text" name="surname" class="form-input btn-block" placeholder="{{ user.surname }}" maxlength=256>
-    <input type="text" name="address" class="form-input btn-block" placeholder="{{ user.address }}" maxlength=256>
-    <input type="text" name="tel" class="form-input btn-block" placeholder="{{ user.phone }}" minlength=10 maxlength=20>
-    <input type="text" name="email" class="form-input btn-block" placeholder="{{ user.email }}" maxlength=256>
-    <input type="password" name="password" class="form-input btn-block" placeholder="Password (at least 6 characters)" minlength=6 maxlength=256>
-    {% if g.admin %}
-    <div class="input-group mt-2 mb-2">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="select_register">Role</label>
-      </div>
-      <select class="custom-select" id="select_register" name="role">
-        {% if role == 'User' %}
-        <option value="user" selected>User</option>
-        <option value="driver">Driver</option>
-        <option value="operator">Operator</option>
-        <option value="admin">Admin</option>
-        {% elif role == 'Driver' %}
-        <option value="user">User</option>
-        <option value="driver" selected>Driver</option>
-        <option value="operator">Operator</option>
-        <option value="admin">Admin</option>
-        {% elif role == 'Operator' %}
-        <option value="user">User</option>
-        <option value="driver">Driver</option>
-        <option value="operator" selected>Operator</option>
-        <option value="admin">Admin</option>
-        {% elif role == 'Admin' %}
-        <option value="user">User</option>
-        <option value="driver">Driver</option>
-        <option value="operator">Operator</option>
-        <option value="admin" selected>Admin</option>
-        {% endif %}
-      </select>
-    </div>
-    {% endif %}
-    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Change">
-  </form>
-</div>
-{% endblock %}
+  <div class="jumbotron bg-light">
 
+    <h2 class="pb-4">Edit user</h2>
+
+    <div class="tab-content py-3 px-3 px-sm-0">
+      <form method="POST">
+        {% if error %}<div class="text-danger mb-2" style="opacity:0.75">{{ error }}</div>{% endif %}
+        <div class="form-group row">
+          <label for="input-email" class="col text-right">Email</label>
+          <input type="text" name="email" id="input-email" class="form-control mx-sm-3 col" placeholder="Email" maxlength=256 required autofocus {% if user %}value="{{ user.email }}"{% endif %}>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-password" class="col text-right">Password</label>
+          <input type="password" name="password" id="input-password" class="form-control mx-sm-3 col" placeholder="Password" maxlength=64 minlength=5 aria-describedby="password-help">
+          <small id="password-help" class="text-muted text-left col">
+            Must be 5-64 characters long.
+          </small>
+        </div>
+        <div class="form-group row">
+          <label for="input-name" class="col text-right">Name</label>
+          <input type="text" name="name" id="input-name" class="form-control mx-sm-3 col" placeholder="Name" maxlength=256 required {% if user %}value="{{ user.name }}"{% endif %}>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-surname" class="col text-right">Surname</label>
+          <input type="text" name="surname" id="input-surname" class="form-control mx-sm-3 col" placeholder="Surname" maxlength=256 required {% if user %}value="{{ user.surname }}"{% endif %}>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-address" class="col text-right">Address</label>
+          <input type="text" name="address" id="input-address" class="form-control mx-sm-3 col" placeholder="Address" maxlength=256 required {% if user %}value="{{ user.address }}"{% endif %}>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-postcode" class="col text-right">Postcode</label>
+          <input type="text" name="postcode" id="input-postcode" class="form-control mx-sm-3 col" placeholder="Postcode" maxlength=256 required {% if user %}value="{{ user.postcode }}"{% endif %}>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-city" class="col text-right">City</label>
+          <input type="text" name="city" id="input-city" class="form-control mx-sm-3 col" placeholder="City" maxlength=256 required {% if user %}value="{{ user.city }}"{% endif %}>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-phone" class="col text-right">Phone</label>
+          <input type="text" name="phone" id="input-phone" class="form-control mx-sm-3 col" placeholder="Phone" maxlength=256 required {% if user %}value="{{ user.phone }}"{% endif %}>
+          <div class="col"></div>
+        </div>
+        <div class="container">
+          <div class="form-group row">
+            <label for="select-role" class="col text-right">Role</label>
+            <select class="custom-select col mx-sm-3" id="select-role" name="role"  aria-describedby="select-help" {% if not g.admin %}disabled{% endif %} >
+              <option value="User" {% if role == 'User' %}selected{% endif %} >User</option>
+              <option value="Driver" {% if role == 'Driver' %}selected{% endif %} >Driver</option>
+              <option value="Operator" {% if role == 'Operator' %}selected{% endif %} >Operator</option>
+              <option value="Admin" {% if role == 'Admin' %}selected{% endif %} >Admin</option>
+            </select>
+            <small id="select-help" class="text-muted text-left col">
+              Only administrator can change your system role.
+            </small>
+          </div>
+        </div>
+        <input type="submit" class="btn btn-dark btn-lg" value="Confirm">
+      </form>
+    </div>
+  </div>
+{% endblock %}
