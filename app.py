@@ -415,7 +415,7 @@ def checkout():
     )
     db.session.add(new_order)
     db.session.commit()
-    for food, item in items:
+    for food, item, _ in items:
         new_food_in_order = FoodInOrder(
             id_food=food.id,
             id_order=new_order.id,
