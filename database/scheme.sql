@@ -6,15 +6,7 @@ CREATE TABLE IF NOT EXISTS "canteen" (
     "name" VARCHAR(256) NOT NULL,
     "address" VARCHAR(256) NOT NULL,
     "description" VARCHAR(4096) NOT NULL,
-    "img_src" VARCHAR(256) NOT NULL,
-    "id_daily" INTEGER,
-    "id_permanent" INTEGER
-);
-CREATE TABLE IF NOT EXISTS "daily_menu" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
-);
-CREATE TABLE IF NOT EXISTS "permanent_menu" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+    "img_src" VARCHAR(256) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS "food" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -22,7 +14,9 @@ CREATE TABLE IF NOT EXISTS "food" (
     "type" VARCHAR(64) NOT NULL,
     "description" VARCHAR(1024) NOT NULL,
     "allergens" VARCHAR(64) NOT NULL,
-    "price" FLOAT NOT NULL
+    "price" FLOAT NOT NULL,
+    "id_canteen" INTEGER NOT NULL,
+    "active" INTEGER NOT NULL
 );
 CREATE TABLE IF NOT EXISTS "order" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -43,22 +37,13 @@ CREATE TABLE IF NOT EXISTS "order" (
 /************
  * Relations
  ************/
-CREATE TABLE IF NOT EXISTS "food_in_daily" (
-    "id_food" INTEGER NOT NULL,
-    "id_daily" INTEGER NOT NULL,
-    PRIMARY KEY ("id_food", "id_daily")
-);
-CREATE TABLE IF NOT EXISTS "food_in_permanent" (
-    "id_food" INTEGER NOT NULL,
-    "id_permanent" INTEGER NOT NULL,
-    PRIMARY KEY ("id_food", "id_permanent")
-);
 CREATE TABLE IF NOT EXISTS "food_in_order" (
     "id_food" INTEGER NOT NULL,
     "id_order" INTEGER NOT NULL,
+    "qty" INTEGER NOT NULL,
     PRIMARY KEY ("id_food", "id_order")
 );
-CREATE TABLE IF NOT EXISTS "cart_item" (
+CREATE TABLE IF NOT EXISTS "food_in_cart" (
     "id_user" INTEGER NOT NULL,
     "id_food" INTEGER NOT NULL,
     "qty" INTEGER NOT NULL,

@@ -21,19 +21,38 @@
 </head>
 
 <body>
-  <!-- Navigation -->
-  <div class="bg-light custom-header" style="height: 14vh">
-    <div class="container">
-      <nav class="navbar navbar-expand navbar-light bg-light">
-        <a class="navbar-brand" href="/">
-          <img src="../static/img/favicon.ico" class="align-middle" width="80" height="80" alt="Hungry Panda Logo" title="Hungry Panda">
-          Hungry Panda
-        </a>
-        <ul class="navbar-nav ml-auto">
-          {% if g.user %}
+<!-- Navigation -->
+<div class="bg-light custom-header">
+  <div class="container">
+    <nav class="navbar navbar-expand navbar-light bg-light">
+      <a class="navbar-brand" href="/">
+        <img src="../static/img/favicon.ico" class="align-middle" width="80" height="80" alt="Hungry Panda Logo"
+             title="Hungry Panda">
+        Hungry Panda
+      </a>
+      <ul class="navbar-nav ml-auto">
+        {% if g.user %}
           <li class="nav-item mx-4">
             <a class="nav-link mx-4 text-primary" href="/profile">{{ g.user }}</a>
           </li>
+          {% if g.driver or g.operator or g.admin %}
+            <li class="nav-item">
+              <a class="nav-link text-center" href="/manage_orders">Manage orders</a>
+            </li>
+          {% endif %}
+          {% if g.operator or g.admin %}
+            <li class="nav-item">
+              <a class="nav-link text-center" href="/manage_canteen">Manage canteens</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-center" href="/manage_items">Manage items</a>
+            </li>
+          {% endif %}
+          {% if g.admin %}
+            <li class="nav-item">
+              <a class="nav-link text-center" href="/manage_users">Manage users</a>
+            </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link text-center" href="/">Home</a>
           </li>
@@ -43,31 +62,7 @@
           <li class="nav-item">
             <a class="nav-link text-center" href="/logout">Logout</a>
           </li>
-          {% if g.driver %}
-          <li class="nav-item">
-            <a class="nav-link text-center" href="/driver_plan">Your regions</a>
-          </li>
-          {% endif %}
-          {% if g.operator or g.admin %}
-          <li class="nav-item">
-            <a class="nav-link text-center" href="/create_plan">Create plan</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-center" href="/manage_items">Manage items</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-center" href="/manage_orders">Manage orders</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-center" href="/manage_canteen">Manage canteens</a>
-          </li>
-          {% if g.admin %}
-          <li class="nav-item">
-            <a class="nav-link text-center" href="/manage_users">Manage users</a>
-          </li>
-          {% endif %}
-          {% endif %}
-          {% else %}
+        {% else %}
           <li class="nav-item">
             <a class="nav-link text-center" href="/">Home</a>
           </li>
@@ -77,28 +72,29 @@
           <li class="nav-item">
             <a class="nav-link text-center" href="/register">Register</a>
           </li>
-          {% endif %}
-          <li class="nav-item">
-            <a href="/shopping-cart" class="mx-3">
-              <img src="../static/img/shopping-cart.png" onmouseover="this.src='../static/img/shopping-cart-hover.png';" onmouseout="this.src='../static/img/shopping-cart.png';" class="mt-1" width="30" height="30" alt="Shopping cart" title="Shopping cart">
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+        {% endif %}
+        <li class="nav-item">
+          <a href="/shopping-cart" class="mx-3">
+            <img src="../static/img/shopping-cart.png" onmouseover="this.src='../static/img/shopping-cart-hover.png';"
+                 onmouseout="this.src='../static/img/shopping-cart.png';" class="mt-1" width="30" height="30"
+                 alt="Shopping cart" title="Shopping cart">
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
+</div>
 
-  <!-- Page content -->
-  <div class="container" style="min-height: 69.5vh">
+<!-- Page content -->
+<div class="container" style="min-height: 69.5vh">
   {% block content %}{% endblock %}
-  </div>
+</div>
 
-  <!-- Footer -->
-  <footer class="page-footer row-fluid pt-5 bg-light" style="height: 10vh">
-    <p class="m-0 text-center">Copyright &copy; 2019 Šimon Šesták, David Hás, Martina Jendrálová</p>
-  </footer>
+<!-- Footer -->
+<footer class="page-footer row-fluid pt-5 bg-light" style="height: 10vh">
+  <p class="m-0 text-center">Copyright &copy; 2019 Šimon Šesták, David Hás, Martina Jendrálová</p>
+</footer>
 
 </body>
 
 </html>
-

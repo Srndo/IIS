@@ -1,10 +1,10 @@
-<!-- Arguments: items (tuple (id, name, type, price, qty)), total (int) -->
+<!-- Arguments: items (tuple (food, item)), total (int) -->
 {% extends "layout.html" %}
 {% block content %}
-<div class="jumbotron bg-light">
-  <h2 class="mb-5">Shopping cart</h2>
-  <table class="table mb-5">
-    <thead class="thead-light">
+  <div class="jumbotron bg-light">
+    <h2 class="mb-5">Shopping cart</h2>
+    <table class="table mb-5">
+      <thead class="thead-light">
       <tr>
         <th scope="col">Item</th>
         <th scope="col">Type</th>
@@ -13,20 +13,21 @@
         <th scope="col">Total</th>
         <th scope="col"></th> <!-- Remove item -->
       </tr>
-    </thead>
-    <tbody>
-      {% for id, name, type, price, qty in items %}
+      </thead>
+      <tbody>
+      {% for food, item in items %}
         <tr>
-          <th scope="row">{{ name }}</th>
-          <td>{{ type }}</td>
-          <td>{{ '%.2f' | format(price | round(2, "ceil")) }} &euro;</td>
+          <th scope="row">{{ food.name }}</th>
+          <td>{{ food.type }}</td>
+          <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
           <td>
-            <input type="text" form="form-recalculate" name="{{ id }}" class="w-50 form-input text-center" maxlength=32 value="{{ qty }}" required >
+            <input type="text" form="form-recalculate" name="{{ food.id }}" class="w-50 form-input text-center" maxlength=32
+                   value="{{ item.qty }}" required>
           </td>
-          <td>{{ '%.2f' | format((qty * price)|round(2, "ceil")) }} &euro;</td>
+          <td>{{ '%.2f' | format((item.qty * food.price)|round(2, "ceil")) }} &euro;</td>
           <td>
             <form action="/remove-from-cart" method="POST">
-              <input type="hidden" name="food_id" value="{{ id }}" />
+              <input type="hidden" name="food_id" value="{{ food.id }}"/>
               <button type="submit" class="btn btn-secondary btn-sm">Remove</button>
             </form>
           </td>
@@ -40,25 +41,25 @@
         <th>{{ '%.2f' | format((total)|round(2, "ceil")) }} &euro;</th>
         <th></th>
       </tr>
-    </tbody>
-  </table>
-  {% if items %}
-    <div class="row justify-content-end">
-      <div class="col-auto">
-        <form id="form-recalculate" action="/update-cart" method="POST">
-          <button type="submit" class="btn btn-secondary btn-lg">Recalculate</button>
-        </form>
+      </tbody>
+    </table>
+    {% if items %}
+      <div class="row justify-content-end">
+        <div class="col-auto">
+          <form id="form-recalculate" action="/update-cart" method="POST">
+            <button type="submit" class="btn btn-secondary btn-lg">Recalculate</button>
+          </form>
+        </div>
+        <div class="col-auto">
+          <a href="/" class="btn btn-secondary btn-lg">Add items</a>
+        </div>
+        <div class="col-auto">
+          <a class="btn btn-dark btn-lg" href="/checkout">Checkout</a>
+        </div>
       </div>
-      <div class="col-auto">
-        <a href="/" class="btn btn-secondary btn-lg">Add items</a>
-      </div>
-      <div class="col-auto">
-        <a class="btn btn-dark btn-lg" href="/checkout">Checkout</a>
-      </div>
-    </div>
-  {% else %}
-    <h5 class="text-secondary mb-2" style="opacity:0.75">Your shopping cart is empty.</h5>
-  {% endif %}
-</div>
+    {% else %}
+      <h5 class="text-secondary mb-2" style="opacity:0.75">Your shopping cart is empty.</h5>
+    {% endif %}
+  </div>
 {% endblock %}
 

@@ -1,54 +1,93 @@
-<!-- Arguments: TODO -->
+<!-- Arguments: items (list of tuple (order, user, price, driver)), driver_list -->
 {% extends "layout.html" %}
 {% block content %}
   <div class="jumbotron bg-light">
-
-    <h2>Manage orders</h2>
-
-    <nav>
-      <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-unassigned-tab" data-toggle="tab" href="#nav-unassigned" role="tab" aria-controls="nav-unassigned" aria-selected="true" >Unassigned orders</a>
-        <a class="nav-item nav-link"        id="nav-assigned-tab"   data-toggle="tab" href="#nav-assigned"   role="tab" aria-controls="nav-assigned"   aria-selected="false">Assigned orders</a>
-      </div>
-    </nav>
-
-    <div class="tab-content py-3 px-3 px-sm-0">
-
-      <div class="tab-pane fade show active" id="nav-unassigned" role="tabpanel" aria-labelledby="nav-unassigned-tab">
-        Unassigned.
-        <!--
-        <table class="table mb-5">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Type</th>
-              <th scope="col">Description</th>
-              <th scope="col">Alergens</th>
-              <th scope="col">Price</th>
-              <th scope="col">Order</th>
-            </tr>
-          </thead>
-          <tbody>
-          (% for food in daily_foods %)
-            <tr>
-              <th scope="row">(( food.nazov ))</th>
-              <td>(( food.typ ))</td>
-              <td>(( food.popis ))</td>
-              <td>(( food.alergeny ))</td>
-              <td>(( food.cena )) &euro;</td>
-              <td><a href="/new_order/(( food.id ))"><button type="button" class="btn-outline-dark">Order</button></a></td>
-            </tr>
-          (% endfor %)
-          </tbody>
-        </table>-->
-      </div>
-
-      <div class="tab-pane fade" id="nav-assigned" role="tabpanel" aria-labelledby="nav-assigned-tab">
-        Assigned.
-      </div>
-
-    </div>
-
+    <h2 class="mb-5">Manage orders</h2>
+    <table class="table mb-5">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col">Order ID</th>
+        <th scope="col">User</th>
+        <th scope="col">Price</th>
+        <th scope="col">Created on</th>
+        <th scope="col">Status</th>
+        <th scope="col">Driver</th>
+        <th scope="col"></th> <!-- Edit -->
+      </tr>
+      </thead>
+      <tbody>
+      {% for order, user, price, driver in items %}
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{% if user %}{{ user.email }}{% else %}Unregistered{% endif %}</td>
+          <td>{{ '%.2f' | format(price | round(2, "ceil")) }} &euro;</td>
+          <td>{{ int_to_time(order.order_time) }}</td>
+          <td>
+            <form id="form-set-status-{{ order.id }}" action="/update-order" method="POST">
+              <input type="hidden" name="order_id" value="{{ order.id }}"/>
+            </form>
+            <select name="status" form="form-set-status-{{ order.id }}" onchange="this.form.submit()"
+              {% if order.status == "Created" %}class="custom-select border-danger text-danger"
+              {% elif order.status == "Confirmed" %}class="custom-select border-primary text-primary"
+              {% elif order.status == "En route" %}class="custom-select border-success text-success"
+              {% elif order.status == "Delivered" %}class="custom-select border-muted text-muted"
+              {% elif order.status == "Canceled" %}class="custom-select border-muted text-muted"
+              {% endif %}>
+              <option value="Created" {% if order.status == "Created" %} selected {% endif %} >
+                Created
+              </option>
+              <option value="Confirmed" {% if order.status == "Confirmed" %} selected {% endif %} >
+                Confirmed
+              </option>
+              <option value="En route" {% if order.status == "En route" %} selected {% endif %} >
+                En route
+              </option>
+              <option value="Delivered" {% if order.status == "Delivered" %} selected {% endif %} >
+                Delivered
+              </option>
+              <option value="Canceled" {% if order.status == "Canceled" %} selected {% endif %} >
+                Canceled
+              </option>
+            </select>
+          </td>
+          <td>
+            <form id="form-set-driver-{{ order.id }}" action="/update-order" method="POST">
+              <input type="hidden" name="order_id" value="{{ order.id }}"/>
+            </form>
+            <select name="driver_id" class="custom-select" form="form-set-driver-{{ order.id }}"
+                    onchange="this.form.submit()">
+              {% if driver %}
+                <option value="{{ driver.id }}" selected>
+                  [{{ driver.id }}] {{ driver.name }} {{ driver.surname }}
+                </option>
+                <option value="{{ -1 }}">None</option>
+              {% else %}
+                <option value="{{ -1 }}" selected>None</option>
+              {% endif %}
+              {% for d in driver_list %}
+                {% if driver.id != d.id %}
+                  <option value="{{ d.id }}">
+                    [{{ d.id }}] {{ d.name }} {{ d.surname }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </td>
+          <td>
+            <a href="/view-order?id={{ order.id }}" class="mx-3">
+              <img src="../static/img/view-icon.png" onmouseover="this.src='../static/img/view-icon-hover.png';"
+                   onmouseout="this.src='../static/img/view-icon.png';" class="mt-1" width="25" height="25"
+                   alt="View order" title="View order">
+            </a>
+            <a href="/view-order?id={{ order.id }}&edit" class="mx-3">
+              <img src="../static/img/edit-icon.png" onmouseover="this.src='../static/img/edit-icon-hover.png';"
+                   onmouseout="this.src='../static/img/edit-icon.png';" class="mt-1" width="30" height="30"
+                   alt="Edit order" title="Edit order">
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
   </div>
 {% endblock %}
-

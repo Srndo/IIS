@@ -1,4 +1,4 @@
-<!-- Arguments: user (User), role (string), orders (list of Order) -->
+<!-- Arguments: user (User), role (string), orders (list of (Order, price)) -->
 {% extends "layout.html" %}
 {% block content %}
   <div class="jumbotron bg-light">
@@ -7,8 +7,10 @@
 
     <nav>
       <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-account-tab" data-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="true" >Account info</a>
-        <a class="nav-item nav-link"        id="nav-orders-tab"   data-toggle="tab" href="#nav-orders"   role="tab" aria-controls="nav-orders"   aria-selected="false">My orders</a>
+        <a class="nav-item nav-link active" id="nav-account-tab" data-toggle="tab" href="#nav-account" role="tab"
+           aria-controls="nav-account" aria-selected="true">Account info</a>
+        <a class="nav-item nav-link" id="nav-orders-tab" data-toggle="tab" href="#nav-orders" role="tab"
+           aria-controls="nav-orders" aria-selected="false">My orders</a>
       </div>
     </nav>
 
@@ -16,7 +18,8 @@
 
       <div class="tab-pane fade show active" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
         <div class="text-secondary pb-5 pt-4">
-          Your account info is used as default when you create an order.<br/>But you can always specify it manually, for example if you make an order to a different place.
+          Your account info is used as default when you create an order.<br/>But you can always specify it manually, for
+          example if you make an order to a different place.
         </div>
         <form method="POST">
           <div class="form-group row">
@@ -26,7 +29,8 @@
           </div>
           <div class="form-group row">
             <label for="input-password" class="col text-right">Password</label>
-            <input type="password" id="input-password" class="form-control mx-sm-3 col" aria-describedby="password-help" readonly>
+            <input type="password" id="input-password" class="form-control mx-sm-3 col" aria-describedby="password-help"
+                   readonly>
             <small id="password-help" class="text-muted text-left col">
               Must be 5-64 characters long.
             </small>
@@ -48,7 +52,8 @@
           </div>
           <div class="form-group row">
             <label for="input-postcode" class="col text-right">Postcode</label>
-            <input type="text" id="input-postcode" class="form-control mx-sm-3 col" readonly value="{{ user.postcode }}">
+            <input type="text" id="input-postcode" class="form-control mx-sm-3 col" readonly
+                   value="{{ user.postcode }}">
             <div class="col"></div>
           </div>
           <div class="form-group row">
@@ -66,7 +71,9 @@
             <input type="text" id="input-role" class="form-control mx-sm-3 col" readonly value="{{ role }}">
             <div class="col"></div>
           </div>
-          <a href="/edit_user/{{ user.id }}"><button type="button" class="btn btn-dark btn-lg">Edit</button></a>
+          <a href="/edit_user/{{ user.id }}">
+            <button type="button" class="btn btn-dark btn-lg">Edit</button>
+          </a>
         </form>
       </div>
 
@@ -74,20 +81,38 @@
         {% if orders %}
           <table class="table mb-5">
             <thead class="thead-light">
-              <tr>
-                <th scope="col">Order ID</th>
-                <th scope="col">Status</th>
-                <th scope="col">Created at</th>
-              </tr>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">Price</th>
+              <th scope="col">Created on</th>
+              <th scope="col">Status</th>
+              <th scope="col"></th> <!-- Action -->
+            </tr>
             </thead>
             <tbody>
-              {% for order in orders %}
-                <tr>
-                  <td>{{ order.id }}</td>
-                  <td>{{ order.status }}</td>
-                  <td>{{ int_to_time(order.order_time) }}</td>
-                </tr>
-              {% endfor %}
+            {% for order, price in orders %}
+              <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ '%.2f' | format(price | round(2, "ceil")) }} &euro;</td>
+                <td>{{ int_to_time(order.order_time) }}</td>
+                <td
+                        {% if order.status == "Created" %}class="border-danger text-danger"
+                        {% elif order.status == "Confirmed" %}class="border-primary text-primary"
+                        {% elif order.status == "En route" %}class="border-success text-success"
+                        {% elif order.status == "Delivered" %}class="border-muted text-muted"
+                        {% elif order.status == "Canceled" %}class="border-muted text-muted"
+                        {% endif %}>
+                  {{ order.status }}
+                </td>
+                <td>
+                  <a href="/view-order?id={{ order.id }}" class="mx-3">
+                    <img src="../static/img/view-icon.png" onmouseover="this.src='../static/img/view-icon-hover.png';"
+                         onmouseout="this.src='../static/img/view-icon.png';" class="mt-1" width="25" height="25"
+                         alt="View order" title="View order">
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
             </tbody>
           </table>
         {% else %}
