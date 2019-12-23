@@ -50,12 +50,12 @@ INSERT INTO "food" ("id", "name", "type", "description", "allergens", "price", "
     ('37', 'Beerhouse gulash, Chicken soup', 'Lunch', 'Gulash with variation of dumplings.', '3, 9', '4.70', '4', '1');
 
 INSERT INTO "order" ("id", "status", "order_time", "name", "surname", "address", "postcode", "city", "phone", "email", "id_user", "id_driver") VALUES
-    ('0', 'Created', '20', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', NULL),
-    ('1', 'Confirmed', '19', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', NULL),
-    ('2', 'Confirmed', '18', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', '2'),
-    ('3', 'En route', '17', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', '2'),
-    ('4', 'Delivered', '16', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', '2'),
-    ('5', 'Canceled', '15', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', NULL);
+    ('0', 'Created', '1577110500', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', NULL),
+    ('1', 'Confirmed', '1577110427', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', '2'),
+    ('2', 'Confirmed', '1577110250', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', '5'),
+    ('3', 'En route', '1577110139', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', '2'),
+    ('4', 'Delivered', '1577110339', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', '2'),
+    ('5', 'Canceled', '1577110239', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', '2');
 
 
 /************
@@ -80,13 +80,28 @@ INSERT INTO "user" ("id", "email", "password", "name", "surname", "address", "po
     ('2', 'Andrej.Dolnik@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Andrej', 'Dolník', 'Reisigova 319', '612 00', 'Brno-Královo pole', '+421 958 658 489'),  /* password: asdfasdf */
     ('3', 'Julia.Cermakova@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444'),  /* password: asdfasdf */
     ('4', 'david.silber@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'David', 'Silber', 'Gorkého 42', '602 00', 'Brno-střed', '+421 569 863 457'),  /* password: asdfasdf */
-    ('5', 'andrea.villova@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Andrea', 'Villová', 'Botanická 77', '602 00', 'Brno-střed', '+420 968 569 832');  /* password: asdfasdf */
+    ('5', 'andrea.villova@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Andrea', 'Villová', 'Botanická 77', '602 00', 'Brno-střed', '+420 968 569 832'),  /* password: asdfasdf */
+    ('6', 'ingrid.bartova@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Ingrid', 'Bartová', 'Grohova 11', '602 00', 'Brno-střed', '+420 789 568 476'),  /* password: asdfasdf */
+    ('7', 'emil.voda@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Emil', 'Voda', 'Kolejní 45', '612 00', 'Brno-Královo pole', '+420 156 328 957'),  /* password: asdfasdf */
+    ('8', 'jakub.cenek@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Jakub', 'Čeněk', 'Kounicova 16', '602 00', 'Brno-Žabovřesky', '+420 588 996 335'),  /* password: asdfasdf */
+    ('9', 'arnold.noga@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Arnold', 'Noga', 'Božetěchova 16', '612 00', 'Brno-Královo pole', '+420 123 569 866'),  /* password: asdfasdf */
+    ('10', 'oliver.stanek@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Oliver', 'Staněk', 'Husitská 19', '612 00', 'Brno-Královo poe', '+420 485 967 256'),  /* password: asdfasdf */
+    ('11', 'denis.dovicic@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Denis', 'Dovičic', 'Hlavní 78', '624 00', 'Brno-Komín', '+421 456 987 221'),  /* password: asdfasdf */
+    ('12', 'antonia.horna@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Antonia', 'Horná', 'Nová 35', '635 00', 'Brno-Kníničky', '+421 985 625 333'),  /* password: asdfasdf */
+    ('13', 'vincent.kocis@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Vincent', 'Kočis', 'Tererova 51', '612 00', 'Brno-Královo pole', '+421 915 612 359'),  /* password: asdfasdf */
+    ('14', 'zora.fererova@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Zora', 'Fererová', 'Masarykova 54', '602 00', 'Brno-střed', '+420 799 652 114'),  /* password: asdfasdf */
+    ('15', 'hugo.lovin@gmail.com', '$5$rounds=535000$fclrBT5bsouAbcjB$ielqqoZFgC7SP2v.ez7YlS1QE28IfjMavXLhc70FkY2', 'Hugo', 'Lovin', 'Čapkova 34',  '602 00', 'Brno-střed', '+420 784 514 598');  /* password: asdfasdf */
 
 INSERT INTO "driver" ("id") VALUES
-    ('2');
+    ('2'),
+    ('5'),
+    ('11'),
+    ('14');
 
 INSERT INTO "operator" ("id") VALUES
-    ('1');
+    ('1'),
+    ('12'),
+    ('3');
 
 INSERT INTO "admin" ("id") VALUES
     ('0'),
