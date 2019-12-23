@@ -5,7 +5,7 @@ INSERT INTO "canteen" ("id", "name", "address", "description", "img_src") VALUES
     ('0', 'Klub cestovatelů', 'Veleslavínova 183/14, 612 00 Brno', 'Oriental dishes from the whole Asia. Discover the taste of adventure with the Klub cestovatelů restaurant.', 'https://i.imgur.com/W2NhNwR.jpg'),
     ('1', 'Pizzeria Mozzarella', 'Kolejní 2905/2, 612 00 Brno-Královo Pole', 'Order some genuine italian pizza from Pizzeria Mozzarella.', 'https://i.imgur.com/mjy5rt7.jpg'),
     ('2', 'Everest', 'Veveří 61, 602 00 Brno-střed', 'Oriental dishes specially from the Nepal province are available in restaurant Everest.', 'https://i.imgur.com/qhNgPj8.jpg'),
-    ('3', 'Pivní stáj', 'Veveří 38, 602 00 Brno-střed', 'The best burgers in South Moravian Region with great prices are available at Pivní stáj.', 'https://i.imgur.com/RX8fTFm.jpg'),
+    ('3', 'Pivní stáj', 'Veveří 38, 602 00 Brno-střed', 'The best burgers in South Moravian Region with great prices are available at Pivní stáj.', 'https://i.imgur.com/KUSpuXy.jpg'),
     ('4', 'Borgeska', 'Palackého tř. 285/47, 612 00 Brno-Královo Pole', 'Traditional czech dishes, menu and desserts from Borgeska restaurant.', 'https://i.imgur.com/42oGtPp.jpg'),
     ('5', 'U 3 opic', 'Palackého tř. 200/77, 612 00 Brno-Královo Pole', 'Traditional czech dishes directly to your home can be ordered from restaurant U 3 opic.', 'https://i.imgur.com/gSMIT7u.jpg');
 
