@@ -42,7 +42,12 @@ INSERT INTO "food" ("id", "name", "type", "description", "allergens", "price", "
     ('29', 'Greek salad', 'Salad', 'Fresh and colorful greek salad.', '7', '3.80', '2', '1'),
     ('30', 'Caesar salad', 'Salad', 'Salad with chicken slices and toasted baguette.', '7', '3.95', '3', '1'),
     ('31', 'Chicken salad', 'Salad', 'Salad with roasted chicken pieces and mix of lettuce salads.', '9', '3.80', '3', '1'),
-    ('32', 'Cheese salad', 'Salad', 'Salad with grilled goat cheese and honey dressing.', '9', '4.20', '5', '1');
+    ('32', 'Cheese salad', 'Salad', 'Salad with grilled goat cheese and honey dressing.', '9', '4.20', '5', '1'),
+    ('33', 'Chicken mushroom, Garlic soup', 'Lunch', 'Chicken cubes with mushroom sauce and garlic soup.', '4, 8', '4.30', '0', '1'),
+    ('34', 'Vegetable curry, Tomato soup', 'Lunch', 'Mixture of seasonal vegetables cooked in traditional curry sauce.', '4, 8', '4.30', '2', '1'),
+    ('35', 'Double burger with fries, Potato soup', 'Lunch', 'Extra portion of burger meat combined with pootato soup.', '3, 7', '4.50', '3', '1'),
+    ('36', 'Roasted knee, Potato soup', 'Lunch', 'Marinated roasted pork knee without bone.', '3, 7', '4.90', '4', '1'),
+    ('37', 'Beerhouse gulash, Chicken soup', 'Lunch', 'Gulash with variation of dumplings.', '3, 9', '4.70', '4', '1');
 
 INSERT INTO "order" ("id", "status", "order_time", "name", "surname", "address", "postcode", "city", "phone", "email", "id_user", "id_driver") VALUES
     ('0', 'Created', '20', 'Julia', 'Čermáková', 'Technická 1', '612 00', 'Brno-Královo pole', '+420 778 695 444', 'Julia.Cermakova@gmail.com', '3', NULL),
