@@ -323,12 +323,12 @@ def add_to_cart():
             .filter(FoodInCart.id_food == food_id)
             .first())
     if item:
-        item.qty += 1
+        item.qty += int(request.form['qty'])
     else:
         new_item = FoodInCart(
             id_user=g.user_id,
             id_food=food_id,
-            qty=1
+            qty=int(request.form['qty'])
         )
         db.session.add(new_item)
     db.session.commit()

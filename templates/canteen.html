@@ -13,12 +13,13 @@
   <table class="table mb-5">
     <thead class="thead-light">
       <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Description</th>
-        <th scope="col">Allergens</th>
-        <th scope="col">Price</th>
-        <th scope="col"></th><!-- Order button -->
+        <th scope="col" style="width: 25%">Name</th>
+        <th scope="col" style="width: 10%">Type</th>
+        <th scope="col" style="width: 25%">Description</th>
+        <th scope="col" style="width: 10%">Allergens</th>
+        <th scope="col" style="width: 10%">Price</th>
+        <th scope="col" style="width: 10%">Quantity</th>
+        <th scope="col" style="width: 10%"></th><!-- Order button -->
       </tr>
     </thead>
     <tbody>
@@ -30,10 +31,13 @@
         <td>{{ food.allergens }}</td>
         <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
         <td>
-          <form action="/add-to-cart" method="POST">
-            <input type="hidden" name="food_id" value="{{ food.id }}" />
+          <input type="text" form="form-order-{{ food.id }}" name="qty" class="w-50 form-input text-center" maxlength=32 value="1" required>
+        </td>
+        <td>
+          <form id="form-order-{{ food.id }}" action="/add-to-cart" method="POST">
+            <input type="hidden" name="food_id" value="{{ food.id }}"/>
             <input type="hidden" name="redirect" value="/canteen/{{ canteen.id }}"/>
-            <button type="submit" class="btn-outline-dark">Order</button>
+            <button type="submit" class="btn btn-secondary btn-sm">Order</button>
           </form>
         </td>
       </tr>
@@ -46,27 +50,31 @@
   <table class="table">
     <thead class="thead-light">
       <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Description</th>
-        <th scope="col">Allergens</th>
-        <th scope="col">Price</th>
-        <th scope="col"></th><!-- Order button -->
+        <th scope="col" style="width: 25%">Name</th>
+        <th scope="col" style="width: 10%">Type</th>
+        <th scope="col" style="width: 25%">Description</th>
+        <th scope="col" style="width: 10%">Allergens</th>
+        <th scope="col" style="width: 10%">Price</th>
+        <th scope="col" style="width: 10%">Quantity</th>
+        <th scope="col" style="width: 10%"></th><!-- Order button -->
       </tr>
     </thead>
     <tbody>
     {% for food in permanent_foods %}
       <tr>
-        <th scope="row">{{ food.name }}</th>
-        <td>{{ food.type }}</td>
-        <td>{{ food.description }}</td>
-        <td>{{ food.allergens }}</td>
-        <td>{{ food.price }} &euro;</td>
+        <th scope="row" class="align-middle">{{ food.name }}</th>
+        <td class="align-middle">{{ food.type }}</td>
+        <td class="align-middle">{{ food.description }}</td>
+        <td class="align-middle">{{ food.allergens }}</td>
+        <td class="align-middle">{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
         <td>
-          <form action="/add-to-cart" method="POST">
-            <input type="hidden" name="food_id" value="{{ food.id }}" />
+          <input type="text" form="form-order-{{ food.id }}" name="qty" class="w-50 form-input text-center" maxlength=32 value="1" required>
+        </td>
+        <td>
+          <form id="form-order-{{ food.id }}" action="/add-to-cart" method="POST">
+            <input type="hidden" name="food_id" value="{{ food.id }}"/>
             <input type="hidden" name="redirect" value="/canteen/{{ canteen.id }}"/>
-            <button type="submit" class="btn-outline-dark">Order</button>
+            <button type="submit" class="btn btn-secondary btn-sm">Order</button>
           </form>
         </td>
       </tr>
