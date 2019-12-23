@@ -522,7 +522,7 @@ def remove_user(id):
         user = User.query.filter(User.id == id).first()
         db.session.delete(user)
         db.session.commit()
-        return render_template('all_done.html', desc="User removed")
+        return redirect('/')
     return redirect('/login')
 
 
@@ -536,7 +536,7 @@ def add_canteen():
             new_canteen = Canteen(name=name, address=address, description=description, img_src='https://via.placeholder.com/150')
             db.session.add(new_canteen)
             db.session.commit()
-            return render_template('all_done.html', desc="New canteen added.")
+            return redirect('/')
         else:
             operators = User.query.filter(User.id == Operator.id).all()
             return render_template('add_canteen.html', operators=operators)
@@ -675,12 +675,9 @@ def add_item():
             new_item = Food(name=name, type=type, description=description, allergens=alergens, price=price)
             db.session.add(new_item)
             db.session.commit()
-            
-            return render_template('all_done.html', desc="New item added")
-            
+            return redirect('/')
         else:
             return render_template('add_item.html')
-        
     return redirect('/login')
 
 
@@ -699,9 +696,7 @@ def remove_canteen(canteen_id):
         canteen = Canteen.query.filter(Canteen.id == canteen_id).first()
         db.session.delete(canteen)
         db.session.commit()
-        
-        return render_template('all_done.html', desc="Canteen removed")
-        
+        return redirect('/')
     return redirect('/login')
 
 
@@ -711,9 +706,7 @@ def remove_item(id):
         item = Food.query.filter(Food.id == id).first()
         db.session.delete(item)
         db.session.commit()
-
-        return render_template('all_done.html', desc="Item removed")
-
+        return redirect('/')
     return redirect('/login')
 
 

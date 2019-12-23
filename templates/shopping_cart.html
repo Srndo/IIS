@@ -21,12 +21,12 @@
           <th scope="row">{{ food.name }}</th>
           <td>{{ food.type }}</td>
           <td><a href="/canteen/{{ canteen.id }}" class="text-primary" >{{ canteen.name }}</a></td>
-          <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
+          <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }}&nbsp;&euro;</td>
           <td>
             <input type="text" form="form-recalculate" name="{{ food.id }}" class="w-50 form-input text-center" maxlength=32
                    value="{{ item.qty }}" required>
           </td>
-          <td>{{ '%.2f' | format((item.qty * food.price)|round(2, "ceil")) }} &euro;</td>
+          <td>{{ '%.2f' | format((item.qty * food.price)|round(2, "ceil")) }}&nbsp;&euro;</td>
           <td>
             <form action="/remove-from-cart" method="POST">
               <input type="hidden" name="food_id" value="{{ food.id }}"/>
@@ -41,7 +41,7 @@
         <th></th>
         <th></th>
         <th></th>
-        <th>{{ '%.2f' | format((total)|round(2, "ceil")) }} &euro;</th>
+        <th>{{ '%.2f' | format((total)|round(2, "ceil")) }}&nbsp;&euro;</th>
         <th></th>
       </tr>
       </tbody>

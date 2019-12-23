@@ -21,9 +21,9 @@
           <th scope="row">{{ food.name }}</th>
           <td>{{ food.type }}</td>
           <td><a href="/canteen/{{ canteen.id }}" class="text-primary" >{{ canteen.name }}</a></td>
-          <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
+          <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }}&nbsp;&euro;</td>
           <td>{{ item.qty }}</td>
-          <td>{{ '%.2f' | format((item.qty * food.price)|round(2, "ceil")) }} &euro;</td>
+          <td>{{ '%.2f' | format((item.qty * food.price)|round(2, "ceil")) }}&nbsp;&euro;</td>
         </tr>
       {% endfor %}
       <tr class="thead-light">
@@ -32,7 +32,7 @@
         <th></th>
         <th></th>
         <th></th>
-        <th>{{ '%.2f' | format((total)|round(2, "ceil")) }} &euro;</th>
+        <th>{{ '%.2f' | format((total)|round(2, "ceil")) }}&nbsp;&euro;</th>
       </tr>
     </tbody>
   </table>
@@ -73,7 +73,7 @@
       <div class="col"></div>
     </div>
     <h3 class="pt-4">
-      Order price: {{ '%.2f' | format((total)|round(2, "ceil")) }} &euro;
+      Order price: {{ '%.2f' | format((total)|round(2, "ceil")) }}&nbsp;&euro;
     </h3>
     <div class="row justify-content-center pt-4">
       <div class="col-auto">

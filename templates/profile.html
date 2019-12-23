@@ -93,7 +93,7 @@
             {% for order, price in orders %}
               <tr>
                 <td>{{ order.id }}</td>
-                <td>{{ '%.2f' | format(price | round(2, "ceil")) }} &euro;</td>
+                <td>{{ '%.2f' | format(price | round(2, "ceil")) }}&nbsp;&euro;</td>
                 <td>{{ int_to_time(order.order_time) }}</td>
                 <td
                         {% if order.status == "Created" %}class="border-danger text-danger"

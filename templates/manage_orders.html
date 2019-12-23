@@ -20,7 +20,7 @@
         <tr>
           <td>{{ order.id }}</td>
           <td>{% if user %}{{ user.email }}{% else %}Unregistered{% endif %}</td>
-          <td>{{ '%.2f' | format(price | round(2, "ceil")) }} &euro;</td>
+          <td>{{ '%.2f' | format(price | round(2, "ceil")) }}&nbsp;&euro;</td>
           <td>{{ int_to_time(order.order_time) }}</td>
           <td>
             <form id="form-set-status-{{ order.id }}" action="/update-order" method="POST">
