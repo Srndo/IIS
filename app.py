@@ -476,7 +476,6 @@ def edit_user(id):
     postcode = request.form['postcode']
     city = request.form['city']
     phone = request.form['phone']
-    new_role = request.form['role']
 
     user.email = email
     if len(password) >= 5:
@@ -488,23 +487,25 @@ def edit_user(id):
     user.city = city
     user.phone = phone
 
-    if new_role != role:
-        if role == 'Driver':
-            db.session.delete(driver)
-        elif role == 'Operator':
-            db.session.delete(operator)
-        elif role == 'Admin':
-            if user.id == 0:
-                db.session.commit()
-                return render_template('edit_user.html', user=user, role=role, error="~* 𝔗𝔥𝔢𝔯𝔢 𝔪𝔲𝔰𝔱 𝔞𝔩𝔴𝔞𝔶𝔰 𝔟𝔢 𝔞𝔫 𝔞𝔡𝔪𝔦𝔫 *~")
-            else:
-                db.session.delete(admin)
-        if new_role == 'Driver':
-            db.session.add(Driver(id=id))
-        elif new_role == 'Operator':
-            db.session.add(Operator(id=id))
-        elif new_role == 'Admin':
-            db.session.add(Admin(id=id))
+    if g.admin:
+        new_role = request.form['role']
+        if new_role != role:
+            if role == 'Driver':
+                db.session.delete(driver)
+            elif role == 'Operator':
+                db.session.delete(operator)
+            elif role == 'Admin':
+                if user.id == 0:
+                    db.session.commit()
+                    return render_template('edit_user.html', user=user, role=role, error="~* 𝔗𝔥𝔢𝔯𝔢 𝔪𝔲𝔰𝔱 𝔞𝔩𝔴𝔞𝔶𝔰 𝔟𝔢 𝔞𝔫 𝔞𝔡𝔪𝔦𝔫 *~")
+                else:
+                    db.session.delete(admin)
+            if new_role == 'Driver':
+                db.session.add(Driver(id=id))
+            elif new_role == 'Operator':
+                db.session.add(Operator(id=id))
+            elif new_role == 'Admin':
+                db.session.add(Admin(id=id))
     db.session.commit()
     return redirect(f"/edit_user/{id}")
 
