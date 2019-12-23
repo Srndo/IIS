@@ -1,0 +1,86 @@
+<!-- Arguments: canteen, foods -->
+{% extends "layout.html" %}
+{% block content %}
+  <div class="jumbotron bg-light">
+    <h2 class="pb-4">Edit canteen</h2>
+    <div class="py-3 px-3 px-sm-0">
+      <form method="POST">
+        <div class="form-group row">
+          <label for="input-name" class="col text-right">Canteen name</label>
+          <input type="text" name="name" id="input-name" class="form-control mx-sm-3 col" placeholder="Name"
+                 maxlength=256 required autofocus value="{{ canteen.name }}">
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-address" class="col text-right">Canteen address</label>
+          <input type="text" name="address" id="input-address" class="form-control mx-sm-3 col" placeholder="Address"
+                 maxlength=256 required value="{{ canteen.address }}">
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-description" class="col text-right">Description</label>
+          <textarea type="text" name="description" id="input-description" class="form-control mx-sm-3 col"
+                    placeholder="Description" maxlength=4096 required>{{ canteen.description }}</textarea>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-img_src" class="col text-right">Image URL</label>
+          <input type="text" name="img_src" id="input-img_src" class="form-control mx-sm-3 col" placeholder="Image URL"
+                 maxlength=256 required aria-describedby="img-src-help" value="{{ canteen.img_src }}">
+          <small id="img-src-help" class="text-muted text-left col">
+            Ideally, the image should be 150×150 px large and in the JPEG format. You can use arbitrary webhosting for
+            the URL, for example tumbrl.
+          </small>
+        </div>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col-auto">
+            <input type="submit" class="btn btn-dark btn-lg mb-5 " value="Confirm">
+          </div>
+          <div class="col"></div>
+        </div>
+      </form>
+    </div>
+    <div class="pt-5">
+      <a href="/add_item/{{ canteen.id }}" class="btn btn-secondary btn-lg">Add item</a>
+      <a href="/remove_canteen/{{ canteen.id }}" class="btn btn-secondary btn-lg">Delete canteen</a>
+      <a href="/manage_canteen" class="btn btn-secondary btn-lg">Cancel</a>
+    </div>
+    <h2 class="pb-3 pt-5">Canteen items</h2>
+    <table class="table mb-5">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col" style="width: 20%">Name</th>
+        <th scope="col" style="width: 10%">Type</th>
+        <th scope="col" style="width: 30%">Description</th>
+        <th scope="col" style="width: 10%">Allergens</th>
+        <th scope="col" style="width: 10%">Price</th>
+        <th scope="col" style="width: 10%"></th> <!-- Action -->
+      </tr>
+      </thead>
+      <tbody>
+      {% for food in foods %}
+        <tr>
+          <td class="align-middle">{{ food.name }}</td>
+          <td class="align-middle">{{ food.type }}</td>
+          <td class="align-middle">{{ food.description }}</td>
+          <td class="align-middle">{{ food.allergens }}</td>
+          <td class="align-middle">{{ '%.2f' | format(food.price | round(2, "ceil")) }}&nbsp;&euro;</td>
+          <td class="align-middle">
+            <a href="/edit-item/{{ food.id }}" class="my-5">
+              <img src="../static/img/edit-icon.png" onmouseover="this.src='../static/img/edit-icon-hover.png';"
+                   onmouseout="this.src='../static/img/edit-icon.png';" class="mt-1" width="30" height="30"
+                   alt="Edit item" title="Edit item">
+            </a>
+            <a href="/remove_item/{{ food.id }}" class="mx-3">
+              <img src="../static/img/delete-icon.png" onmouseover="this.src='../static/img/delete-icon-hover.png';"
+                   onmouseout="this.src='../static/img/delete-icon.png';" class="mt-1" width="25" height="25"
+                   alt="Delete item" title="Delete item">
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

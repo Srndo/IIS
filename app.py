@@ -545,19 +545,6 @@ def add_canteen():
         return render_template('add_canteen.html')
 
 
-@app.route('/edit_canteen_picture/<int:id_canteen>', methods=['POST', 'GET'])
-def edit_canteen_picture(id_canteen):
-    if g.operator or g.admin:
-        canteen = Canteen.query.filter(Canteen.id == id_canteen).first()
-        if request.method == 'POST':
-            file = request.form['source']
-            canteen.img_src = file
-            db.session.commit()
-            return render_template('edit_canteen_picture.html', canteen=canteen)
-        else:
-            return render_template('edit_canteen_picture.html', canteen=canteen)
-
-
 @app.route('/manage_canteen')
 def manage_canteen():
     if g.operator or g.admin:
@@ -565,6 +552,111 @@ def manage_canteen():
         return render_template('manage_canteen.html', canteens=canteens)
     else:
         return redirect('/login')
+
+
+@app.route('/edit-canteen/<int:canteen_id>', methods=['POST', 'GET'])
+def edit_canteen(canteen_id):
+    if not g.user:
+        return redirect('/login')
+    if not g.operator and not g.admin:
+        abort(403)
+    canteen = Canteen.query.filter_by(id=canteen_id).first()
+    if canteen is None:
+        abort(422)
+    foods = Food.query.filter_by(id_canteen=canteen_id).all()
+    if request.method == 'GET':
+        return render_template('edit-canteen.html', canteen=canteen, foods=foods)
+
+    name = request.form['name']
+    address = request.form['address']
+    description = request.form['description']
+    img_src = request.form['img_src']
+    if None in (name, address, description, img_src):
+        abort(422)
+    canteen.name = name
+    canteen.address = address
+    canteen.description = description
+    canteen.img_src = img_src
+    db.session.commit()
+    return redirect('/manage_canteen')
+
+
+@app.route('/remove_canteen/<int:canteen_id>')
+def remove_canteen(canteen_id):
+    if not g.user:
+        return redirect('/login')
+    if not g.operator and not g.admin:
+        abort(403)
+    Food.query.filter_by(id_canteen=canteen_id).delete()
+    Canteen.query.filter_by(id=canteen_id).delete()
+    db.session.commit()
+    return redirect('/manage_canteen')
+
+
+@app.route('/add_item/<int:canteen_id>', methods=['POST', 'GET'])
+def add_item(canteen_id):
+    if not g.user:
+        return redirect('/login')
+    if not g.operator and not g.admin:
+        abort(403)
+    canteen = Canteen.query.filter_by(id=canteen_id).first()
+    if canteen is None:
+        abort(422)
+    if request.method == 'GET':
+        return render_template('add_item.html')
+
+    name = request.form['name']
+    type = request.form['type']
+    description = request.form['description']
+    allergens = request.form['allergens']
+    price = request.form['price']
+    if None in (name, type, description, allergens, price):
+        abort(422)
+    new_item = Food(
+        name=name,
+        type=type,
+        description=description,
+        allergens=allergens,
+        price=price,
+        id_canteen=canteen_id,
+        active=1
+    )
+    db.session.add(new_item)
+    db.session.commit()
+    return redirect(f'/edit-canteen/{canteen_id}')
+
+
+@app.route('/edit-item/<int:food_id>', methods=['POST', 'GET'])
+def edit_item(food_id):
+    if not g.user:
+        return redirect('/login')
+    if not g.operator and not g.admin:
+        abort(403)
+    food = Food.query.filter_by(id=food_id).first()
+    if food is None:
+        abort(422)
+    if request.method == 'GET':
+        return render_template('edit-item.html', food=food)
+    food.name = request.form['name']
+    food.type = request.form['type']
+    food.description = request.form['description']
+    food.allergens = request.form['allergens']
+    food.price = float(request.form['price'])
+    db.session.commit()
+    return redirect(f'/edit-canteen/{food.id_canteen}')
+
+
+@app.route('/remove_item/<int:id>')
+def remove_item(id):
+    if not g.user:
+        return redirect('/login')
+    if not g.operator and not g.admin:
+        abort(403)
+    item = Food.query.filter_by(id=id).first()
+    canteen_id = item.id_canteen
+    db.session.delete(item)
+    db.session.commit()
+    return redirect(f'/edit-canteen/{canteen_id}')
 
 
 @app.route('/manage_orders')
@@ -662,61 +754,6 @@ def show_order():
         return render_template('view-order.html', order_id=order_id, items=items, total=price, order=order, edit=edit, locked=False)
     else:
         return render_template('view-order.html', order_id=order_id, items=items, total=price, order=order, edit=False, locked=True)
-
-
-@app.route('/add_item', methods=['POST', 'GET'])
-def add_item():
-    if g.operator or g.admin:
-        if request.method == 'POST':
-            name = request.form['name']
-            type = request.form['type']
-            description = request.form['description']
-            alergens = request.form['alergens']
-            price = float(request.form['price'])
-            
-            new_item = Food(name=name, type=type, description=description, allergens=alergens, price=price)
-            db.session.add(new_item)
-            db.session.commit()
-            return redirect('/')
-        else:
-            return render_template('add_item.html')
-    return redirect('/login')
-
-
-@app.route('/manage_items', methods=['GET', 'POST'])
-def manage_items():
-    if g.operator or g.admin:
-        items = Food.query.all()
-        return render_template('manage_items.html', items=items)
-    else:
-        return redirect('/login')
-
-
-@app.route('/remove_canteen/<int:canteen_id>')
-def remove_canteen(canteen_id):
-    if g.operator or g.admin:
-        canteen = Canteen.query.filter(Canteen.id == canteen_id).first()
-        db.session.delete(canteen)
-        db.session.commit()
-        return redirect('/')
-    return redirect('/login')
-
-
-@app.route('/remove_item/<int:id>')
-def remove_item(id):
-    if g.operator or g.admin:
-        item = Food.query.filter(Food.id == id).first()
-        db.session.delete(item)
-        db.session.commit()
-        return redirect('/')
-    return redirect('/login')
-
-
-@app.route('/remove')
-def remove():
-    if g.operator or g.admin:
-        return render_template('remove.html')
-    return redirect('/login')
 
 
 ########################################

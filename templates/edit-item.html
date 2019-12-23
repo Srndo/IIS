@@ -2,25 +2,25 @@
 {% extends "layout.html" %}
 {% block content %}
   <div class="jumbotron bg-light">
-    <h2 class="pb-4">Add item</h2>
+    <h2 class="pb-4">Edit item</h2>
     <div class="py-3 px-3 px-sm-0">
       <form method="POST">
         <div class="form-group row">
           <label for="input-name" class="col text-right">Name</label>
           <input type="text" name="name" id="input-name" class="form-control mx-sm-3 col" placeholder="Name"
-                 maxlength=256 required autofocus>
+                 maxlength=256 required autofocus value="{{ food.name }}">
           <div class="col"></div>
         </div>
         <div class="container">
           <div class="form-group row">
             <label for="select-type" class="col text-right">Type</label>
             <select id="select-type" name="type" class="custom-select col mx-sm-3">
-              <option value="Lunch" selected>Lunch</option>
-              <option value="Soup">Soup</option>
-              <option value="Meat">Meat</option>
-              <option value="Side dish">Side dish</option>
-              <option value="Salad">Salad</option>
-              <option value="Drink">Drink</option>
+              <option value="Lunch" {% if food.type == "Lunch" %}selected{% endif %} >Lunch</option>
+              <option value="Soup" {% if food.type == "Soup" %}selected{% endif %} >Soup</option>
+              <option value="Meat" {% if food.type == "Meat" %}selected{% endif %} >Meat</option>
+              <option value="Side dish" {% if food.type == "Side dish" %}selected{% endif %} >Side dish</option>
+              <option value="Salad" {% if food.type == "Salad" %}selected{% endif %} >Salad</option>
+              <option value="Drink" {% if food.type == "Drink" %}selected{% endif %} >Drink</option>
             </select>
             <div class="col"></div>
           </div>
@@ -28,19 +28,19 @@
         <div class="form-group row">
           <label for="input-description" class="col text-right">Description</label>
           <textarea type="text" name="description" id="input-description" class="form-control mx-sm-3 col"
-                    placeholder="Description" maxlength=1024 required></textarea>
+                    placeholder="Description" maxlength=1024 required>{{ food.description }}</textarea>
           <div class="col"></div>
         </div>
         <div class="form-group row">
           <label for="input-allergens" class="col text-right">Allergens</label>
           <input type="text" name="allergens" id="input-allergens" class="form-control mx-sm-3 col"
-                 placeholder="Allergens" maxlength=64 required>
+                 placeholder="Allergens" maxlength=64 required value="{{ food.allergens }}">
           <div class="col"></div>
         </div>
         <div class="form-group row">
           <label for="input-price" class="col text-right">Price</label>
           <input type="text" name="price" id="input-price" class="form-control mx-sm-3 col"
-                 placeholder="Price" maxlength=4096 required>
+                 placeholder="Price" maxlength=4096 required value="{{ food.price }}">
           <div class="col"></div>
         </div>
         <div class="row">
