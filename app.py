@@ -594,7 +594,7 @@ def manage_orders():
 def update_order():
     if not g.user:
         return redirect('/login')
-    if not g.driver or g.operator or g.admin:
+    if not g.driver and not g.operator and not g.admin:
         abort(403)
     try:
         order_id = int(request.form['order_id'])
