@@ -396,6 +396,10 @@ def checkout():
     city = request.form['city']
     if None in (email, phone, name, surname, address, postcode, city):
         abort(400)
+    qtyties = [entry.qty for _, entry, _ in items]
+    if sum(qtyties) > 100:
+        refill_data = User(email=email, password="", name=name, surname=surname, address=address, postcode=postcode, city=city, phone=phone)
+        return render_template('checkout.html', items=items, total=total, user=refill_data, error="The order may consist of at most 100 items."), 422
     if g.user_id < 0:
         id_user = None
     else:

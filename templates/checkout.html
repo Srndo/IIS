@@ -1,8 +1,9 @@
-<!-- Arguments: items (tuple (food, item, canteen)), total (int), user (User) -->
+<!-- Arguments: items (tuple (food, item, canteen)), total (int), user (User), error (str) -->
 {% extends "layout.html" %}
 {% block content %}
 <div class="jumbotron bg-light">
   <h2 class="mb-5">Checkout</h2>
+  {% if error %}<div class="text-danger mb-4">{{ error }}</div>{% endif %}
   <table class="table mb-5">
     <thead class="thead-light">
       <tr>
