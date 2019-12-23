@@ -528,19 +528,21 @@ def remove_user(id):
 
 @app.route('/add_canteen', methods=['POST', 'GET'])
 def add_canteen():
-    if g.operator or g.admin:
-        if request.method == 'POST':
-            name = request.form['name']
-            address = request.form['address']
-            description = request.form['description']
-            new_canteen = Canteen(name=name, address=address, description=description, img_src='https://via.placeholder.com/150')
-            db.session.add(new_canteen)
-            db.session.commit()
-            return redirect('/')
-        else:
-            operators = User.query.filter(User.id == Operator.id).all()
-            return render_template('add_canteen.html', operators=operators)
-    return redirect('/login')
+    if not g.user:
+        return redirect('/login')
+    if not g.operator and not g.admin:
+        abort(403)
+    if request.method == 'POST':
+        name = request.form['name']
+        address = request.form['address']
+        description = request.form['description']
+        img_src = request.form['img_src']
+        new_canteen = Canteen(name=name, address=address, description=description, img_src=img_src)
+        db.session.add(new_canteen)
+        db.session.commit()
+        return redirect('/')
+    else:
+        return render_template('add_canteen.html')
 
 
 @app.route('/edit_canteen_picture/<int:id_canteen>', methods=['POST', 'GET'])

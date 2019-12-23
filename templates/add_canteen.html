@@ -1,22 +1,59 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="jumbotron">
-  <h2>Add canteen</h2>
-  <form class="form-auth" method="post">
-    <input type="text" name="name" class="form-input btn-block" placeholder="Name" maxlength=256 autofocus required>
-    <input type="text" name="address" class="form-input btn-block" placeholder="Address" maxlength=256 required>
-    <input type="text" name="description" class="form-input btn-block" placeholder="Description" maxlength=256 required>
-    <div class="input-group mt-2 mb-2">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="select_operator">Operator</label>
+  <div class="jumbotron">
+    <h2>Add canteen</h2>
+    <form class="form-auth" method="post">
+      <input type="text" name="name" class="form-input btn-block" placeholder="Name" maxlength=256 autofocus required>
+      <input type="text" name="address" class="form-input btn-block" placeholder="Address" maxlength=256 required>
+      <input type="text" name="description" class="form-input btn-block" placeholder="Description" maxlength=256
+             required>
+      <input type="text" name="img_src" class="form-input btn-block" placeholder="Description" maxlength=256 required>
+      <div class="input-group mt-2 mb-2">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="select_operator">Operator</label>
+        </div>
+        <select class="custom-select" id="select_operator" name="operator">
+          {% for operator in operators %}
+            <option value="{{ operator.id }}">{{ operator.name }} {{ operator.surname }}</option>
+          {% endfor %}
+        </select>
       </div>
-      <select class="custom-select" id="select_operator" name="operator">
-        {% for operator in operators %}
-        <option value="{{ operator.id }}">{{ operator.name }} {{ operator.surname }}</option>
-        {% endfor %}
-      </select>
+      <input type="submit" class="btn btn-lg btn-primary btn-block" value="Add">
+    </form>
+  </div>
+  <div class="jumbotron bg-light">
+    <h2 class="pb-4">Add canteen</h2>
+    <div class="py-3 px-3 px-sm-0">
+      <form method="POST">
+        <div class="form-group row">
+          <label for="input-name" class="col text-right">Canteen name</label>
+          <input type="text" name="name" id="input-name" class="form-control mx-sm-3 col" placeholder="Name"
+                 maxlength=256 required autofocus>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-address" class="col text-right">Canteen address</label>
+          <input type="text" name="address" id="input-address" class="form-control mx-sm-3 col" placeholder="Address"
+                 maxlength=256 required>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-description" class="col text-right">Description</label>
+          <textarea type="text" name="description" id="input-description" class="form-control mx-sm-3 col"
+                    placeholder="Description" maxlength=4096 required></textarea>
+          <div class="col"></div>
+        </div>
+        <div class="form-group row">
+          <label for="input-img_src" class="col text-right">Image URL</label>
+          <input type="text" name="img_src" id="input-img_src" class="form-control mx-sm-3 col" placeholder="Image URL"
+                 maxlength=256 required aria-describedby="img-src-help" value="https://via.placeholder.com/150">
+          <small id="img-src-help" class="text-muted text-left col">
+            Ideally, the image should be 150×150 px large and in the JPEG format. You can use arbitrary webhosting for
+            the URL, for example tumbrl.
+          </small>
+        </div>
+        <input type="submit" class="btn btn-dark btn-lg" value="Confirm">
+      </form>
     </div>
-    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Add">
-  </form>
-</div>
+  </div>
 {% endblock %}
