@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../static/css/layout.css">
   <link rel="stylesheet" href="../static/css/bootstrap.min.css">
   <script src="../static/js/jquery.min.js"></script>
+  <script src="../static/js/popper.min.js"></script>
   <script src="../static/js/bootstrap.min.js"></script>
 
   <!-- Favicon -->
@@ -26,8 +27,7 @@
   <div class="container">
     <nav class="navbar navbar-expand navbar-light bg-light">
       <a class="navbar-brand" href="/">
-        <img src="../static/img/favicon.ico" class="align-middle" width="80" height="80" alt="Hungry Panda Logo"
-             title="Hungry Panda">
+        <img src="../static/img/favicon.ico" class="align-middle" width="80" height="80" alt="Hungry Panda Logo" title="Hungry Panda">
         Hungry Panda
       </a>
       <ul class="navbar-nav ml-auto">
@@ -35,24 +35,25 @@
           <li class="nav-item mx-4">
             <a class="nav-link mx-4 text-primary" href="/profile">{{ g.user }}</a>
           </li>
-          {% if g.driver %}
+          {% if g.driver or g.operator or g.admin %}
             <li class="nav-item">
-              <a class="nav-link text-center" href="/manage_orders">Delivery</a>
-            </li>
-          {% elif g.operator or g.admin %}
-            <li class="nav-item">
-              <a class="nav-link text-center" href="/manage_orders">Manage orders</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-center" href="/manage_canteen">Manage canteens</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-center" href="/manage_items">Manage items</a>
-            </li>
-          {% endif %}
-          {% if g.admin %}
-            <li class="nav-item">
-              <a class="nav-link text-center" href="/manage_users">Manage users</a>
+              <div class="dropdown">
+                <a class="dropdown-toggle nav-link text-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Manage
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {% if g.driver %}
+                    <a class="dropdown-item" href="/manage_orders">Delivery</a>
+                  {% else %}
+                    <a class="dropdown-item" href="/manage_orders">Orders</a>
+                    <a class="dropdown-item" href="/manage_canteen">Canteens</a>
+                    <a class="dropdown-item" href="/manage_items">Items</a>
+                  {% endif %}
+                  {% if g.admin %}
+                    <a class="dropdown-item" href="/manage_users">Users</a>
+                  {% endif %}
+                </div>
+              </div>
             </li>
           {% endif %}
           <li class="nav-item">
@@ -77,9 +78,7 @@
         {% endif %}
         <li class="nav-item">
           <a href="/shopping-cart" class="mx-3">
-            <img src="../static/img/shopping-cart.png" onmouseover="this.src='../static/img/shopping-cart-hover.png';"
-                 onmouseout="this.src='../static/img/shopping-cart.png';" class="mt-1" width="30" height="30"
-                 alt="Shopping cart" title="Shopping cart">
+            <img src="../static/img/shopping-cart.png" onmouseover="this.src='../static/img/shopping-cart-hover.png';" onmouseout="this.src='../static/img/shopping-cart.png';" class="mt-1" width="30" height="30" alt="Shopping cart" title="Shopping cart">
           </a>
         </li>
       </ul>
