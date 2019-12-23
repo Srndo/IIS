@@ -171,6 +171,22 @@ def get_all_orders_info():
     return result, driver_list
 
 
+def get_driver_orders_info(driver_id):
+    result = []
+    orders = Order.query.filter_by(id_driver=driver_id).all()
+    for order in orders:
+        entries = FoodInOrder.query.filter_by(id_order=order.id).all()
+        price = 0
+        for entry in entries:
+            food = Food.query.filter(Food.id == entry.id_food).first()
+            price += food.price * entry.qty
+        user = User.query.filter_by(id=order.id_user).first()
+        driver = User.query.filter_by(id=order.id_driver).first()
+        result.append((order, user, price, driver))
+    result.reverse()
+    return result
+
+
 def get_profile_info():
     if g.driver:
         role = "Driver"
@@ -201,6 +217,7 @@ def get_order_info(order_id):
         food = Food.query.filter(Food.id == entry.id_food).first()
         price += food.price * entry.qty
         result.append((food, entry))
+    result.reverse()
     return result, price
 
 
@@ -563,23 +580,39 @@ def manage_canteen():
 def manage_orders():
     if not g.user:
         return redirect('/login')
-    if not g.operator or g.admin:
-        abort(401)
-    items, driver_list = get_all_orders_info()
-    return render_template('manage_orders.html', items=items, driver_list=driver_list)
+    if g.driver:
+        items = get_driver_orders_info(g.user_id)
+        return render_template('delivery.html', items=items)
+    if g.operator or g.admin:
+        items, driver_list = get_all_orders_info()
+        return render_template('manage_orders.html', items=items, driver_list=driver_list)
+    else:
+        abort(403)
 
 
 @app.route('/update-order', methods=['POST'])
 def update_order():
     if not g.user:
         return redirect('/login')
-    if not g.operator or g.admin:
-        abort(401)
+    if not g.driver or g.operator or g.admin:
+        abort(403)
     try:
         order_id = int(request.form['order_id'])
-        order = Order.query.filter_by(id=order_id).first()
     except KeyError:
         abort(400)
+    order = Order.query.filter_by(id=order_id).first()
+    if g.driver:
+        try:
+            status = request.form['status']
+            if status in ("Created", "Canceled"):
+                abort(403)
+            if status not in ("Confirmed", "En route", "Delivered"):
+                abort(400)
+            order.status = status
+        except KeyError:
+            abort(403)
+        db.session.commit()
+        return redirect('/manage_orders')
     try:
         driver_id = int(request.form['driver_id'])
         if driver_id >= 0:
@@ -614,7 +647,7 @@ def update_order():
         order.postcode = postcode
         order.city = city
     except KeyError:
-        abort(400)
+        pass
     db.session.commit()
     return redirect('/manage_orders')
 
@@ -624,19 +657,20 @@ def show_order():
     if not g.user:
         return redirect('/login')
     order_id = int(request.args.get('id'))
-    if not g.operator and not g.admin:
-        order = Order.query.filter_by(id_user=g.user_id).filter_by(id=order_id).first()
-        if order is None:
-            abort(401)
+    order = Order.query.filter_by(id=order_id).first()
+    if not g.driver and not g.operator and not g.admin:
+        if order.id_user != g.user_id:
+            abort(403)
+    if g.driver and order.id_driver != g.user_id:
+        abort(403)
     items, price = get_order_info(order_id)
     if not items or price <= 0:
         abort(400)
     edit = request.args.get('edit') is not None
-    order = Order.query.filter_by(id=order_id).first()
     if g.operator or g.admin:
         return render_template('view-order.html', order_id=order_id, items=items, total=price, order=order, edit=edit, locked=False)
     else:
-        return render_template('view-order.html', order_id=order_id, items=items, total=price, order=order, edit=edit, locked=True)
+        return render_template('view-order.html', order_id=order_id, items=items, total=price, order=order, edit=False, locked=True)
 
 
 @app.route('/add_item', methods=['POST', 'GET'])

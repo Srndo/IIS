@@ -35,12 +35,14 @@
           <li class="nav-item mx-4">
             <a class="nav-link mx-4 text-primary" href="/profile">{{ g.user }}</a>
           </li>
-          {% if g.driver or g.operator or g.admin %}
+          {% if g.driver %}
+            <li class="nav-item">
+              <a class="nav-link text-center" href="/manage_orders">Delivery</a>
+            </li>
+          {% elif g.operator or g.admin %}
             <li class="nav-item">
               <a class="nav-link text-center" href="/manage_orders">Manage orders</a>
             </li>
-          {% endif %}
-          {% if g.operator or g.admin %}
             <li class="nav-item">
               <a class="nav-link text-center" href="/manage_canteen">Manage canteens</a>
             </li>
