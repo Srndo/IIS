@@ -1,4 +1,4 @@
-<!-- Arguments: items (tuple (food, item)), total (int) -->
+<!-- Arguments: items (tuple (food, item, canteen)), total (int) -->
 {% extends "layout.html" %}
 {% block content %}
   <div class="jumbotron bg-light">
@@ -8,6 +8,7 @@
       <tr>
         <th scope="col">Item</th>
         <th scope="col">Type</th>
+        <th scope="col">Canteen</th>
         <th scope="col">Price</th>
         <th style="width: 15%" scope="col">Quantity</th>
         <th scope="col">Total</th>
@@ -15,10 +16,11 @@
       </tr>
       </thead>
       <tbody>
-      {% for food, item in items %}
+      {% for food, item, canteen in items %}
         <tr>
           <th scope="row">{{ food.name }}</th>
           <td>{{ food.type }}</td>
+          <td><a href="/canteen/{{ canteen.id }}" class="text-primary" >{{ canteen.name }}</a></td>
           <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
           <td>
             <input type="text" form="form-recalculate" name="{{ food.id }}" class="w-50 form-input text-center" maxlength=32
@@ -35,6 +37,7 @@
       {% endfor %}
       <tr class="thead-light">
         <th scope="row">Total</th>
+        <th></th>
         <th></th>
         <th></th>
         <th></th>

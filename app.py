@@ -149,7 +149,8 @@ def get_cart_info(user_id):
     total = 0
     for entry in entries:
         food = Food.query.filter(Food.id == entry.id_food).first()
-        result.append((food, entry))
+        canteen = Canteen.query.filter_by(id=food.id_canteen).first()
+        result.append((food, entry, canteen))
         total += food.price * entry.qty
     return result, total
 
@@ -216,7 +217,8 @@ def get_order_info(order_id):
     for entry in entries:
         food = Food.query.filter(Food.id == entry.id_food).first()
         price += food.price * entry.qty
-        result.append((food, entry))
+        canteen = Canteen.query.filter_by(id=food.id_canteen).first()
+        result.append((food, entry, canteen))
     result.reverse()
     return result, price
 
@@ -687,7 +689,7 @@ def add_item():
             db.session.add(new_item)
             db.session.commit()
             
-            return render_template('all_done.html', desc="New item aded")
+            return render_template('all_done.html', desc="New item added")
             
         else:
             return render_template('add_item.html')
