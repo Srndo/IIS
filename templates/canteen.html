@@ -25,15 +25,15 @@
     <tbody>
     {% for food in daily_foods %}
       <tr>
-        <th scope="row">{{ food.name }}</th>
-        <td>{{ food.type }}</td>
-        <td>{{ food.description }}</td>
-        <td>{{ food.allergens }}</td>
-        <td>{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
-        <td>
+        <th scope="row" class="align-middle">{{ food.name }}</th>
+        <td class="align-middle">{{ food.type }}</td>
+        <td class="align-middle">{{ food.description }}</td>
+        <td class="align-middle">{{ food.allergens }}</td>
+        <td class="align-middle">{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
+        <td class="align-middle">
           <input type="text" form="form-order-{{ food.id }}" name="qty" class="w-50 form-input text-center" maxlength=32 value="1" required>
         </td>
-        <td>
+        <td class="align-middle">
           <form id="form-order-{{ food.id }}" action="/add-to-cart" method="POST">
             <input type="hidden" name="food_id" value="{{ food.id }}"/>
             <input type="hidden" name="redirect" value="/canteen/{{ canteen.id }}"/>
@@ -67,10 +67,10 @@
         <td class="align-middle">{{ food.description }}</td>
         <td class="align-middle">{{ food.allergens }}</td>
         <td class="align-middle">{{ '%.2f' | format(food.price | round(2, "ceil")) }} &euro;</td>
-        <td>
+        <td class="align-middle">
           <input type="text" form="form-order-{{ food.id }}" name="qty" class="w-50 form-input text-center" maxlength=32 value="1" required>
         </td>
-        <td>
+        <td class="align-middle">
           <form id="form-order-{{ food.id }}" action="/add-to-cart" method="POST">
             <input type="hidden" name="food_id" value="{{ food.id }}"/>
             <input type="hidden" name="redirect" value="/canteen/{{ canteen.id }}"/>
